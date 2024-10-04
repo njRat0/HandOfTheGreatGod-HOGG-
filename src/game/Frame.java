@@ -39,9 +39,7 @@ public class Frame extends JFrame {
 		gameHeight = (int)((float)gameWidth / 16 * 9);      
 		gameCenterY = gameHeight/2;
 		gameCenterX = gameWidth/2;
-		Settings.coeficientOfScreen = (float)gameWidth / (float)Settings.STANDART_WINDOW_SIZE_X;
-		//coeficientY = (float)gameHeight / (float)Settings.STANDART_WINDOW_SIZE_Y;
-		
+		Settings.coeficientOfGameScreen = (float)gameWidth / (float)Settings.STANDART_WINDOW_SIZE_X;
 	}
 	
 	/**
