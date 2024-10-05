@@ -1,0 +1,6 @@
+screenSizeX: 2560
+screenSizeY: 1440
+gameScreenSizeX: 2560
+gameScreenSizeY: 1440
+coeficientOfGameScreen: 2
+typeOfScreenRender: OptionalWithoutBorders

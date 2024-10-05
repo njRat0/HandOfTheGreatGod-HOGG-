@@ -10,11 +10,15 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 
 public class Frame extends JFrame {
+	public static int windowSizeX;
+	public static int windowSizeY;
 	public static int gameHeight;                  // 720p game resolution
 	public static int gameWidth;  // wide aspect ratio
 	public static int gameCenterY;
 	public static int gameCenterX;
 	public static float coeficient;
+	public static int startPosOfGameX;
+	public static int startPosOfGameY;
 
 	private long lastRender;
 	private ArrayList<Float> fpsHistory;
@@ -25,23 +29,33 @@ public class Frame extends JFrame {
 		super(title);
 		setResizable(false);
 		//setExtendedState(JFrame.MAXIMIZED_BOTH); 
-		SetUp_WindowSizeParameters();
-		Dimension size = Toolkit.getDefaultToolkit().getScreenSize(); 
-		setSize(size.width + 10, size.height + 10);
+		windowSizeX = Settings.screenSize.width;
+		windowSizeY = Settings.screenSize.height;
+		gameWidth = Settings.gameScreenSize.width ;
+		gameHeight = Settings.gameScreenSize.height ; 
+		if (Settings.typeOfScreenRender == TypeOfScreenRender.FullScreen){
+			setExtendedState(JFrame.MAXIMIZED_BOTH);
+			gameWidth += 15;
+			gameHeight += 15;      
+		}
+		else if (Settings.typeOfScreenRender == TypeOfScreenRender.OptionalWithoutBorders) {
+			windowSizeX = gameWidth;
+			windowSizeY = gameHeight;
+		}
+		gameCenterY = gameHeight/2;
+		gameCenterX = gameWidth/2;
+		startPosOfGameX = (int)((windowSizeX - gameWidth)/2);
+		startPosOfGameY = (int)((windowSizeY - gameHeight)/2);
+		if (Settings.typeOfScreenRender == TypeOfScreenRender.FullScreen){
+			startPosOfGameX += 8;
+			startPosOfGameY += 8;
+		}
+
+		setSize(windowSizeX, windowSizeY);
 		lastRender = -1;
 		fpsHistory = new ArrayList<>(100);
 	}
 
-
-	public static void SetUp_WindowSizeParameters(){
-		Dimension size = Toolkit.getDefaultToolkit().getScreenSize(); 
-		gameWidth = size.width + 5;
-		gameHeight = (int)((float)gameWidth / 16 * 9);      
-		gameCenterY = gameHeight/2;
-		gameCenterX = gameWidth/2;
-		Settings.coeficientOfGameScreen = (float)gameWidth / (float)Settings.STANDART_WINDOW_SIZE_X;
-	}
-	
 	/**
 	 * This must be called once after the JFrame is shown:
 	 *    frame.setVisible(true);
@@ -93,7 +107,7 @@ public class Frame extends JFrame {
 	private void doRendering(Graphics2D g2d, Player player, ArrayList<InteractingObject> interactingObjects) {
 		// Draw background
 		g2d.setColor(Color.BLACK);
-		g2d.fillRect(0, 0, gameWidth, gameHeight);
+		g2d.fillRect(startPosOfGameX, startPosOfGameY, gameWidth, gameHeight);
 		
 		
 		if(GameLoop.curLayout == 0){
@@ -118,36 +132,6 @@ public class Frame extends JFrame {
 		}
 		else if(GameLoop.curLayout == 3){
 			if(!player.isDead){
-				//Draw player and enemies
-				//player.toDraw(g2d);
-				if(interactingObjects != null){
-					for(InteractingObject object : interactingObjects){
-						object.toDraw(g2d);
-					}
-				}
-				//>>>>UI rendering
-					//hp bar
-				g2d.setColor(Color.black);
-				g2d.fillRect(8, 31, (int)(player.maxHP + 0.5f)  + 5, 25);
-				g2d.setColor(Color.red);
-				g2d.fillRect(8, 34, (int)(player.curHP + 0.5f), 19);
-					//level indicator
-				String str1 = "Level: " + player.level;
-				g2d.setColor(Color.WHITE);
-				g2d.setFont(g2d.getFont().deriveFont(Font.BOLD).deriveFont(12.0f));
-				g2d.drawString(str1, 18, 75);
-					//exp bar
-				g2d.setColor(Color.black);
-				g2d.fillRect(0, gameHeight - 30, gameWidth, 30);
-				g2d.setColor(Color.BLUE);
-				g2d.fillRect(0, gameHeight - 27, (int)((float)(player.curEXP) / player.expForLevelUp  * gameWidth), 16);
-					//timer
-				String strTimer = "Seconds: " + (int)(GameLoop.timer / Settings.maxFps);
-				g2d.setColor(Color.WHITE);
-				g2d.setFont(g2d.getFont().deriveFont(Font.BOLD).deriveFont(15f));
-				int strWidthTimer = g2d.getFontMetrics().stringWidth(strTimer);
-				g2d.drawString(strTimer, gameWidth - strWidthTimer - 40, 50);
-				//<<<
 				// Print FPS info
 				long currentRender = System.currentTimeMillis();
 				if (lastRender > 0) {
@@ -166,7 +150,7 @@ public class Frame extends JFrame {
 					g2d.setFont(g2d.getFont().deriveFont(18.0f));
 					int strWidth = g2d.getFontMetrics().stringWidth(str);
 					int strHeight = g2d.getFontMetrics().getHeight();
-					g2d.drawString(str, (gameWidth - strWidth) / 2, strHeight + 25);
+					g2d.drawString(str, (gameWidth - strWidth) / 2, strHeight + 25 + startPosOfGameY);
 				}
 				lastRender = currentRender;
 			}
