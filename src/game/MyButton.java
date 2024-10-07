@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 enum TypeOfButton{
     Menu
@@ -15,6 +17,9 @@ class MyButton{
     //>>>class button
     public String description = "null";
     public BufferedImage icon;
+    public boolean hasOwnFuctionality = false;
+    public Method mouseClickMethod;
+    public Object object;
     //<<<
 
     //>>>menu button
@@ -81,14 +86,26 @@ class MyButton{
                 curColor = colorOver;
                 if(isPressed){
                     isPressed = false;
-                    switch (type) {
-                        case Menu:
-                            GameLoop.curLayout = goTo;   
-                            player.mousePress = false; 
-                            break;
-                        default:
-                            System.out.println("Button type error");
-                            break;
+                    if (hasOwnFuctionality == true){
+                        Object[] parametes = new Object[0];
+                        try {
+                            mouseClickMethod.invoke(object, parametes);
+                        }
+                        catch (Exception e){
+                            e.printStackTrace();
+                        }
+                        
+                    }
+                    else{
+                        switch (type) {
+                            case Menu:
+                                GameLoop.curLayout = goTo;   
+                                player.mousePress = false; 
+                                break;
+                            default:
+                                System.out.println("Button type error");
+                                break;
+                        }
                     }
                 }
             }
@@ -99,8 +116,9 @@ class MyButton{
     }
 
     
-    public MyButton(Player player, TypeOfButton type){
+    public MyButton(Player player, TypeOfButton type, Object object){
         this.player = player;
+        this.object = object;
         this.type = type;
         //this.setLayout(new FlowLayout());
         curColor = colorBackground;
