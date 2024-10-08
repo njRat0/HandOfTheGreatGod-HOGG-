@@ -87,9 +87,9 @@ class MyButton{
                 if(isPressed){
                     isPressed = false;
                     if (hasOwnFuctionality == true){
-                        Object[] parametes = new Object[0];
+                        Object[] parameters = new Object[0];
                         try {
-                            mouseClickMethod.invoke(object, parametes);
+                            mouseClickMethod.invoke(object, parameters);
                         }
                         catch (Exception e){
                             e.printStackTrace();

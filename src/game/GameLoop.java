@@ -67,6 +67,7 @@ public class GameLoop implements Runnable {
 		canvas.addMouseListener(player.getMouseListener());
 		canvas.addMouseMotionListener(player.getMouseMotionListener());
 		SetUp_MenuButtons();
+		SetUp_SettingsButtons();
 		isPause = true;
 	}
 
@@ -101,13 +102,13 @@ public class GameLoop implements Runnable {
 		menuButtons[3].goTo = -1;
 	}
 
-	private void testFun(){
+	private static void testFun(){
 		System.out.println("works");
 	}
 
 	public static void SetUp_SettingsButtons(){
 		for(int i = 0; i < settingsButtons.length; i++){
-			settingsButtons[i] = new MyButton(player, TypeOfButton.Menu, null);
+			settingsButtons[i] = new MyButton(player, TypeOfButton.Menu, GameLoop.class);
 			settingsButtons[i].id= i;
 			settingsButtons[i].borderSize = 3;
 			settingsButtons[i].colorBackground = new Color(125, 125, 125);
@@ -122,16 +123,15 @@ public class GameLoop implements Runnable {
 		settingsButtons[2].name = "Test2";
 		settingsButtons[3].name = "Back";
 
-		// try{
-		// 	Class[] parameterTypes = new Class[1];
-		// 	settingsButtons[0].hasOwnFuctionality = true;
-        // 	parameterTypes[0] = String.class;
-		// 	Method method1 = GameLoop.class.getMethod("testFun", parameterTypes);
-		// 	settingsButtons[0].mouseClickMethod = method1;
-		// }
-		// catch(Exception e){
-		// 	e.printStackTrace();
-		// }
+		try{
+			Class[] parameterTypes = new Class[1];
+			settingsButtons[0].hasOwnFuctionality = true;
+			Method method1 = GameLoop.class.getMethod("testFun", parameterTypes);
+			settingsButtons[0].mouseClickMethod = method1;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
         
 		settingsButtons[2].goTo = 2;
 		settingsButtons[3].goTo = 0;
@@ -144,7 +144,7 @@ public class GameLoop implements Runnable {
 		while (!gameOver) {
 			try {
 				long start = System.currentTimeMillis();
-				System.out.println(player.mouseX + ", " + player.mouseY);
+				//System.out.println(player.mouseX + ", " + player.mouseY);
 				if(curLayout == 0){
 					for(MyButton button : GameLoop.menuButtons){
 						button.update();

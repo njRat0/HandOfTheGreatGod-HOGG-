@@ -66,11 +66,11 @@ public class Player extends Character{
 		//
 		collision = new Rectangle(locX, locY, 32,32);
 		//
-		try {
-			sprite = ImageIO.read(new File("res\\Characters\\Icon1.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		// try {
+		// 	sprite = ImageIO.read(new File("res\\Characters\\Icon1.png"));
+		// } catch (IOException e) {
+		// 	e.printStackTrace();
+		// }
 
 		//SplashOfFire skill = new SplashOfFire(null, this);
 		//skill.canDamageEnemy = true;
