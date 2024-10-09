@@ -2,9 +2,6 @@
 package game;
 
 import java.awt.Color;
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -81,7 +78,7 @@ public class GameLoop implements Runnable {
 	public static MyButton[] rulesButtons = new MyButton[1];
 	public static void SetUp_MenuButtons(){
 		for(int i = 0; i < menuButtons.length; i++){
-			menuButtons[i] = new MyButton(player, TypeOfButton.Menu, null);
+			menuButtons[i] = new MyButton(player, TypeOfButton.Menu);
 			menuButtons[i].id=i;
 			menuButtons[i].borderSize = 3;
 			menuButtons[i].colorBackground = new Color(125, 125, 125);
@@ -102,13 +99,9 @@ public class GameLoop implements Runnable {
 		menuButtons[3].goTo = -1;
 	}
 
-	private static void testFun(){
-		System.out.println("works");
-	}
-
 	public static void SetUp_SettingsButtons(){
 		for(int i = 0; i < settingsButtons.length; i++){
-			settingsButtons[i] = new MyButton(player, TypeOfButton.Menu, GameLoop.class);
+			settingsButtons[i] = new MyButton(player, TypeOfButton.Menu);
 			settingsButtons[i].id= i;
 			settingsButtons[i].borderSize = 3;
 			settingsButtons[i].colorBackground = new Color(125, 125, 125);
@@ -122,16 +115,6 @@ public class GameLoop implements Runnable {
 		settingsButtons[1].name = "Test1";
 		settingsButtons[2].name = "Test2";
 		settingsButtons[3].name = "Back";
-
-		try{
-			Class[] parameterTypes = new Class[1];
-			settingsButtons[0].hasOwnFuctionality = true;
-			Method method1 = GameLoop.class.getMethod("testFun", parameterTypes);
-			settingsButtons[0].mouseClickMethod = method1;
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
         
 		settingsButtons[2].goTo = 2;
 		settingsButtons[3].goTo = 0;

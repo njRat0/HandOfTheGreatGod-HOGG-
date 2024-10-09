@@ -19,7 +19,6 @@ class MyButton{
     public BufferedImage icon;
     public boolean hasOwnFuctionality = false;
     public Method mouseClickMethod;
-    public Object object;
     //<<<
 
     //>>>menu button
@@ -89,7 +88,6 @@ class MyButton{
                     if (hasOwnFuctionality == true){
                         Object[] parameters = new Object[0];
                         try {
-                            mouseClickMethod.invoke(object, parameters);
                         }
                         catch (Exception e){
                             e.printStackTrace();
@@ -116,9 +114,8 @@ class MyButton{
     }
 
     
-    public MyButton(Player player, TypeOfButton type, Object object){
+    public MyButton(Player player, TypeOfButton type){
         this.player = player;
-        this.object = object;
         this.type = type;
         //this.setLayout(new FlowLayout());
         curColor = colorBackground;
