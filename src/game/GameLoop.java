@@ -77,16 +77,19 @@ public class GameLoop implements Runnable {
 	public static MyButton[] settingsButtons = new MyButton[4];
 	public static MyButton[] rulesButtons = new MyButton[1];
 	public static void SetUp_MenuButtons(){
+		int globalOffset = 0;
 		for(int i = 0; i < menuButtons.length; i++){
-			menuButtons[i] = new MyButton(player, TypeOfButton.Menu);
+			menuButtons[i] = new MyButton(player, TypeOfButton.Menu, null);
 			menuButtons[i].id=i;
-			menuButtons[i].borderSize = 3;
+			menuButtons[i].SetBorderSize(3);
 			menuButtons[i].colorBackground = new Color(125, 125, 125);
 			menuButtons[i].colorBorders = new Color(0, 0, 0);
 			menuButtons[i].colorOver = new Color(94, 94, 94);
 			menuButtons[i].colorClick = new Color(0, 0, 0);
 			menuButtons[i].SetSize(100, 50);
-			menuButtons[i].SetLocation(Frame.gameCenterX -50 , Frame.gameCenterY -240 + 60 * i );
+			System.out.println(menuButtons[i].GetSizeX());
+			menuButtons[i].SetLocation(Frame.gameCenterX - menuButtons[i].GetSizeX()/2, Frame.gameCenterY - menuButtons[i].GetSizeY()*4/2 + globalOffset);
+			globalOffset += (20 * Settings.coeficientOfGameScreen) + menuButtons[i].GetSizeY();
 		}
 		menuButtons[0].name = "Start";
 		menuButtons[1].name = "Settings";
@@ -100,24 +103,28 @@ public class GameLoop implements Runnable {
 	}
 
 	public static void SetUp_SettingsButtons(){
+		System.out.println("works");
+		int globalOffset = 0;
 		for(int i = 0; i < settingsButtons.length; i++){
-			settingsButtons[i] = new MyButton(player, TypeOfButton.Menu);
+			settingsButtons[i] = new MyButton(player, TypeOfButton.Settings, null);
 			settingsButtons[i].id= i;
-			settingsButtons[i].borderSize = 3;
+			settingsButtons[i].SetBorderSize(3);
 			settingsButtons[i].colorBackground = new Color(125, 125, 125);
 			settingsButtons[i].colorBorders = new Color(0, 0, 0);
 			settingsButtons[i].colorOver = new Color(94, 94, 94);
 			settingsButtons[i].colorClick = new Color(0, 0, 0);
-			settingsButtons[i].SetSize(100, 50);
-			settingsButtons[i].SetLocation(Frame.gameCenterX -50 , Frame.gameCenterY -240 + 60 * i );
+			settingsButtons[i].SetSize(150, 50);
+			settingsButtons[i].SetLocation((int)((20 * Settings.coeficientOfGameScreen + settingsButtons[i].GetSizeX()/2) - menuButtons[i].GetSizeX()/2), Frame.gameCenterY - menuButtons[i].GetSizeY()*4/2 + globalOffset);
+			globalOffset += (20 * Settings.coeficientOfGameScreen) + menuButtons[i].GetSizeY();
 		}
 		settingsButtons[0].name = "ChangeResolution";
 		settingsButtons[1].name = "Test1";
 		settingsButtons[2].name = "Test2";
 		settingsButtons[3].name = "Back";
         
+		settingsButtons[0].nameOfFunction = "ChangeResolutionUp";
 		settingsButtons[2].goTo = 2;
-		settingsButtons[3].goTo = 0;
+		//settingsButtons[3].goTo = 0;
 	}
 
 	@Override
@@ -132,11 +139,12 @@ public class GameLoop implements Runnable {
 					for(MyButton button : GameLoop.menuButtons){
 						button.update();
 					}
-					
+					//continue;
+				}
+				else if(curLayout == 1){
 					for(MyButton button : GameLoop.settingsButtons){
 						button.update();
 					}
-					//continue;
 				}
 				if(isPause == false){
 					timer++;

@@ -115,7 +115,7 @@ public class Frame extends JFrame {
 				button.toDraw(g2d);
 				String str = button.name;
 				g2d.setColor(Color.WHITE);
-				g2d.setFont(g2d.getFont().deriveFont(Font.BOLD).deriveFont(12.0f));
+				g2d.setFont(g2d.getFont().deriveFont(Font.BOLD).deriveFont(12.0f * Settings.coeficientOfGameScreen));
 				int strWidth = g2d.getFontMetrics().stringWidth(str);
 				g2d.drawString(str, button.GetLocationX() + (100 - strWidth) / 2,  button.GetLocationY() + 28);
 			}
@@ -123,6 +123,20 @@ public class Frame extends JFrame {
 		else if(GameLoop.curLayout == 1){
 			for(MyButton button : GameLoop.settingsButtons){
 				button.toDraw(g2d);
+				String str = button.name;
+				g2d.setColor(Color.WHITE);
+				g2d.setFont(g2d.getFont().deriveFont(Font.BOLD).deriveFont(12.0f * Settings.coeficientOfGameScreen));
+				int strWidth = g2d.getFontMetrics().stringWidth(str);
+				g2d.drawString(str, button.GetLocationX() + (button.GetSizeX() - strWidth) / 2,  button.GetLocationY() + button.GetSizeY()/2+ 4 * Settings.coeficientOfGameScreen);
+
+				if(button.name.equals("ChangeResolution")){
+					String strResolution = SettingButtons.SCREEN_RESOLUTION_LIST[SettingButtons.currentResolution];
+					g2d.setColor(Color.WHITE);
+					g2d.setFont(g2d.getFont().deriveFont(Font.BOLD).deriveFont(12.0f * Settings.coeficientOfGameScreen));
+					int strResolutionWidth = g2d.getFontMetrics().stringWidth(str);
+					g2d.drawString(strResolution, button.GetLocationX() + 150 * Settings.coeficientOfGameScreen + strResolutionWidth/ 2,  button.GetLocationY() + button.GetSizeY()/2+ 4 * Settings.coeficientOfGameScreen);
+
+				}
 			}
 		}
 		else if(GameLoop.curLayout == 2){

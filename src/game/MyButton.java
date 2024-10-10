@@ -8,7 +8,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 enum TypeOfButton{
-    Menu
+    Menu,
+    Settings
 }
 
 
@@ -19,6 +20,7 @@ class MyButton{
     public BufferedImage icon;
     public boolean hasOwnFuctionality = false;
     public Method mouseClickMethod;
+    public String nameOfFunction = null;
     //<<<
 
     //>>>menu button
@@ -36,7 +38,7 @@ class MyButton{
     public Color colorClick = new Color(152, 184, 144);
     public Color colorBackground = new Color(30, 136, 56);
     public Color colorBorders = new Color(30, 136, 56);
-    public int borderSize = 2;
+    private int borderSize = 2;
     public int id;
     // public int locX = 0;
     // public int locY = 0;
@@ -45,8 +47,12 @@ class MyButton{
     private Rectangle rectangleOfButton = new Rectangle();
 
     public void SetLocation(int x, int y){
-        rectangleOfButton.x = x;
-        rectangleOfButton.y = y;
+        rectangleOfButton.x = (int)(x * Settings.coeficientOfGameScreen);
+        rectangleOfButton.y = (int)(y * Settings.coeficientOfGameScreen);
+    }
+
+    public void SetBorderSize(int value){
+        borderSize = (int)(value * Settings.coeficientOfGameScreen);
     }
 
     public int GetLocationX(){
@@ -57,9 +63,17 @@ class MyButton{
         return rectangleOfButton.y;
     }
 
+    public int GetSizeX(){
+        return rectangleOfButton.width;
+    }
+
+    public int GetSizeY(){
+        return rectangleOfButton.height;
+    }
+
     public void SetSize(int x, int y){
-        rectangleOfButton.width = x;
-        rectangleOfButton.height = y;
+        rectangleOfButton.width = (int)(x * Settings.coeficientOfGameScreen);
+        rectangleOfButton.height = (int)(y * Settings.coeficientOfGameScreen);
     }
     //rectangleOfButton.x <= player.mouseX && player.mouseX <= rectangleOfButton.x + rectangleOfButton.width && rectangleOfButton.y <= GameLoop.mouseY && GameLoop.mouseY <= rectangleOfButton.y + rectangleOfButton.height
     public void update(){
@@ -85,23 +99,32 @@ class MyButton{
                 curColor = colorOver;
                 if(isPressed){
                     isPressed = false;
-                    if (hasOwnFuctionality == true){
-                        Object[] parameters = new Object[0];
-                        try {
+                    if (nameOfFunction != null){
+                        switch (type) {
+                            case Settings:
+                                SettingButtons.Activate(nameOfFunction);
+                                player.mousePress = false; 
+                                break;
+                            default:
+                                System.out.println("Button type error");
+                                player.mousePress = false; 
+                                break;
                         }
-                        catch (Exception e){
-                            e.printStackTrace();
-                        }
-                        
                     }
                     else{
+                        System.out.println("go to: " + goTo);
                         switch (type) {
                             case Menu:
                                 GameLoop.curLayout = goTo;   
                                 player.mousePress = false; 
                                 break;
+                            case Settings:
+                                GameLoop.curLayout = goTo;   
+                                player.mousePress = false; 
+                                break;
                             default:
                                 System.out.println("Button type error");
+                                player.mousePress = false; 
                                 break;
                         }
                     }
@@ -114,7 +137,8 @@ class MyButton{
     }
 
     
-    public MyButton(Player player, TypeOfButton type){
+    public MyButton(Player player, TypeOfButton type, String nameOfFunction){
+        this.nameOfFunction = nameOfFunction;
         this.player = player;
         this.type = type;
         //this.setLayout(new FlowLayout());

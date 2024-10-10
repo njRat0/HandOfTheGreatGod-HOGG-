@@ -1,7 +1,7 @@
 package game;
 
 public class SettingButtons {
-    private static final String[] SCREEN_RESOLUTION_LIST = new String[]{
+    public static final String[] SCREEN_RESOLUTION_LIST = new String[]{
         "640x360",
         "854x480",
         "960x540",
@@ -12,12 +12,17 @@ public class SettingButtons {
         "1920x1080",
         "2560x1440"
     };
-    private static int currentResolution = 0;
+    public static int currentResolution = 0;
 
     private static void ChangeResolutionUp(){
         currentResolution += 1;
+        String[] curResolutionValue = SCREEN_RESOLUTION_LIST[currentResolution].split("x");
         if (currentResolution >8){
             currentResolution = 0;
+        }
+        else if (Integer.valueOf(curResolutionValue[0]) > Settings.screenSize.width && Integer.valueOf(curResolutionValue[1]) > Settings.screenSize.height ){
+            currentResolution = 0;
+            
         }
     }
 
