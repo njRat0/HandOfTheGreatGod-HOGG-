@@ -3,7 +3,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 
 public class Main {
-	
+	public static Frame frame;
     public static void main(String[] args) {
 		// Initialize the global thread-pool
 		ThreadPool.init();
@@ -15,14 +15,15 @@ public class Main {
 			@Override
 			public void run() {
 				Settings.Init();
-				Settings.SetUpSettings();
-				Frame frame = new Frame("ThroughTheEssence");
+				Settings.SetUpDefaultSettings();
+				frame = new Frame("ThroughTheEssence");
 				frame.setLocationRelativeTo(null); // put frame at center of screen
 				frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				frame.setVisible(true);
 				frame.initBufferStrategy();
 				// Create and execute the game-loop
 				GameLoop game = new GameLoop(frame);
+				SettingButtons.FindCurrentResolution();
 				game.init();
 				ThreadPool.execute(game);
 				// and the game starts ...

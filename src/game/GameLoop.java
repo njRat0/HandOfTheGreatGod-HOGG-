@@ -65,6 +65,7 @@ public class GameLoop implements Runnable {
 		canvas.addMouseMotionListener(player.getMouseMotionListener());
 		SetUp_MenuButtons();
 		SetUp_SettingsButtons();
+		Main.frame.SetUpFrame();
 		isPause = true;
 	}
 
@@ -88,8 +89,8 @@ public class GameLoop implements Runnable {
 			menuButtons[i].colorClick = new Color(0, 0, 0);
 			menuButtons[i].SetSize(100, 50);
 			System.out.println(menuButtons[i].GetSizeX());
-			menuButtons[i].SetLocation(Frame.gameCenterX - menuButtons[i].GetSizeX()/2, Frame.gameCenterY - menuButtons[i].GetSizeY()*4/2 + globalOffset);
-			globalOffset += (20 * Settings.coeficientOfGameScreen) + menuButtons[i].GetSizeY();
+			menuButtons[i].SetLocation((int)(Settings.gameScreenSize.getWidth()/2 - menuButtons[i].GetSizeX()/2), (int)(Settings.gameScreenSize.getHeight()/2 - menuButtons[i].GetSizeY()*2 + globalOffset));
+			globalOffset += (20 + menuButtons[i].GetSizeY() * Settings.coeficientOfGameScreen);
 		}
 		menuButtons[0].name = "Start";
 		menuButtons[1].name = "Settings";

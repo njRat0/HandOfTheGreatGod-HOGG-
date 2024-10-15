@@ -29,6 +29,12 @@ public class Frame extends JFrame {
 		super(title);
 		setResizable(false);
 		//setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		//SetUpFrame();
+		lastRender = -1;
+		fpsHistory = new ArrayList<>(100);
+	}
+
+	public void SetUpFrame(){
 		windowSizeX = Settings.screenSize.width;
 		windowSizeY = Settings.screenSize.height;
 		gameWidth = Settings.gameScreenSize.width ;
@@ -52,8 +58,13 @@ public class Frame extends JFrame {
 		}
 
 		setSize(windowSizeX, windowSizeY);
-		lastRender = -1;
-		fpsHistory = new ArrayList<>(100);
+		
+		GameLoop.SetUp_MenuButtons();
+		GameLoop.SetUp_SettingsButtons();
+
+		// pack();
+		setLocationRelativeTo(null);
+		// setVisible(true);
 	}
 
 	/**
@@ -117,7 +128,7 @@ public class Frame extends JFrame {
 				g2d.setColor(Color.WHITE);
 				g2d.setFont(g2d.getFont().deriveFont(Font.BOLD).deriveFont(12.0f * Settings.coeficientOfGameScreen));
 				int strWidth = g2d.getFontMetrics().stringWidth(str);
-				g2d.drawString(str, button.GetLocationX() + (100 - strWidth) / 2,  button.GetLocationY() + 28);
+				g2d.drawString(str, button.GetLocationX() + (button.GetSizeX() - strWidth) / 2,  button.GetLocationY() + button.GetSizeY()/2+ 4 * Settings.coeficientOfGameScreen);
 			}
 		}
 		else if(GameLoop.curLayout == 1){
@@ -134,7 +145,7 @@ public class Frame extends JFrame {
 					g2d.setColor(Color.WHITE);
 					g2d.setFont(g2d.getFont().deriveFont(Font.BOLD).deriveFont(12.0f * Settings.coeficientOfGameScreen));
 					int strResolutionWidth = g2d.getFontMetrics().stringWidth(str);
-					g2d.drawString(strResolution, button.GetLocationX() + 150 * Settings.coeficientOfGameScreen + strResolutionWidth/ 2,  button.GetLocationY() + button.GetSizeY()/2+ 4 * Settings.coeficientOfGameScreen);
+					g2d.drawString(strResolution, button.GetLocationX() + (150 + strResolutionWidth/ 2) * Settings.coeficientOfGameScreen ,  button.GetLocationY() + button.GetSizeY()/2+ 4 * Settings.coeficientOfGameScreen);
 
 				}
 			}

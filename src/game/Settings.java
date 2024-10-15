@@ -36,7 +36,7 @@ public class Settings {
             //settingsData = new File("data\\SettingsOfGame.txt");
             try{
                 f.createNewFile();
-                SetUpSettings();
+                SetUpDefaultSettings();
                 SaveDataToFile();
             }
             catch (IOException e){
@@ -45,13 +45,19 @@ public class Settings {
         }
     }
 
-    public static void SetUpSettings(){
+    public static void SetUpDefaultSettings(){
         screenSize = Toolkit.getDefaultToolkit().getScreenSize(); 
 		gameScreenSize.width = screenSize.width;
 		gameScreenSize.height = (int)((float)gameScreenSize.width / 16 * 9);
 		coeficientOfGameScreen = (float)gameScreenSize.width / (float)Settings.STANDART_WINDOW_SIZE_X;
         typeOfScreenRender = TypeOfScreenRender.OptionalWithoutBorders;
         SaveDataToFile();
+    }
+
+    public static void SetUpCurrentSettings(){ 
+		coeficientOfGameScreen = (float)gameScreenSize.width / (float)Settings.STANDART_WINDOW_SIZE_X;
+        SaveDataToFile();
+        Main.frame.SetUpFrame();
     }
 
     public static void GetDataFromFile(){

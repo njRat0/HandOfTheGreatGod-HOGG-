@@ -1,6 +1,6 @@
 screenSizeX: 1280
 screenSizeY: 1024
-gameScreenSizeX: 1280
-gameScreenSizeY: 720
+gameScreenSizeX: 1600
+gameScreenSizeY: 900
 coeficientOfGameScreen: 1
 typeOfScreenRender: OptionalWithoutBorders
