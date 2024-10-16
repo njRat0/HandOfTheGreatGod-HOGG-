@@ -56,6 +56,7 @@ public class Settings {
 
     public static void SetUpCurrentSettings(){ 
 		coeficientOfGameScreen = (float)gameScreenSize.width / (float)Settings.STANDART_WINDOW_SIZE_X;
+        //System.out.println(coeficientOfGameScreen);
         SaveDataToFile();
         Main.frame.SetUpFrame();
     }

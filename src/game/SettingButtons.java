@@ -13,9 +13,18 @@ public class SettingButtons {
         "1920x1080",
         "2560x1440"
     };
+    public static final String[] TYPES_SCREEN_RENDER = new String[]{
+        "FullScreen",
+        "OptionalWithBorders",
+        "OptionalWithoutBorders"
+    };
+
     public static int currentResolution = 0;
+    public static int currentTypeOfScreen = 0;
+    public static void FindCurrentTypeOfScreenRender(){
+        currentTypeOfScreen = Arrays.asList(TYPES_SCREEN_RENDER).indexOf(Settings.typeOfScreenRender.toString());
+    }
     public static void FindCurrentResolution(){
-        System.out.println((int)(Settings.gameScreenSize.getWidth()) + "x" + (int)(Settings.gameScreenSize.getHeight()));
         currentResolution = Arrays.asList(SCREEN_RESOLUTION_LIST).indexOf((int)(Settings.gameScreenSize.getWidth()) + "x" + (int)(Settings.gameScreenSize.getHeight()));
     }
 
@@ -49,23 +58,24 @@ public class SettingButtons {
         Settings.SetUpCurrentSettings();
     }
 
-    private static void TypeOfScreenUp(){
-        currentResolution += 1;
-        String[] curResolutionValue = SCREEN_RESOLUTION_LIST[currentResolution].split("x");
-        if (currentResolution >8){
-            currentResolution = 0;
+    private static void ChangeTypeOfScreenRenderUp(){
+        currentTypeOfScreen += 1;
+        if (currentTypeOfScreen > 2){
+            currentTypeOfScreen = 0;
         }
-        else if (Integer.valueOf(curResolutionValue[0]) > Settings.screenSize.width && Integer.valueOf(curResolutionValue[1]) > Settings.screenSize.height ){
-            currentResolution = 0;
-            
-        }
+        Settings.typeOfScreenRender = TypeOfScreenRender.valueOf(TYPES_SCREEN_RENDER[currentTypeOfScreen]);
+
+        Settings.SetUpCurrentSettings();
     }
 
-    private static void TypeOfScreenDown(){
-        currentResolution -= 1;
-        if (currentResolution < 0){
-            currentResolution = 8;
+    private static void ChangeTypeOfScreenRenderDown(){
+        currentTypeOfScreen -= 1;
+        if (currentTypeOfScreen <0){
+            currentTypeOfScreen = 0;
         }
+        Settings.typeOfScreenRender = TypeOfScreenRender.valueOf(TYPES_SCREEN_RENDER[currentTypeOfScreen]);
+
+        Settings.SetUpCurrentSettings();
     }
 
     public static void Activate(String name){
@@ -74,6 +84,12 @@ public class SettingButtons {
         }
         else if(name == "ChangeResolutionDown"){
             ChangeResolutionDown();
+        }
+        else if (name == "ChangeTypeOfScreenRenderUp"){
+            ChangeTypeOfScreenRenderUp();
+        }
+        else if(name == "ChangeTypeOfScreenRenderDown"){
+            ChangeTypeOfScreenRenderUp();
         }
     }
 }

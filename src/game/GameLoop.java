@@ -75,10 +75,10 @@ public class GameLoop implements Runnable {
 
 	public static int curLayout = 0; // 0 -> menu; 1 -> settings; 2 -> rules; 3 -> game
 	public static MyButton[] menuButtons = new MyButton[4];
-	public static MyButton[] settingsButtons = new MyButton[4];
+	public static MyButton[] settingsButtons = new MyButton[5];
 	public static MyButton[] rulesButtons = new MyButton[1];
 	public static void SetUp_MenuButtons(){
-		int globalOffset = 0;
+		int globalOffset = -(int)(menuButtons.length*35*Settings.coeficientOfGameScreen/2);
 		for(int i = 0; i < menuButtons.length; i++){
 			menuButtons[i] = new MyButton(player, TypeOfButton.Menu, null);
 			menuButtons[i].id=i;
@@ -88,9 +88,9 @@ public class GameLoop implements Runnable {
 			menuButtons[i].colorOver = new Color(94, 94, 94);
 			menuButtons[i].colorClick = new Color(0, 0, 0);
 			menuButtons[i].SetSize(100, 50);
-			System.out.println(menuButtons[i].GetSizeX());
-			menuButtons[i].SetLocation((int)(Settings.gameScreenSize.getWidth()/2 - menuButtons[i].GetSizeX()/2), (int)(Settings.gameScreenSize.getHeight()/2 - menuButtons[i].GetSizeY()*2 + globalOffset));
-			globalOffset += (20 + menuButtons[i].GetSizeY() * Settings.coeficientOfGameScreen);
+			System.out.println(Frame.gameCenterX);
+			menuButtons[i].SetLocation(Frame.gameCenterX - menuButtons[i].GetSizeX()/2, Frame.gameCenterY + globalOffset);
+			globalOffset += (menuButtons[i].GetSizeY() + 10)* Settings.coeficientOfGameScreen;
 		}
 		menuButtons[0].name = "Start";
 		menuButtons[1].name = "Settings";
@@ -114,17 +114,19 @@ public class GameLoop implements Runnable {
 			settingsButtons[i].colorBorders = new Color(0, 0, 0);
 			settingsButtons[i].colorOver = new Color(94, 94, 94);
 			settingsButtons[i].colorClick = new Color(0, 0, 0);
-			settingsButtons[i].SetSize(150, 50);
-			settingsButtons[i].SetLocation((int)((20 * Settings.coeficientOfGameScreen + settingsButtons[i].GetSizeX()/2) - menuButtons[i].GetSizeX()/2), Frame.gameCenterY - menuButtons[i].GetSizeY()*4/2 + globalOffset);
-			globalOffset += (20 * Settings.coeficientOfGameScreen) + menuButtons[i].GetSizeY();
 		}
-		settingsButtons[0].name = "ChangeResolution";
-		settingsButtons[1].name = "Test1";
-		settingsButtons[2].name = "Test2";
-		settingsButtons[3].name = "Back";
+		//settingsButtons[i].SetSize(150, 50);
+		settingsButtons[0].name = ">";
+		settingsButtons[1].name = "<";
+		settingsButtons[2].name = ">";
+		settingsButtons[3].name = "<";
+		settingsButtons[4].name = "Back";
         
 		settingsButtons[0].nameOfFunction = "ChangeResolutionUp";
-		settingsButtons[2].goTo = 2;
+		settingsButtons[1].nameOfFunction = "ChangeResolutionDown";
+		settingsButtons[2].nameOfFunction = "ChangeTypeOfScreenRenderUp";
+		settingsButtons[3].nameOfFunction = "ChangeTypeOfScreenRenderDown";
+		settingsButtons[4].goTo = 0;
 		//settingsButtons[3].goTo = 0;
 	}
 
