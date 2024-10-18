@@ -89,7 +89,7 @@ public class SettingButtons {
             ChangeTypeOfScreenRenderUp();
         }
         else if(name == "ChangeTypeOfScreenRenderDown"){
-            ChangeTypeOfScreenRenderUp();
+            ChangeTypeOfScreenRenderDown();
         }
     }
 }

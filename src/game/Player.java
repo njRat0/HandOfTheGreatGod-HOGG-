@@ -21,150 +21,36 @@ import java.util.ArrayList;
 public class Player extends Character{
 	
 	//parameters
-	public float moveSpeed = 5f;
-
-	public boolean isDead;
-	
 	public boolean keyUP, keyDOWN, keyRIGHT, keyLEFT;
 	public boolean mousePress;
 	public int mouseX, mouseY;	
 	private KeyHandler keyHandler;
 	private MouseHandler mouseHandler;
 
-	public Rectangle collision;
-    public boolean isCollision;
-
-	public float curHP = 100;
-	public float maxHP = 100;
-	public float hpRegen = 0.3f;
-
-	public int level = 1;
-	public int curEXP = 0;
-	public int expForLevelUp = 5;
-	public boolean isLevelingUpping = false;
-	//private int remainingEXP = 0;
-	public boolean canBeSlowed = true;
-	public boolean isSlowed = false;
-	public int counterForSlowing = 0;
+	public  static ArrayList<String> itemsInventory = new ArrayList<String>();
 
 	public Player() {
-		locX = Frame.gameCenterX;
-		locY = Frame.gameCenterY;
-		isDead = false;
-		//
-		keyUP = false;
-		keyDOWN = false;
-		keyRIGHT = false;
-		keyLEFT = false;
-		//
-		mousePress = false;
-		mouseX = 0;
-		mouseY = 0;
-		//
-		keyHandler = new KeyHandler();
-		mouseHandler = new MouseHandler();
-		//
-		collision = new Rectangle(locX, locY, 32,32);
-		//
-		// try {
-		// 	sprite = ImageIO.read(new File("res\\Characters\\Icon1.png"));
-		// } catch (IOException e) {
-		// 	e.printStackTrace();
-		// }
-
-		//SplashOfFire skill = new SplashOfFire(null, this);
-		//skill.canDamageEnemy = true;
-		//skill.canDamagePlayer = false;
-		// BlueCross skill1 = new BlueCross(null, this);
-		// skill1.canDamageEnemy = true;
-		// skill1.canDamagePlayer = false;
-		//skills.add(skill);
-		// skills.add(skill1);
-		// skills.add(testWeapon);
-		// curWeapon = testWeapon;
+		
 	}
 	
 	/**
 	 * The method which updates the game state.
 	 */
 	public void update() {
-		if(isSlowed == true && canBeSlowed == true){
-			changingSpeed = 0.5f;
-			counterForSlowing++;
-		}
-		if(counterForSlowing >= 30){
-			changingSpeed = 1f;
-			counterForSlowing = 0;
-			isSlowed = false;
-		}
-		if( isLevelingUpping == false && curEXP >= expForLevelUp){
-			LevelUp();
-		}
-		if(curHP <= maxHP){
-			curHP+=hpRegen;
-		}
-		// if (mousePress) {
-		// 	// locY = mouseY - diam / 2;
-		// 	// locX = mouseX - diam / 2;
-		// 	StandartBullet bullet = new StandartBullet(locX,locY,mouseX,mouseY,2f,this);
-		// 	bullet.speed = 12f;
-        //     bullet.SetSprite("res\\Bullets\\GojoSatoru(BLUE).png");
-        //     bullet.sizeOfSprite = 1f;
-        //     bullet.canDamagePlayer = false;
-        //     bullet.canDamageEnemy = true;
-        //     bullet.damage = 4f;
 
-		// 	bullet.SetUpCollision();
-		// }
-		//System.out.println(changingSpeed);
-		if (keyUP)
-			locY -= (keyLEFT || keyRIGHT) ? moveSpeed * Settings.COEFFICIENT_OF_DIAGANOL_MOVING  * changingSpeed: moveSpeed* changingSpeed;
-		if (keyDOWN)
-			locY += (keyLEFT || keyRIGHT) ? moveSpeed * Settings.COEFFICIENT_OF_DIAGANOL_MOVING * changingSpeed: moveSpeed* changingSpeed;
-		if (keyLEFT)
-			locX -= (keyUP || keyDOWN) ? moveSpeed * Settings.COEFFICIENT_OF_DIAGANOL_MOVING * changingSpeed: moveSpeed* changingSpeed;
-		if (keyRIGHT)
-			locX += (keyUP || keyDOWN) ? moveSpeed * Settings.COEFFICIENT_OF_DIAGANOL_MOVING * changingSpeed: moveSpeed* changingSpeed;
-
-		locX = Math.max(locX, 0);
-		locX = Math.min(locX, Frame.gameWidth);
-		locY = Math.max(locY, 0);
-		locY = Math.min(locY, Frame.gameHeight);
-
-		collision.x = locX;
-		collision.y = locY;
-
-	}
-
-	public void LevelUp(){
-		mousePress = false;
-		isLevelingUpping = true;
-		curEXP = curEXP - expForLevelUp;
-		//w.println(curEXP);
-		expForLevelUp = (int)(1.2*level+4);
-		level++;
 	}
 
 	public void TakeDamage(float amount){
-		curHP -= amount;
-		if(curHP <= 0){
-			isDead = true;
-		}
+		
 	}
 
 	public void TakeHeale(float amount){
-		curHP += amount;
-		if(curHP > maxHP){
-			curHP = maxHP;
-		}
+		
 	}
 
 	public void toDraw(Graphics2D g2d){
-		//g2d.drawImage(sprite, locX, locY, sprite.getWidth(), sprite.getHeight(), null);
-        g2d.drawImage(sprite, locX,locY, (int)(sprite.getWidth()*sizeOfSprite * Frame.coeficient),(int)(sprite.getHeight()*sizeOfSprite * Frame.coeficient), null);
-		g2d.setColor(new Color((int)((1 - curHP / maxHP) * 255),(int)(curHP / maxHP*255),0));
-		g2d.fillRect(locX+ (int)((32-(int)(28 * curHP / maxHP)) / 2 *sizeOfSprite * Frame.coeficient),(int)(locY + 32 *sizeOfSprite * Frame.coeficient), (int)(28 * curHP / maxHP*sizeOfSprite * Frame.coeficient), (int)(4 *sizeOfSprite * Frame.coeficient));	
-    }
+	
+	}
 	
 	
 	public KeyListener getKeyListener() {

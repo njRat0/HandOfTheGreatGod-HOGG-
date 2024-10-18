@@ -59,6 +59,7 @@ public class Settings {
         //System.out.println(coeficientOfGameScreen);
         SaveDataToFile();
         Main.frame.SetUpFrame();
+        //Main.frame.SetUpFrame();
     }
 
     public static void GetDataFromFile(){

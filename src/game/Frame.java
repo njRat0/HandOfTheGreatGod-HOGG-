@@ -29,7 +29,9 @@ public class Frame extends JFrame {
 		super(title);
 		setResizable(false);
 		//setExtendedState(JFrame.MAXIMIZED_BOTH); 
-		//SetUpFrame();
+		SetUpFrame();
+		gameCenterY = gameHeight/2;
+		gameCenterX = gameWidth/2;
 		lastRender = -1;
 		fpsHistory = new ArrayList<>(100);
 	}
@@ -54,8 +56,6 @@ public class Frame extends JFrame {
 			startPosOfGameX += 8;
 			startPosOfGameY += 8;
 		}
-		gameCenterY = gameHeight/2;
-		gameCenterX = gameWidth/2;
 
 		setSize(windowSizeX, windowSizeY);
 		System.out.println(getSize());
@@ -63,8 +63,8 @@ public class Frame extends JFrame {
 		GameLoop.SetUp_MenuButtons();
 		GameLoop.SetUp_SettingsButtons();
 
-		// pack();
-		setLocationRelativeTo(null);
+		
+		//setLocationRelativeTo(null);
 		// setVisible(true);
 	}
 
@@ -83,7 +83,7 @@ public class Frame extends JFrame {
 	/**
 	 * Game rendering with triple-buffering using BufferStrategy.
 	 */
-	public void render(Player player, ArrayList<InteractingObject> interactingObjects) {
+	public void render(Player player) {
 		// Get a new graphics context to render the current frame
 		// Render single frame
 		do {
@@ -94,7 +94,7 @@ public class Frame extends JFrame {
 				// to make sure the strategy is validated
 				Graphics2D graphics = (Graphics2D) bufferStrategy.getDrawGraphics();
 				try {
-					doRendering(graphics, player, interactingObjects);
+					doRendering(graphics, player);
 				} finally {
 					// Dispose the graphics
 					graphics.dispose();
@@ -116,7 +116,7 @@ public class Frame extends JFrame {
 	 * Rendering all game elements based on the game player.
 	 */
 	public static MyButton[] listOfMenuButtons = new MyButton[3];
-	private void doRendering(Graphics2D g2d, Player player, ArrayList<InteractingObject> interactingObjects) {
+	private void doRendering(Graphics2D g2d, Player player) {
 		// Draw background
 		g2d.setColor(Color.BLACK);
 		g2d.fillRect(startPosOfGameX, startPosOfGameY, gameWidth, gameHeight);
@@ -138,17 +138,23 @@ public class Frame extends JFrame {
 			g2d.setFont(g2d.getFont().deriveFont(Font.BOLD).deriveFont(32.0f * Settings.coeficientOfGameScreen));
 			String strSettings = "Settings";
 			strWidth = g2d.getFontMetrics().stringWidth(strSettings);
-			g2d.drawString(strSettings, 40 * Settings.coeficientOfGameScreen, 80 * Settings.coeficientOfGameScreen );
+			g2d.drawString(strSettings, 40 , 80 );
+			
 			g2d.setFont(g2d.getFont().deriveFont(Font.BOLD).deriveFont(14.0f * Settings.coeficientOfGameScreen));
 			String strResolution = "Resolution: ";
 			strWidth = g2d.getFontMetrics().stringWidth(strResolution);
-			g2d.drawString(strResolution, 120 * Settings.coeficientOfGameScreen - strWidth/2, 120 * Settings.coeficientOfGameScreen );
+			g2d.drawString(strResolution, 120 - strWidth/2, 120);
+			String strCurrentResolution = SettingButtons.SCREEN_RESOLUTION_LIST[SettingButtons.currentResolution];
+			strWidth = g2d.getFontMetrics().stringWidth(strCurrentResolution);
+			g2d.drawString(strCurrentResolution, 360 - strWidth/2, 120 );
+			
 			String strTypeOfScreenRender = "Type of screen render: ";
 			strWidth = g2d.getFontMetrics().stringWidth(strTypeOfScreenRender);
-			g2d.drawString(strTypeOfScreenRender, 120 * Settings.coeficientOfGameScreen - strWidth/2, (14 + 10) * Settings.coeficientOfGameScreen + 120 * Settings.coeficientOfGameScreen );
+			g2d.drawString(strTypeOfScreenRender, 120 - strWidth/2, (14 + 10+ 120));
+			String strCurrentTypeOfScreenRender = SettingButtons.TYPES_SCREEN_RENDER[SettingButtons.currentTypeOfScreen];
+			strWidth = g2d.getFontMetrics().stringWidth(strCurrentTypeOfScreenRender);
+			g2d.drawString(strCurrentTypeOfScreenRender, 360 - strWidth/2,  (14 + 10+ 120));
 			
-			
-
 			for(MyButton button : GameLoop.settingsButtons){
 				button.toDraw(g2d);
 				String str = button.name;
@@ -163,7 +169,7 @@ public class Frame extends JFrame {
 			}
 		}
 		else if(GameLoop.curLayout == 3){
-			if(!player.isDead){
+			if(true){
 				// Print FPS info
 				long currentRender = System.currentTimeMillis();
 				if (lastRender > 0) {
