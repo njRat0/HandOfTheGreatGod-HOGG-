@@ -77,7 +77,7 @@ class MyButton{
     }
     //rectangleOfButton.x <= player.mouseX && player.mouseX <= rectangleOfButton.x + rectangleOfButton.width && rectangleOfButton.y <= GameLoop.mouseY && GameLoop.mouseY <= rectangleOfButton.y + rectangleOfButton.height
     public void update(){
-        if(rectangleOfButton.contains(player.mouseX, player.mouseY)) {
+        if(rectangleOfButton.contains(UserInputService.mouseX, UserInputService.mouseY)) {
             if(isMouseOver == false){
                 isMouseOver = true;
                 curColor = colorOver;
@@ -90,7 +90,7 @@ class MyButton{
             }
         }
 
-        if(player.mousePress == true && isMouseOver == true ){
+        if(UserInputService.mousePress == true && isMouseOver == true ){
             curColor = colorClick; 
             isPressed = true;
         }
@@ -103,11 +103,11 @@ class MyButton{
                         switch (type) {
                             case Settings:
                                 SettingButtons.Activate(nameOfFunction);
-                                player.mousePress = false; 
+                                UserInputService.mousePress = false; 
                                 break;
                             default:
                                 System.out.println("Button type error");
-                                player.mousePress = false; 
+                                UserInputService.mousePress = false; 
                                 break;
                         }
                     }
@@ -116,15 +116,15 @@ class MyButton{
                         switch (type) {
                             case Menu:
                                 GameLoop.curLayout = goTo;   
-                                player.mousePress = false; 
+                                UserInputService.mousePress = false; 
                                 break;
                             case Settings:
                                 GameLoop.curLayout = goTo;   
-                                player.mousePress = false; 
+                                UserInputService.mousePress = false; 
                                 break;
                             default:
                                 System.out.println("Button type error");
-                                player.mousePress = false; 
+                                UserInputService.mousePress = false; 
                                 break;
                         }
                     }

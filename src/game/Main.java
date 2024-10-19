@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 public class Main {
 	public static Frame frame;
 	public static GameLoop game;
+	public static UserInputService userInputService;
 
 	// public static void RestartFrame(){
 	// 	frame.dispose();
@@ -26,7 +27,7 @@ public class Main {
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				new Item_BasicSword();
+				userInputService = new UserInputService();
 				Settings.Init();
 				Settings.SetUpDefaultSettings();
 				frame = new Frame("ThroughTheEssence");
@@ -34,6 +35,7 @@ public class Main {
 				frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				frame.setVisible(true);
 				frame.initBufferStrategy();
+				//frame.getContentPane().add(new UserInputService());
 				// Create and execute the game-loop
 				game = new GameLoop(frame);
 				SettingButtons.FindCurrentResolution();

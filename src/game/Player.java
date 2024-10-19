@@ -21,11 +21,6 @@ import java.util.ArrayList;
 public class Player extends Character{
 	
 	//parameters
-	public boolean keyUP, keyDOWN, keyRIGHT, keyLEFT;
-	public boolean mousePress;
-	public int mouseX, mouseY;	
-	private KeyHandler keyHandler;
-	private MouseHandler mouseHandler;
 
 	public  static ArrayList<String> itemsInventory = new ArrayList<String>();
 
@@ -53,90 +48,11 @@ public class Player extends Character{
 	}
 	
 	
-	public KeyListener getKeyListener() {
-		return keyHandler;
-	}
-	public MouseListener getMouseListener() {
-		return mouseHandler;
-	}
-	public MouseMotionListener getMouseMotionListener() {
-		return mouseHandler;
-	}
-	/**
-	 * The keyboard handler.
-	 */
-	class KeyHandler extends KeyAdapter {
-
-		@Override
-		public void keyPressed(KeyEvent e) {
-			switch (e.getKeyCode())
-			{
-				case KeyEvent.VK_W:
-					keyUP = true;
-					break;
-				case KeyEvent.VK_S:
-					keyDOWN = true;
-					break;
-				case KeyEvent.VK_A:
-					keyLEFT = true;
-					break;
-				case KeyEvent.VK_D:
-					keyRIGHT = true;
-					break;
-				case KeyEvent.VK_ESCAPE:
-					GameLoop.isPause = (GameLoop.isPause == true)? false:true;
-					break;
-			}
-		}
-
-		@Override
-		public void keyReleased(KeyEvent e) {
-			switch (e.getKeyCode())
-			{
-				case KeyEvent.VK_W:
-					keyUP = false;
-					break;
-				case KeyEvent.VK_S:
-					keyDOWN = false;
-					break;
-				case KeyEvent.VK_A:
-					keyLEFT = false;
-					break;
-				case KeyEvent.VK_D:
-					keyRIGHT = false;
-					break;
-			}
-		}
-
-	}
+	
 
 	/**
 	 * The mouse handler.
 	 */
-	class MouseHandler extends MouseAdapter {
-
-		@Override
-		public void mousePressed(MouseEvent e) {
-			mouseX = e.getX();
-			mouseY = e.getY();
-			mousePress = true;
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent e) {
-			mousePress = false;
-		}
-
-		@Override
-		public void mouseMoved(MouseEvent e) {
-			mouseX = e.getX();
-			mouseY = e.getY();
-		}
-		@Override
-		public void mouseDragged(MouseEvent e){
-			mouseX = e.getX();
-			mouseY = e.getY();
-		}
-	}
+	
 }
 

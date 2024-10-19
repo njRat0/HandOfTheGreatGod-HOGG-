@@ -46,9 +46,8 @@ public class Settings {
     }
 
     public static void SetUpDefaultSettings(){
-        screenSize = Toolkit.getDefaultToolkit().getScreenSize(); 
-		gameScreenSize.width = screenSize.width;
-		gameScreenSize.height = (int)((float)gameScreenSize.width / 16 * 9);
+		gameScreenSize.width = 1280;
+		gameScreenSize.height = 720;
 		coeficientOfGameScreen = (float)gameScreenSize.width / (float)Settings.STANDART_WINDOW_SIZE_X;
         typeOfScreenRender = TypeOfScreenRender.OptionalWithoutBorders;
         SaveDataToFile();

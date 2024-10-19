@@ -55,9 +55,9 @@ public class GameLoop implements Runnable {
 
 	public void RestartFrame(Frame frame){
 		canvas = frame;
-		canvas.addKeyListener(player.getKeyListener());
-		canvas.addMouseListener(player.getMouseListener());
-		canvas.addMouseMotionListener(player.getMouseMotionListener());
+		// canvas.addKeyListener(UserInputService.getKeyListener());
+		// canvas.addMouseListener(UserInputService.getMouseListener());
+		// canvas.addMouseMotionListener(UserInputService.getMouseMotionListener());
 		SetUp_MenuButtons();
 		SetUp_SettingsButtons();
 		canvas.SetUpFrame();
@@ -69,9 +69,9 @@ public class GameLoop implements Runnable {
 	public void init() {
 		// Perform all initializations ...
 		player = new Player();
-		canvas.addKeyListener(player.getKeyListener());
-		canvas.addMouseListener(player.getMouseListener());
-		canvas.addMouseMotionListener(player.getMouseMotionListener());
+		canvas.addKeyListener(UserInputService.getKeyListener());
+		canvas.addMouseListener(UserInputService.getMouseListener());
+		canvas.addMouseMotionListener(UserInputService.getMouseMotionListener());
 		SetUp_MenuButtons();
 		SetUp_SettingsButtons();
 		//canvas.SetUpFrame();
@@ -158,7 +158,7 @@ public class GameLoop implements Runnable {
 		while (!gameOver) {
 			try {
 				long start = System.currentTimeMillis();
-				//System.out.println(player.mouseX + ", " + player.mouseY);
+				System.out.println(UserInputService.mouseX + ", " + UserInputService.mouseY);
 				if(curLayout == 0){
 					for(MyButton button : GameLoop.menuButtons){
 						button.update();

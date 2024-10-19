@@ -1,5 +1,5 @@
-screenSizeX: 1280
-screenSizeY: 1024
+screenSizeX: 2560
+screenSizeY: 1440
 gameScreenSizeX: 1280
 gameScreenSizeY: 720
 coeficientOfGameScreen: 1
