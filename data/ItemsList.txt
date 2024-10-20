@@ -3,6 +3,8 @@ RegularSword{
     type:TwoHandedWeapon
     addDamage:3
     addSpeed:-1.2
+    cards:TestAttack, TestBlock;
+    worth:55
 }
 SmallHealingPotion{
     id:00002
@@ -13,9 +15,11 @@ SmallHealingPotion{
     addMaxMP:0
     addSpeed:0
     duration:0
+    isGradual:false;
     speedCost:0.5
+    worth:2
 }
-MediumHealingPotion{
+HealingPotion{
     id:00003
     type:Consumable
     addCurHP:100
@@ -24,7 +28,9 @@ MediumHealingPotion{
     addMaxMP:0
     addSpeed:0
     duration:0
+    isGradual:false;
     speedCost:1.2
+    worth:15
 }
 HugeHealingPotion{
     id:00004
@@ -35,7 +41,9 @@ HugeHealingPotion{
     addMaxMP:0
     addSpeed:0
     duration:0
+    isGradual:false;
     speedCost:2.5
+    worth:100
 }
 MassiveHealingPotion{
     id:00005
@@ -46,7 +54,9 @@ MassiveHealingPotion{
     addMaxMP:0
     addSpeed:0
     duration:0
+    isGradual:false;
     speedCost:5
+    worth:750
 }
 SmallManaPotion{
     id:00006
@@ -57,9 +67,11 @@ SmallManaPotion{
     addMaxMP:0
     addSpeed:0
     duration:0
+    isGradual:false;
     speedCost:0.5
+    worth:4
 }
-MediumManaPotion{
+ManaPotion{
     id:00007
     type:Consumable
     addCurHP:100
@@ -68,7 +80,9 @@ MediumManaPotion{
     addMaxMP:0
     addSpeed:0
     duration:0
+    isGradual:false;
     speedCost:1.2
+    worth:30
 }
 HugeManaPotion{
     id:00008
@@ -79,7 +93,9 @@ HugeManaPotion{
     addMaxMP:0
     addSpeed:0
     duration:0
+    isGradual:false;
     speedCost:2.5
+    worth:225
 }
 MassiveManaPotion{
     id:00009
@@ -90,7 +106,9 @@ MassiveManaPotion{
     addMaxMP:0
     addSpeed:0
     duration:0
+    isGradual:false;
     speedCost:5
+    worth:1200
 }
 SmallRedSoul{
     id:00010
@@ -101,9 +119,11 @@ SmallRedSoul{
     addMaxMP:0
     addSpeed:0
     duration:0
+    isGradual:false;
     speedCost:1
+    worth:200
 }
-MediumRedSoul{
+RedSoul{
     id:00011
     type:Consumable
     addCurHP:1000
@@ -112,7 +132,9 @@ MediumRedSoul{
     addMaxMP:0
     addSpeed:0
     duration:0
+    isGradual:false;
     speedCost:4
+    worth:2100
 }
 HugeRedSoul{
     id:00012
@@ -123,5 +145,7 @@ HugeRedSoul{
     addMaxMP:0
     addSpeed:0
     duration:2
+    isGradual:false;
     speedCost:10
+    worth:23000
 }
