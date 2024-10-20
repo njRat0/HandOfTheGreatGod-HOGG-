@@ -46,13 +46,5 @@ public class Player extends Character{
 	public void toDraw(Graphics2D g2d){
 	
 	}
-	
-	
-	
-
-	/**
-	 * The mouse handler.
-	 */
-	
 }
 

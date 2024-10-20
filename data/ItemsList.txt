@@ -1,0 +1,127 @@
+RegularSword{
+    id:00001
+    type:TwoHandedWeapon
+    addDamage:3
+    addSpeed:-1.2
+}
+SmallHealingPotion{
+    id:00002
+    type:Consumable
+    addCurHP:20
+    addMaxHP:0
+    addCurMP:0
+    addMaxMP:0
+    addSpeed:0
+    duration:0
+    speedCost:0.5
+}
+MediumHealingPotion{
+    id:00003
+    type:Consumable
+    addCurHP:100
+    addMaxHP:0
+    addCurMP:0
+    addMaxMP:0
+    addSpeed:0
+    duration:0
+    speedCost:1.2
+}
+HugeHealingPotion{
+    id:00004
+    type:Consumable
+    addCurHP:500
+    addMaxHP:0
+    addCurMP:0
+    addMaxMP:0
+    addSpeed:0
+    duration:0
+    speedCost:2.5
+}
+MassiveHealingPotion{
+    id:00005
+    type:Consumable
+    addCurHP:2500
+    addMaxHP:0
+    addCurMP:0
+    addMaxMP:0
+    addSpeed:0
+    duration:0
+    speedCost:5
+}
+SmallManaPotion{
+    id:00006
+    type:Consumable
+    addCurHP:20
+    addMaxHP:0
+    addCurMP:0
+    addMaxMP:0
+    addSpeed:0
+    duration:0
+    speedCost:0.5
+}
+MediumManaPotion{
+    id:00007
+    type:Consumable
+    addCurHP:100
+    addMaxHP:0
+    addCurMP:0
+    addMaxMP:0
+    addSpeed:0
+    duration:0
+    speedCost:1.2
+}
+HugeManaPotion{
+    id:00008
+    type:Consumable
+    addCurHP:500
+    addMaxHP:0
+    addCurMP:0
+    addMaxMP:0
+    addSpeed:0
+    duration:0
+    speedCost:2.5
+}
+MassiveManaPotion{
+    id:00009
+    type:Consumable
+    addCurHP:2500
+    addMaxHP:0
+    addCurMP:0
+    addMaxMP:0
+    addSpeed:0
+    duration:0
+    speedCost:5
+}
+SmallRedSoul{
+    id:00010
+    type:Consumable
+    addCurHP:100
+    addMaxHP:100
+    addCurMP:0
+    addMaxMP:0
+    addSpeed:0
+    duration:0
+    speedCost:1
+}
+MediumRedSoul{
+    id:00011
+    type:Consumable
+    addCurHP:1000
+    addMaxHP:1000
+    addCurMP:0
+    addMaxMP:0
+    addSpeed:0
+    duration:0
+    speedCost:4
+}
+HugeRedSoul{
+    id:00012
+    type:Consumable
+    addCurHP:10000
+    addMaxHP:10000
+    addCurMP:0
+    addMaxMP:0
+    addSpeed:0
+    duration:2
+    speedCost:10
+}
