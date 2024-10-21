@@ -217,8 +217,8 @@ public class Frame extends JFrame {
 				for (int x = 0; x < 8; x++){
 					g2d.drawImage(inventoryCellImage, 660 + x * 37 * 2, 60 + y*37 * 2, 32*2,32*2,null);
 					int indexOfItemInInventory = x+(y*8);
-					if (Player.itemsInventory.size() > indexOfItemInInventory){
-						g2d.drawImage(ItemsService.GetItemClass(Player.itemsInventory.get(indexOfItemInInventory)).icon, 660 + x * 37 * 2, 60 + y*37 * 2, 32*2,32*2,null);
+					if (Player.itemsInventory != null){
+						g2d.drawImage(ItemsService.GetItemClass(Player.itemsInventory[y][x]).icon, 660 + x * 37 * 2, 60 + y*37 * 2, 32*2,32*2,null);
 					}
 				}
 			}

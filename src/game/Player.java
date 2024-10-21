@@ -1,17 +1,8 @@
 /*** In The Name of Allah ***/
 package game;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * This class holds the state of game and all of its elements.
@@ -22,12 +13,23 @@ import java.util.HashMap;
 public class Player extends Character{
 	
 	//parameters
-	public  static ArrayList<String> itemsInventory = new ArrayList<String>();
+	public static int size = 8;
+	//public  static ArrayList<String> itemsInventory = new ArrayList<String>();
+	public static String[][] itemsInventory = new String[8][8];
+	public static int[][] itemsInventoryAmount = new int[8][8];
 
-	//public  static HashMap<String, Integer> itemsInventory = new HashMap<String, Integer>();
+	public static void ChangeTheSizeOfInventory(int size){
+		String[][] newItemsInventory = new String[size][8];
+
+		for(int i = 0; i < 8; i++){
+			newItemsInventory[i] = itemsInventory[i];
+		}
+		itemsInventory = newItemsInventory;
+	}
 
 	public Player() {
-		
+		// InitItemsInventory();
+		// items.add(itemsInventory);
 	}
 	
 	/**

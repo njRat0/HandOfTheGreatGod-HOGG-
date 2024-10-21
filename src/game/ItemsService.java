@@ -61,26 +61,51 @@ public class ItemsService {
     }
 
     public static Item GetItemClass(String name){
-        if (dictionaryOfItemsInGameByName.get(name) != null){
-            return dictionaryOfItemsInGameByName.get(name);
+        try{
+            Item item = dictionaryOfItemsInGameByName.get(name);
+            return item;
         }
-        else if(dictionaryOfItemsByName.get(name) != null){
+        catch(NullPointerException e1){
             LoadItemIntoGameSession(name);
-            if (dictionaryOfItemsInGameByName.get(name) != null){
-                return dictionaryOfItemsInGameByName.get(name);
+            try{
+                Item item = dictionaryOfItemsInGameByName.get(name);
+                return item;
             }
-            else{
+            catch(NullPointerException e2){
                 System.out.println("Error: Item doesnt exists in game");
+            }
+            if (dictionaryOfItemsInGameByName.get(name) != null){
             }
         }
         return null;
     }
 
-    public static void SetItemToInventoryOfPlayer(String itemName, int amount){
-        for(int i = 0; i < amount; i++){
-            Player.itemsInventory.add(itemName);
+    public static void AddItemToInventoryOfPlayer(String itemName, int amount){
+        boolean wasItemAdd = false;
+        for(int y = 0; y < Player.itemsInventory.length; y++){
+            for(int x = 0; x < Player.itemsInventory[0].length; x++){
+                if(Player.itemsInventory[y][x].equals(itemName)){
+                    wasItemAdd = true;
+                    Player.itemsInventoryAmount[y][x] += amount;
+                }
+            }
         }
-        //Player.itemsInventory.put(itemName, amount);
+
+        if (wasItemAdd == false){
+            for(int y = 0; y < Player.itemsInventory.length; y++){
+                for(int x = 0; x < Player.itemsInventory[0].length; x++){
+                    if(Player.itemsInventory[y][x] == null){
+                        wasItemAdd = true;
+                        Player.itemsInventory[y][x] = itemName;
+                        Player.itemsInventoryAmount[y][x] += amount;
+                    }
+                }
+            }
+        }
+        
+        if(wasItemAdd == false){
+            System.out.println("Error: Cannot add item to players inventory");
+        }
     }
 
     private static Item CreateItemClass(String itemName,List<String> itemParameters){
