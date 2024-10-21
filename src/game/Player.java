@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This class holds the state of game and all of its elements.
@@ -21,8 +22,9 @@ import java.util.ArrayList;
 public class Player extends Character{
 	
 	//parameters
-
 	public  static ArrayList<String> itemsInventory = new ArrayList<String>();
+
+	//public  static HashMap<String, Integer> itemsInventory = new HashMap<String, Integer>();
 
 	public Player() {
 		

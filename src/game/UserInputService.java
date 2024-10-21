@@ -67,18 +67,20 @@ public class UserInputService {
 			{
 				case KeyEvent.VK_W:
 					keyUP = true;
+					ItemsService.SetItemToInventoryOfPlayer("SmallRedSoul", 2);
 					break;
 				case KeyEvent.VK_S:
 					keyDOWN = true;
+					ItemsService.SetItemToInventoryOfPlayer("RedSoul", 2);
 					break;
 				case KeyEvent.VK_A:
 					keyLEFT = true;
 					break;
 				case KeyEvent.VK_D:
-					keyRIGHT = true;
+					keyRIGHT = true;	
 					break;
-				case KeyEvent.VK_ESCAPE:
-					GameLoop.isPause = (GameLoop.isPause == true)? false:true;
+				case KeyEvent.VK_TAB:
+					GameLoop.GoToItemsInventory();
 					break;
 			}
 		}

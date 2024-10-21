@@ -3,10 +3,11 @@ package game;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
-//import java.util.List;
-
-//import javax.swing.JButton;
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 public class Frame extends JFrame {
@@ -20,6 +21,8 @@ public class Frame extends JFrame {
 	public static int startPosOfGameX;
 	public static int startPosOfGameY;
 
+	private static BufferedImage inventoryCellImage;
+
 	private long lastRender;
 	private ArrayList<Float> fpsHistory;
 
@@ -27,6 +30,11 @@ public class Frame extends JFrame {
 	
 	public Frame(String title) {
 		super(title);
+		try {
+			inventoryCellImage = ImageIO.read(new File("res\\UI\\InventoryCell.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		setResizable(false);
 		//setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		SetUpFrame();
@@ -34,6 +42,7 @@ public class Frame extends JFrame {
 		gameCenterX = gameWidth/2;
 		lastRender = -1;
 		fpsHistory = new ArrayList<>(100);
+		setFocusTraversalKeysEnabled(false);
 	}
 
 	public void SetUpFrame(){
@@ -199,6 +208,20 @@ public class Frame extends JFrame {
 				int strWidth = g2d.getFontMetrics().stringWidth(str);
 				g2d.drawString(str, (gameWidth - strWidth) / 2, gameHeight / 2);
 			}
-		}	
+		}
+		else if(GameLoop.curLayout == 5){
+			g2d.setColor(new Color(64, 64, 64));
+			g2d.fillRect(640, 0, 640, gameHeight);
+
+			for (int y = 0; y < 8; y++){
+				for (int x = 0; x < 8; x++){
+					g2d.drawImage(inventoryCellImage, 660 + x * 37 * 2, 60 + y*37 * 2, 32*2,32*2,null);
+					int indexOfItemInInventory = x+(y*8);
+					if (Player.itemsInventory.size() > indexOfItemInInventory){
+						g2d.drawImage(ItemsService.GetItemClass(Player.itemsInventory.get(indexOfItemInInventory)).icon, 660 + x * 37 * 2, 60 + y*37 * 2, 32*2,32*2,null);
+					}
+				}
+			}
+		}
 	}
 }

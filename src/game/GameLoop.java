@@ -82,7 +82,7 @@ public class GameLoop implements Runnable {
 	public static int timer = 0;
 	public int levelOfDificulty = 0;
 
-	public static int curLayout = 0; // 0 -> menu; 1 -> settings; 2 -> rules; 3 -> game; 4 -> Batle; 5 -> ItemsInventory; 6 -> CardsInventory
+	public static int curLayout = 0; // 0 -> menu; 1 -> settings; 2 -> rules; 3 -> game; 4 -> Battle; 5 -> ItemsInventory; 6 -> CardsInventory
 	public static MyButton[] menuButtons = new MyButton[4];
 	public static MyButton[] settingsButtons = new MyButton[5];
 	public static MyButton[] rulesButtons = new MyButton[1];
@@ -97,12 +97,10 @@ public class GameLoop implements Runnable {
 			menuButtons[i].colorOver = new Color(94, 94, 94);
 			menuButtons[i].colorClick = new Color(0, 0, 0);
 			menuButtons[i].SetSize(100, 50);
-			System.out.println(Frame.gameCenterX);
 			menuButtons[i].SetLocation(Frame.gameCenterX - menuButtons[i].GetSizeX()/2, Frame.gameCenterY - menuButtons[i].GetSizeY()/2 + globalOffset);
 			globalOffset += menuButtons[i].GetSizeY() + 10;
 		}
 		//menuButtons[1].SetLocation(1000, 1000);
-		System.out.println("loc: " + menuButtons[1].GetLocationX());
 		menuButtons[0].name = "Start";
 		menuButtons[1].name = "Settings";
 		menuButtons[2].name = "Rules";
@@ -115,7 +113,6 @@ public class GameLoop implements Runnable {
 	}
 
 	public static void SetUp_SettingsButtons(){
-		System.out.println("works");
 		int globalOffset = 0;
 		for(int i = 0; i < settingsButtons.length; i++){
 			settingsButtons[i] = new MyButton(player, TypeOfButton.Settings, null);
@@ -187,4 +184,9 @@ public class GameLoop implements Runnable {
 		canvas.render(player);
 	}
 
+	//Button detecting functions
+	public static void GoToItemsInventory(){
+		System.out.println("inventory open");
+		curLayout = 5;
+	}
 }
