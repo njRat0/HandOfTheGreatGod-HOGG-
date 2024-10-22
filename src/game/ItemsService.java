@@ -61,20 +61,19 @@ public class ItemsService {
     }
 
     public static Item GetItemClass(String name){
-        try{
-            Item item = dictionaryOfItemsInGameByName.get(name);
+        Item item = dictionaryOfItemsInGameByName.get(name);
+        if (item != null){
             return item;
         }
-        catch(NullPointerException e1){
+        else{
             LoadItemIntoGameSession(name);
-            try{
-                Item item = dictionaryOfItemsInGameByName.get(name);
-                return item;
-            }
-            catch(NullPointerException e2){
+            item = dictionaryOfItemsInGameByName.get(name);
+                
+            if(item == null){
                 System.out.println("Error: Item doesnt exists in game");
             }
-            if (dictionaryOfItemsInGameByName.get(name) != null){
+            else{
+                return item;
             }
         }
         return null;
@@ -82,29 +81,62 @@ public class ItemsService {
 
     public static void AddItemToInventoryOfPlayer(String itemName, int amount){
         boolean wasItemAdd = false;
-        for(int y = 0; y < Player.itemsInventory.length; y++){
-            for(int x = 0; x < Player.itemsInventory[0].length; x++){
-                if(Player.itemsInventory[y][x].equals(itemName)){
-                    wasItemAdd = true;
-                    Player.itemsInventoryAmount[y][x] += amount;
+        Item classOfItem = GetItemClass(itemName);
+        System.out.println("add");
+        boolean isEnd = false;
+        if(classOfItem.maxAmountInStack > 1){
+            for(int y = 0; y < Player.itemsInventory.length; y++){
+                for(int x = 0; x < Player.itemsInventory[0].length; x++){
+                    if(Player.itemsInventory[y][x] != null && Player.itemsInventory[y][x].equals(itemName)){
+                        if(Player.itemsInventoryAmount[y][x] < classOfItem.maxAmountInStack){
+                            if(Player.itemsInventoryAmount[y][x] + amount > classOfItem.maxAmountInStack){
+                                System.out.println("add3");
+                                int addValue = classOfItem.maxAmountInStack - Player.itemsInventoryAmount[y][x];
+                                Player.itemsInventoryAmount[y][x] += addValue;
+                                amount -= addValue;
+                            }
+                            else{
+                                wasItemAdd = true;
+                                Player.itemsInventoryAmount[y][x] += amount;
+                                isEnd = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if(isEnd == true){
+                    break;
                 }
             }
         }
 
         if (wasItemAdd == false){
+            isEnd = false;
             for(int y = 0; y < Player.itemsInventory.length; y++){
                 for(int x = 0; x < Player.itemsInventory[0].length; x++){
                     if(Player.itemsInventory[y][x] == null){
-                        wasItemAdd = true;
-                        Player.itemsInventory[y][x] = itemName;
-                        Player.itemsInventoryAmount[y][x] += amount;
+                        if(amount > classOfItem.maxAmountInStack){
+                            amount -= classOfItem.maxAmountInStack;
+                            Player.itemsInventory[y][x] = itemName;
+                            Player.itemsInventoryAmount[y][x] += classOfItem.maxAmountInStack;
+                        }
+                        else{
+                            wasItemAdd = true;
+                            Player.itemsInventory[y][x] = itemName;
+                            Player.itemsInventoryAmount[y][x] += amount;
+                            isEnd = true;
+                            break;
+                        }
                     }
+                }
+                if(isEnd == true){
+                    break;
                 }
             }
         }
         
         if(wasItemAdd == false){
-            System.out.println("Error: Cannot add item to players inventory");
+            System.out.println("Inventory of player is Full");
         }
     }
 
@@ -144,14 +176,14 @@ public class ItemsService {
     }
 
     public static void LoadItemIntoGameSession(String itemName){
-        if (dictionaryOfItemsInGameByName.get(itemName) == null){
+        Item item = dictionaryOfItemsInGameByName.get(itemName);
+        if (item == null){
             List<String> itemParameters = dictionaryOfItemsByName.get(itemName);
             dictionaryOfItemsInGameByName.put(itemName, CreateItemClass(itemName, itemParameters));
         }
         else{
             System.out.println("Error: item already exists in game");
         }
-
     }
 }
 
@@ -160,6 +192,7 @@ abstract class Item {
     String name;
     int worth;
     BufferedImage icon;
+    int maxAmountInStack = 1;
 }
 
 class OneHandedWeapon extends Item{
@@ -231,6 +264,7 @@ class Consumable extends Item{
 
     public Consumable(List<String> ListOfParameters, String itemName){
         name = itemName;
+        maxAmountInStack = 16;
         try {
 			icon = ImageIO.read(new File("res\\Items\\Consumable\\" + name + ".png"));
 		} catch (IOException e) {
@@ -279,6 +313,7 @@ class Scroll extends Item{
 
     public Scroll(List<String> ListOfParameters, String itemName){
         name = itemName;
+        maxAmountInStack = 5;
         try {
 			icon = ImageIO.read(new File("res\\Items\\Scroll\\" + name + ".png"));
 		} catch (IOException e) {

@@ -155,6 +155,7 @@ public class GameLoop implements Runnable {
 		while (!gameOver) {
 			try {
 				long start = System.currentTimeMillis();
+				//System.out.println(Player.itemsInventory[2][0]);
 				//System.out.println(UserInputService.mouseX + ", " + UserInputService.mouseY);
 				if(curLayout == 0){
 					for(MyButton button : GameLoop.menuButtons){

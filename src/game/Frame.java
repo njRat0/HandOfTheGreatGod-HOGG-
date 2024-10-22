@@ -121,6 +121,10 @@ public class Frame extends JFrame {
 		} while (bufferStrategy.contentsLost());
 	}
 	
+	private static int numberOfCycle = 0;
+	public static void MassageToPlayer(Graphics2D g2d){
+
+	}
 	/**
 	 * Rendering all game elements based on the game player.
 	 */
@@ -216,9 +220,15 @@ public class Frame extends JFrame {
 			for (int y = 0; y < 8; y++){
 				for (int x = 0; x < 8; x++){
 					g2d.drawImage(inventoryCellImage, 660 + x * 37 * 2, 60 + y*37 * 2, 32*2,32*2,null);
-					int indexOfItemInInventory = x+(y*8);
-					if (Player.itemsInventory != null){
+					if (Player.itemsInventory[y][x] != null){
 						g2d.drawImage(ItemsService.GetItemClass(Player.itemsInventory[y][x]).icon, 660 + x * 37 * 2, 60 + y*37 * 2, 32*2,32*2,null);
+						g2d.setColor(Color.white);
+
+						if (Player.itemsInventoryAmount[y][x] > 1){
+							String strAmountOfItem = String.valueOf(Player.itemsInventoryAmount[y][x]);
+							int strWidth = g2d.getFontMetrics().stringWidth(strAmountOfItem);
+							g2d.drawString(strAmountOfItem, 720 - strWidth + x * 74, 120+ y*74);
+						}
 					}
 				}
 			}

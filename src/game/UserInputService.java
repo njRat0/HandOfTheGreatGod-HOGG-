@@ -67,11 +67,11 @@ public class UserInputService {
 			{
 				case KeyEvent.VK_W:
 					keyUP = true;
-					ItemsService.AddItemToInventoryOfPlayer("SmallRedSoul", 2);
+					ItemsService.AddItemToInventoryOfPlayer("SmallRedSoul", 1);
 					break;
 				case KeyEvent.VK_S:
 					keyDOWN = true;
-					ItemsService.AddItemToInventoryOfPlayer("RedSoul", 2);
+					ItemsService.AddItemToInventoryOfPlayer("RedSoul", 50);
 					break;
 				case KeyEvent.VK_A:
 					keyLEFT = true;
