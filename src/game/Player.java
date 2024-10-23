@@ -13,18 +13,26 @@ import java.util.*;
 public class Player extends Character{
 	
 	//parameters
-	public static int size = 8;
+	public static int[] sizeOfItemsInventory = new int[]{8,8};
 	//public  static ArrayList<String> itemsInventory = new ArrayList<String>();
 	public static String[][] itemsInventory = new String[8][8];
 	public static int[][] itemsInventoryAmount = new int[8][8];
+	public static int[] selectedItemForDraggCordinates = new int[2];
 
-	public static void ChangeTheSizeOfInventory(int size){
-		String[][] newItemsInventory = new String[size][8];
+	public static void ChangeTheSizeOfInventory(int[] newSize){
+		sizeOfItemsInventory = newSize;
+		String[][] newItemsInventory = new String[sizeOfItemsInventory[1]][sizeOfItemsInventory[0]];
+		int[][] newItemsInventoryAmount = new int[sizeOfItemsInventory[1]][sizeOfItemsInventory[0]];
 
-		for(int i = 0; i < 8; i++){
-			newItemsInventory[i] = itemsInventory[i];
+		for(int y = 0; y < itemsInventory.length; y++){
+			for(int x = 0; x< itemsInventory[0].length; x++){
+				newItemsInventory[y][x] = itemsInventory[y][x];
+				newItemsInventoryAmount[y][x] = itemsInventoryAmount[y][x];
+			}
+			
 		}
 		itemsInventory = newItemsInventory;
+		itemsInventoryAmount = newItemsInventoryAmount;
 	}
 
 	public Player() {

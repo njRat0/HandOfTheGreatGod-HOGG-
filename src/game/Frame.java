@@ -217,8 +217,8 @@ public class Frame extends JFrame {
 			g2d.setColor(new Color(64, 64, 64));
 			g2d.fillRect(640, 0, 640, gameHeight);
 
-			for (int y = 0; y < 8; y++){
-				for (int x = 0; x < 8; x++){
+			for (int y = 0; y < Player.sizeOfItemsInventory[1]; y++){
+				for (int x = 0; x < Player.sizeOfItemsInventory[0]; x++){
 					g2d.drawImage(inventoryCellImage, 660 + x * 37 * 2, 60 + y*37 * 2, 32*2,32*2,null);
 					if (Player.itemsInventory[y][x] != null){
 						g2d.drawImage(ItemsService.GetItemClass(Player.itemsInventory[y][x]).icon, 660 + x * 37 * 2, 60 + y*37 * 2, 32*2,32*2,null);

@@ -6,7 +6,8 @@ import javax.swing.JPanel;
 
 public class UserInputService {
     public static boolean keyUP, keyDOWN, keyRIGHT, keyLEFT;
-	public static boolean mousePress;
+	public static boolean leftMousePress;
+	public static boolean rightMousePress;
 	public static int mouseX, mouseY;
     private static MouseHandler mouseHandler;
     private static KeyHandler keyHandler;
@@ -23,12 +24,20 @@ public class UserInputService {
         public void mousePressed(MouseEvent e) {
             mouseX = e.getX();
             mouseY = e.getY();
-            mousePress = true;
+
+            if (e.getButton() == MouseEvent.BUTTON1){
+				leftMousePress = true;
+			} else if (e.getButton() == MouseEvent.BUTTON2){
+				System.out.println("Middle button clicked");
+			} else if (e.getButton() == MouseEvent.BUTTON3) {
+				rightMousePress = true;
+			}
         }
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            mousePress = false;
+            leftMousePress = false;
+			rightMousePress = false;
         }
 
         @Override

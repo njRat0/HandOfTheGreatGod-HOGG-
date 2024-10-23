@@ -90,7 +90,7 @@ class MyButton{
             }
         }
 
-        if(UserInputService.mousePress == true && isMouseOver == true ){
+        if(UserInputService.leftMousePress == true && isMouseOver == true ){
             curColor = colorClick; 
             isPressed = true;
         }
@@ -103,11 +103,11 @@ class MyButton{
                         switch (type) {
                             case Settings:
                                 SettingButtons.Activate(nameOfFunction);
-                                UserInputService.mousePress = false; 
+                                UserInputService.leftMousePress = false; 
                                 break;
                             default:
                                 System.out.println("Button type error");
-                                UserInputService.mousePress = false; 
+                                UserInputService.leftMousePress = false; 
                                 break;
                         }
                     }
@@ -116,15 +116,15 @@ class MyButton{
                         switch (type) {
                             case Menu:
                                 GameLoop.curLayout = goTo;   
-                                UserInputService.mousePress = false; 
+                                UserInputService.leftMousePress = false; 
                                 break;
                             case Settings:
                                 GameLoop.curLayout = goTo;   
-                                UserInputService.mousePress = false; 
+                                UserInputService.leftMousePress = false; 
                                 break;
                             default:
                                 System.out.println("Button type error");
-                                UserInputService.mousePress = false; 
+                                UserInputService.leftMousePress = false; 
                                 break;
                         }
                     }
