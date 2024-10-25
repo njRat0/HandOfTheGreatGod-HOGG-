@@ -9,9 +9,10 @@ enum TypeOfInventory{
 
 public class Inventory {
     private static List<InventoryCell> cellsOfItemsInventory = new ArrayList<InventoryCell>();
-    public static int[] selectedItemCordinate = new int[]{0,0};
-    public static int[] endItemOfDragging = new int[]{0,0};
-    public static boolean isDraging = false;
+    public static int[] selectedSlotCordinate = new int[]{0,0};
+    public static int[] endSlotCordinate= new int[]{0,0};
+    public static boolean isLeftMouseDragging = false;
+    public static boolean isRightMouseDragging = false;
 
     public static void InitNewItemsInventoryGrid(){
         cellsOfItemsInventory.clear();
@@ -27,25 +28,66 @@ public class Inventory {
             cell.Update();
         }
 
-        if (isDraging == true){
-            DraggingTheItem();
+        if (isLeftMouseDragging == true){
+            LeftMouseDraggingTheItem();
+        }
+        else if(isRightMouseDragging){
+            RightMouseDragging();
         }
     }
 
-    private static void DraggingTheItem(){
+    private static void LeftMouseDraggingTheItem(){
         if(UserInputService.leftMousePress == false){
-            isDraging = false;
-            String savedItemName = Player.itemsInventory[selectedItemCordinate[1]][selectedItemCordinate[0]];
-            int savedItemAmount = Player.itemsInventoryAmount[selectedItemCordinate[1]][selectedItemCordinate[0]];
+            isLeftMouseDragging = false;
+            int maxAmountInStackOfItem = ItemsService.GetItemClass(Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]]).maxAmountInStack;
+            if(Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]].equals(Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]]) && Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] < maxAmountInStackOfItem && Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] < maxAmountInStackOfItem){
+                CombineTwoStacks(Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]]);
+            }
+            else{
+                String savedItemName = Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]];
+                int savedItemAmount = Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]];
 
-            Player.itemsInventory[selectedItemCordinate[1]][selectedItemCordinate[0]] = Player.itemsInventory[endItemOfDragging[1]][endItemOfDragging[0]];
-            Player.itemsInventoryAmount[selectedItemCordinate[1]][selectedItemCordinate[0]] = Player.itemsInventoryAmount[endItemOfDragging[1]][endItemOfDragging[0]];
-            Player.itemsInventory[endItemOfDragging[1]][endItemOfDragging[0]] = savedItemName;
-            Player.itemsInventoryAmount[endItemOfDragging[1]][endItemOfDragging[0]] = savedItemAmount;
+                Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]] = Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]];
+                Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] = Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]];
+                Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]] = savedItemName;
+                Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] = savedItemAmount;
+            }
         }
     }
 
-    public static void SwapTwoItems(){
+    private static void RightMouseDragging(){
+        if(UserInputService.rightMousePress == false){
+            isRightMouseDragging = false;
+            int maxAmountInStackOfItem = ItemsService.GetItemClass(Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]]).maxAmountInStack;
+            if(Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]].equals(Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]]) && Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] < maxAmountInStackOfItem){
+                CombineTwoStacks(Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]]/ 2);
+            }
+            else if(Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]] == null){
+                int amount = Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] / 2;
+                if(amount == 0){
+                    Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]] = Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]];
+                    Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]] = null;
+                    Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] = 0;
+                    Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] = 1;
+                }
+                else{
+                    Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]] = Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]];
+                    Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] -= amount;
+                    Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] = amount;
+                }
+            }
+        }
+    }
+
+    private static void CombineTwoStacks(int amount){
+
+    }
+
+    private static void RightClickOnItemCell(){
+
+    }
+
+    private static void DivideTheStack(){
 
     }
 }
@@ -84,20 +126,24 @@ class InventoryCell{
             }
         }
 
-        if(UserInputService.leftMousePress == true && isMouseOver == true ){
+        if((UserInputService.leftMousePress == true && isMouseOver == true)){
             isPressed = true;
-            if(Inventory.isDraging == false){
-                Inventory.selectedItemCordinate = new int[]{posX,posY};
-                Inventory.isDraging = true;
+            if(Inventory.isLeftMouseDragging == false){
+                Inventory.selectedSlotCordinate = new int[]{posX,posY};
+                Inventory.isLeftMouseDragging = true;
             }
             else{
-                Inventory.endItemOfDragging = new int[]{posX,posY};
+                Inventory.endSlotCordinate = new int[]{posX,posY};
             }
         }
-        
-        if(isMouseOver == true){
-            if(isPressed){
-                isPressed = false;
+        else if(UserInputService.rightMousePress == true && isMouseOver == true){
+            isPressed = true;
+            if(Inventory.isRightMouseDragging == false){
+                Inventory.selectedSlotCordinate = new int[]{posX,posY};
+                Inventory.isRightMouseDragging = true;
+            }
+            else{
+                Inventory.endSlotCordinate = new int[]{posX,posY};
             }
         }
     }
