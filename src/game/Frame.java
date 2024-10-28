@@ -142,20 +142,20 @@ public class Frame extends JFrame {
 				button.toDraw(g2d);
 				String str = button.name;
 				g2d.setColor(Color.WHITE);
-				g2d.setFont(g2d.getFont().deriveFont(Font.BOLD).deriveFont(12.0f * Settings.coeficientOfGameScreen));
+				g2d.setFont(g2d.getFont().deriveFont(Font.BOLD).deriveFont(12.0f ));
 				int strWidth = g2d.getFontMetrics().stringWidth(str);
-				g2d.drawString(str, button.GetLocationX() + (button.GetSizeX() - strWidth) / 2,  button.GetLocationY() + button.GetSizeY()/2+ 4 * Settings.coeficientOfGameScreen);
+				g2d.drawString(str, button.GetLocationX() + (button.GetSizeX() - strWidth) / 2,  button.GetLocationY() + button.GetSizeY()/2+ 4 );
 			}
 		}
 		else if(GameLoop.curLayout == 1){
 			int strWidth;
 			g2d.setColor(Color.WHITE);
-			g2d.setFont(g2d.getFont().deriveFont(Font.BOLD).deriveFont(32.0f * Settings.coeficientOfGameScreen));
+			g2d.setFont(g2d.getFont().deriveFont(Font.BOLD).deriveFont(32.0f ));
 			String strSettings = "Settings";
 			strWidth = g2d.getFontMetrics().stringWidth(strSettings);
 			g2d.drawString(strSettings, 40 , 80 );
 			
-			g2d.setFont(g2d.getFont().deriveFont(Font.BOLD).deriveFont(14.0f * Settings.coeficientOfGameScreen));
+			g2d.setFont(g2d.getFont().deriveFont(Font.BOLD).deriveFont(14.0f ));
 			String strResolution = "Resolution: ";
 			strWidth = g2d.getFontMetrics().stringWidth(strResolution);
 			g2d.drawString(strResolution, 120 - strWidth/2, 120);
@@ -173,9 +173,9 @@ public class Frame extends JFrame {
 			for(MyButton button : GameLoop.settingsButtons){
 				button.toDraw(g2d);
 				String str = button.name;
-				g2d.setFont(g2d.getFont().deriveFont(Font.BOLD).deriveFont(12.0f * Settings.coeficientOfGameScreen));
+				g2d.setFont(g2d.getFont().deriveFont(Font.BOLD).deriveFont(12.0f ));
 				strWidth = g2d.getFontMetrics().stringWidth(str);
-				g2d.drawString(str, button.GetLocationX() + (button.GetSizeX() - strWidth) / 2,  button.GetLocationY() + button.GetSizeY()/2+ 4 * Settings.coeficientOfGameScreen);
+				g2d.drawString(str, button.GetLocationX() + (button.GetSizeX() - strWidth) / 2,  button.GetLocationY() + button.GetSizeY()/2+ 4 );
 			}
 		}
 		else if(GameLoop.curLayout == 2){
@@ -217,27 +217,50 @@ public class Frame extends JFrame {
 		}
 		else if(GameLoop.curLayout == 5){
 			g2d.setColor(new Color(64, 64, 64));
-				g2d.fillRect(640, 0, 640, gameHeight);
-	
-				for (int y = 0; y < Player.sizeOfItemsInventory[1]; y++){
-					for (int x = 0; x < Player.sizeOfItemsInventory[0]; x++){
-						g2d.drawImage(inventoryCellImage, 660 + x * 37 * 2, 60 + y*37 * 2, 32*2,32*2,null);
-						if (Player.itemsInventory[y][x] != null){
-							g2d.drawImage(ItemsService.GetItemClass(Player.itemsInventory[y][x]).icon, 660 + x * 37 * 2, 60 + y*37 * 2, 32*2,32*2,null);
-							g2d.setColor(Color.white);
-	
-							if (Player.itemsInventoryAmount[y][x] > 1){
-								String strAmountOfItem = String.valueOf(Player.itemsInventoryAmount[y][x]);
-								int strWidth = g2d.getFontMetrics().stringWidth(strAmountOfItem);
-								g2d.drawString(strAmountOfItem, 720 - strWidth + x * 74, 120+ y*74);
-							}
+			g2d.fillRect(640, 0, 640, gameHeight);
+
+			for (int y = 0; y < Player.sizeOfItemsInventory[1]; y++){
+				for (int x = 0; x < Player.sizeOfItemsInventory[0]; x++){
+					g2d.drawImage(inventoryCellImage, 660 + x * 74, 60 + y*74, 64,64,null);
+					if (Player.itemsInventory[y][x] != null){
+						g2d.drawImage(ItemsService.GetItemClass(Player.itemsInventory[y][x]).icon, 660 + x * 74, 60 + y*74, 64,64,null);
+						g2d.setColor(Color.white);
+
+						if (Player.itemsInventoryAmount[y][x] > 1){
+							String strAmountOfItem = String.valueOf(Player.itemsInventoryAmount[y][x]);
+							int strWidth = g2d.getFontMetrics().stringWidth(strAmountOfItem);
+							g2d.drawString(strAmountOfItem, 720 - strWidth + x * 74, 120+ y*74);
 						}
 					}
 				}
+			}
+
+			if(Inventory.isLeftMouseDragging){
+				g2d.drawImage(inventoryCellImage, 660 + Inventory.selectedSlotCordinate[0] * 74, 60 + Inventory.selectedSlotCordinate[1]*74, 64,64,null);
+				
+				g2d.drawImage(ItemsService.GetItemClass(Player.itemsInventory[Inventory.selectedSlotCordinate[1]][Inventory.selectedSlotCordinate[0]]).icon, UserInputService.mouseX -32, UserInputService.mouseY -32, 64,64,null);
+			}
+			else if(Inventory.isRightMouseDragging){
+				g2d.drawImage(inventoryCellImage, 660 + Inventory.selectedSlotCordinate[0] * 74, 60 + Inventory.selectedSlotCordinate[1]*74, 64,64,null);
+				g2d.drawImage(ItemsService.GetItemClass(Player.itemsInventory[Inventory.selectedSlotCordinate[1]][Inventory.selectedSlotCordinate[0]]).icon, 660 + Inventory.selectedSlotCordinate[0] * 74, 60 + Inventory.selectedSlotCordinate[1]*74, 64,64,null);
+				g2d.setColor(Color.white);
+				if (Player.itemsInventoryAmount[Inventory.selectedSlotCordinate[1]][Inventory.selectedSlotCordinate[0]] > 2){
+					String strAmountOfItem = String.valueOf(Player.itemsInventoryAmount[Inventory.selectedSlotCordinate[1]][Inventory.selectedSlotCordinate[0]] / 2);
+					int strWidth = g2d.getFontMetrics().stringWidth(strAmountOfItem);
+					g2d.drawString(strAmountOfItem, 720 - strWidth + Inventory.selectedSlotCordinate[0] * 74, 120+ Inventory.selectedSlotCordinate[1]*74);
+				}
+
+				g2d.drawImage(ItemsService.GetItemClass(Player.itemsInventory[Inventory.selectedSlotCordinate[1]][Inventory.selectedSlotCordinate[0]]).icon, UserInputService.mouseX-32, UserInputService.mouseY-32, 64,64,null);
+			}
 
 			if(Inventory.isRightMenuOpen){
 				for(MyButton button : Inventory.rightClickMenuButtons){
 					button.toDraw(g2d);
+					String str = button.name;
+					g2d.setColor(Color.WHITE);
+					g2d.setFont(g2d.getFont().deriveFont(Font.BOLD).deriveFont(12.0f));
+					int strWidth = g2d.getFontMetrics().stringWidth(str);
+					g2d.drawString(str, button.GetLocationX() + (button.GetSizeX() - strWidth) / 2,  button.GetLocationY() + button.GetSizeY()/2+ 4 );
 				}
 			}
 		}

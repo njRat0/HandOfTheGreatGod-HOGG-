@@ -37,6 +37,10 @@ public class Inventory {
             for(MyButton button : rightClickMenuButtons){
                 button.update();
             }
+
+            if(UserInputService.rightMousePress){
+                isRightMenuOpen = false;
+            }
         }
 
         if(Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]] != null){
@@ -56,6 +60,7 @@ public class Inventory {
             isRightClick = false;
             isRightMouseDragging = false;
         }
+
     }
 
     private static void LeftMouseDraggingTheItem(){

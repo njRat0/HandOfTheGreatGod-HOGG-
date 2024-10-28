@@ -189,16 +189,16 @@ public class ItemsService {
     public static void ActivateOptionFromRightClickMenuInInventory(String nameOfOption){
         switch (nameOfOption) {
             case "Equipe":
-                
+                System.out.println("Equipe");
                 break;
             case "Use":
-                
+                System.out.println("Use");
                 break;
             case "Sell":
-                
+                System.out.println("Sell");
                 break;
             case "Divide":
-                
+                System.out.println("Divide");
                 break;
         
             default:
