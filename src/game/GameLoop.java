@@ -89,7 +89,7 @@ public class GameLoop implements Runnable {
 	public static void SetUp_MenuButtons(){
 		int globalOffset = -(int)(menuButtons.length*35*Settings.coeficientOfGameScreen/2);
 		for(int i = 0; i < menuButtons.length; i++){
-			menuButtons[i] = new MyButton(player, TypeOfButton.Menu, null);
+			menuButtons[i] = new MyButton(TypeOfButton.Menu, null);
 			menuButtons[i].id=i;
 			menuButtons[i].SetBorderSize((int)(3));
 			menuButtons[i].colorBackground = new Color(125, 125, 125);
@@ -115,7 +115,7 @@ public class GameLoop implements Runnable {
 	public static void SetUp_SettingsButtons(){
 		int globalOffset = 0;
 		for(int i = 0; i < settingsButtons.length; i++){
-			settingsButtons[i] = new MyButton(player, TypeOfButton.Settings, null);
+			settingsButtons[i] = new MyButton(TypeOfButton.Settings, null);
 			settingsButtons[i].id= i;
 			settingsButtons[i].SetBorderSize((int)(3));
 			settingsButtons[i].SetSize(50, 25);

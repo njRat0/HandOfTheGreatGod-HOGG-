@@ -9,7 +9,8 @@ import java.lang.reflect.Method;
 
 enum TypeOfButton{
     Menu,
-    Settings
+    Settings,
+    RightClickMenuInInventory
 }
 
 
@@ -42,17 +43,16 @@ class MyButton{
     public int id;
     // public int locX = 0;
     // public int locY = 0;
-    private Player player;
 
     private Rectangle rectangleOfButton = new Rectangle();
 
     public void SetLocation(int x, int y){
-        rectangleOfButton.x = (int)(x * Settings.coeficientOfGameScreen);
-        rectangleOfButton.y = (int)(y * Settings.coeficientOfGameScreen);
+        rectangleOfButton.x = (int)(x);
+        rectangleOfButton.y = (int)(y);
     }
 
     public void SetBorderSize(int value){
-        borderSize = (int)(value * Settings.coeficientOfGameScreen);
+        borderSize = (int)(value);
     }
 
     public int GetLocationX(){
@@ -72,8 +72,8 @@ class MyButton{
     }
 
     public void SetSize(int x, int y){
-        rectangleOfButton.width = (int)(x * Settings.coeficientOfGameScreen);
-        rectangleOfButton.height = (int)(y * Settings.coeficientOfGameScreen);
+        rectangleOfButton.width = (int)(x);
+        rectangleOfButton.height = (int)(y);
     }
     //rectangleOfButton.x <= player.mouseX && player.mouseX <= rectangleOfButton.x + rectangleOfButton.width && rectangleOfButton.y <= GameLoop.mouseY && GameLoop.mouseY <= rectangleOfButton.y + rectangleOfButton.height
     public void update(){
@@ -104,6 +104,11 @@ class MyButton{
                             case Settings:
                                 SettingButtons.Activate(nameOfFunction);
                                 UserInputService.leftMousePress = false; 
+                                break;
+                            case RightClickMenuInInventory:
+                                ItemsService.ActivateOptionFromRightClickMenuInInventory(name);
+                                UserInputService.leftMousePress = false; 
+                                Inventory.isRightMenuOpen = false;
                                 break;
                             default:
                                 System.out.println("Button type error");
@@ -137,9 +142,8 @@ class MyButton{
     }
 
     
-    public MyButton(Player player, TypeOfButton type, String nameOfFunction){
+    public MyButton(TypeOfButton type, String nameOfFunction){
         this.nameOfFunction = nameOfFunction;
-        this.player = player;
         this.type = type;
         //this.setLayout(new FlowLayout());
         curColor = colorBackground;

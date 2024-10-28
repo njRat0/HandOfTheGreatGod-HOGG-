@@ -1,5 +1,6 @@
 package game;
 import java.util.List;
+import java.awt.Color;
 import java.util.ArrayList;
 
 enum TypeOfInventory{
@@ -13,6 +14,10 @@ public class Inventory {
     public static int[] endSlotCordinate= new int[]{0,0};
     public static boolean isLeftMouseDragging = false;
     public static boolean isRightMouseDragging = false;
+    public static boolean isRightClick = false;
+
+    public static boolean isRightMenuOpen = false;
+    public static MyButton[] rightClickMenuButtons;
 
     public static void InitNewItemsInventoryGrid(){
         cellsOfItemsInventory.clear();
@@ -28,17 +33,35 @@ public class Inventory {
             cell.Update();
         }
 
-        if (isLeftMouseDragging == true){
-            LeftMouseDraggingTheItem();
+        if(isRightMenuOpen){
+            for(MyButton button : rightClickMenuButtons){
+                button.update();
+            }
         }
-        else if(isRightMouseDragging){
-            RightMouseDragging();
+
+        if(Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]] != null){
+            
+            if (isLeftMouseDragging == true){
+                LeftMouseDraggingTheItem();
+            }
+            else if(isRightMouseDragging){
+                RightMouseDragging();
+            }
+            else if(isRightClick){
+                isRightClick = false;
+            }
+        }
+        else{
+            isLeftMouseDragging = false;
+            isRightClick = false;
+            isRightMouseDragging = false;
         }
     }
 
     private static void LeftMouseDraggingTheItem(){
         if(UserInputService.leftMousePress == false){
             isLeftMouseDragging = false;
+            isRightClick = false;
             int maxAmountInStackOfItem = ItemsService.GetItemClass(Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]]).maxAmountInStack;
             if(Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]].equals(Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]]) && Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] < maxAmountInStackOfItem && Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] < maxAmountInStackOfItem){
                 CombineTwoStacks(Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]]);
@@ -57,38 +80,76 @@ public class Inventory {
 
     private static void RightMouseDragging(){
         if(UserInputService.rightMousePress == false){
-            isRightMouseDragging = false;
-            int maxAmountInStackOfItem = ItemsService.GetItemClass(Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]]).maxAmountInStack;
-            if(Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]].equals(Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]]) && Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] < maxAmountInStackOfItem){
-                CombineTwoStacks(Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]]/ 2);
+            if( isRightClick == false && selectedSlotCordinate[0] == endSlotCordinate[0] && selectedSlotCordinate[1] == endSlotCordinate[1]){
+                System.out.println("right menu");
+                SetUpRightClickMenuOfItem();
+                isRightClick = true;
+                isRightMouseDragging = false;
+                isLeftMouseDragging = false;
             }
-            else if(Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]] == null){
-                int amount = Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] / 2;
-                if(amount == 0){
-                    Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]] = Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]];
-                    Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]] = null;
-                    Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] = 0;
-                    Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] = 1;
+            else{
+                isRightClick = false;
+                isRightMouseDragging = false;
+                isLeftMouseDragging = false;
+                int maxAmountInStackOfItem = ItemsService.GetItemClass(Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]]).maxAmountInStack;
+                if(Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]].equals(Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]]) && Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] < maxAmountInStackOfItem){
+                    CombineTwoStacks(Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]]/ 2);
                 }
-                else{
-                    Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]] = Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]];
-                    Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] -= amount;
-                    Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] = amount;
+                else if(Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]] == null){
+                    int amount = Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] / 2;
+                    if(amount == 0){
+                        Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]] = Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]];
+                        Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]] = null;
+                        Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] = 0;
+                        Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] = 1;
+                    }
+                    else{
+                        Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]] = Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]];
+                        Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] -= amount;
+                        Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] = amount;
+                    }
                 }
             }
         }
     }
 
     private static void CombineTwoStacks(int amount){
-
+        int maxAmountInStackOfItem = ItemsService.GetItemClass(Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]]).maxAmountInStack;
+        int sAmount = maxAmountInStackOfItem - Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]];
+        if (sAmount >= amount){
+            Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] += amount;
+            Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] -= amount;
+            if(Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] == 0){
+                Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]] = null;
+            }
+        }
+        else{
+            Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] += sAmount;
+            Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] -= (amount - sAmount);
+            if(Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] == 0){
+                Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]] = null;
+            }
+        }
     }
 
-    private static void RightClickOnItemCell(){
-
-    }
-
-    private static void DivideTheStack(){
-
+    private static void SetUpRightClickMenuOfItem(){
+        Item selectedItem = ItemsService.GetItemClass(Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]]);
+        rightClickMenuButtons = new MyButton[selectedItem.optionsForRightClickMenuInInventory.size()];
+        int globalOffset = -(int)(rightClickMenuButtons.length*25)/2;
+        isRightMenuOpen = true;
+		for(int i = 0; i < rightClickMenuButtons.length; i++){
+			rightClickMenuButtons[i] = new MyButton(TypeOfButton.RightClickMenuInInventory, selectedItem.optionsForRightClickMenuInInventory.get(i));
+			rightClickMenuButtons[i].id=i;
+			rightClickMenuButtons[i].SetBorderSize((int)(1));
+			rightClickMenuButtons[i].colorBackground = new Color(125, 125, 125);
+			rightClickMenuButtons[i].colorBorders = new Color(0, 0, 0);
+			rightClickMenuButtons[i].colorOver = new Color(94, 94, 94);
+			rightClickMenuButtons[i].colorClick = new Color(0, 0, 0);
+			rightClickMenuButtons[i].SetSize( 50, 25);
+            rightClickMenuButtons[i].name = selectedItem.optionsForRightClickMenuInInventory.get(i);
+			rightClickMenuButtons[i].SetLocation(735 + selectedSlotCordinate[0] * 74,selectedSlotCordinate[1] * 74 + globalOffset + 92);
+			globalOffset += 25;
+		}
     }
 }
 
@@ -116,7 +177,6 @@ class InventoryCell{
         if(locationOnScreenX <= UserInputService.mouseX && locationOnScreenY <= UserInputService.mouseY && locationOnScreenX + sizeX >= UserInputService.mouseX && locationOnScreenY + sizeY >= UserInputService.mouseY) {
             if(isMouseOver == false){
                 isMouseOver = true;
-                System.out.println("Mouse over");
             }
         }
         else{

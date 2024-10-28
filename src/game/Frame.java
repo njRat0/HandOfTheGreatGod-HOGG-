@@ -50,6 +50,8 @@ public class Frame extends JFrame {
 		windowSizeY = Settings.screenSize.height;
 		gameWidth = Settings.gameScreenSize.width ;
 		gameHeight = Settings.gameScreenSize.height ; 
+		gameCenterY = gameHeight/2;
+		gameCenterX = gameWidth/2;
 		if (Settings.typeOfScreenRender == TypeOfScreenRender.FullScreen){
 			setExtendedState(JFrame.MAXIMIZED_BOTH);
 			gameWidth += 15;
@@ -215,21 +217,27 @@ public class Frame extends JFrame {
 		}
 		else if(GameLoop.curLayout == 5){
 			g2d.setColor(new Color(64, 64, 64));
-			g2d.fillRect(640, 0, 640, gameHeight);
-
-			for (int y = 0; y < Player.sizeOfItemsInventory[1]; y++){
-				for (int x = 0; x < Player.sizeOfItemsInventory[0]; x++){
-					g2d.drawImage(inventoryCellImage, 660 + x * 37 * 2, 60 + y*37 * 2, 32*2,32*2,null);
-					if (Player.itemsInventory[y][x] != null){
-						g2d.drawImage(ItemsService.GetItemClass(Player.itemsInventory[y][x]).icon, 660 + x * 37 * 2, 60 + y*37 * 2, 32*2,32*2,null);
-						g2d.setColor(Color.white);
-
-						if (Player.itemsInventoryAmount[y][x] > 1){
-							String strAmountOfItem = String.valueOf(Player.itemsInventoryAmount[y][x]);
-							int strWidth = g2d.getFontMetrics().stringWidth(strAmountOfItem);
-							g2d.drawString(strAmountOfItem, 720 - strWidth + x * 74, 120+ y*74);
+				g2d.fillRect(640, 0, 640, gameHeight);
+	
+				for (int y = 0; y < Player.sizeOfItemsInventory[1]; y++){
+					for (int x = 0; x < Player.sizeOfItemsInventory[0]; x++){
+						g2d.drawImage(inventoryCellImage, 660 + x * 37 * 2, 60 + y*37 * 2, 32*2,32*2,null);
+						if (Player.itemsInventory[y][x] != null){
+							g2d.drawImage(ItemsService.GetItemClass(Player.itemsInventory[y][x]).icon, 660 + x * 37 * 2, 60 + y*37 * 2, 32*2,32*2,null);
+							g2d.setColor(Color.white);
+	
+							if (Player.itemsInventoryAmount[y][x] > 1){
+								String strAmountOfItem = String.valueOf(Player.itemsInventoryAmount[y][x]);
+								int strWidth = g2d.getFontMetrics().stringWidth(strAmountOfItem);
+								g2d.drawString(strAmountOfItem, 720 - strWidth + x * 74, 120+ y*74);
+							}
 						}
 					}
+				}
+
+			if(Inventory.isRightMenuOpen){
+				for(MyButton button : Inventory.rightClickMenuButtons){
+					button.toDraw(g2d);
 				}
 			}
 		}

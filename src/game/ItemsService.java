@@ -185,6 +185,27 @@ public class ItemsService {
             System.out.println("Error: item already exists in game");
         }
     }
+
+    public static void ActivateOptionFromRightClickMenuInInventory(String nameOfOption){
+        switch (nameOfOption) {
+            case "Equipe":
+                
+                break;
+            case "Use":
+                
+                break;
+            case "Sell":
+                
+                break;
+            case "Divide":
+                
+                break;
+        
+            default:
+            System.out.println("Error: list doesnt consist this option");
+                break;
+        }
+    }
 }
 
 abstract class Item {
@@ -193,6 +214,8 @@ abstract class Item {
     int worth;
     BufferedImage icon;
     int maxAmountInStack = 1;
+
+    ArrayList<String> optionsForRightClickMenuInInventory = new ArrayList<String>(){};
 }
 
 class OneHandedWeapon extends Item{
@@ -229,6 +252,9 @@ class OneHandedWeapon extends Item{
                     break;
             }
         }
+
+        optionsForRightClickMenuInInventory.add("Equipe");
+        optionsForRightClickMenuInInventory.add("Sell");
     }
 }
 class TwoHandedWeapon extends Item{
@@ -240,6 +266,9 @@ class TwoHandedWeapon extends Item{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+        optionsForRightClickMenuInInventory.add("Equipe");
+        optionsForRightClickMenuInInventory.add("Sell");
     }
 }
 class Armor extends Item{
@@ -250,6 +279,9 @@ class Armor extends Item{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+        optionsForRightClickMenuInInventory.add("Equipe");
+        optionsForRightClickMenuInInventory.add("Sell");
     }
 }
 class Consumable extends Item{
@@ -307,6 +339,10 @@ class Consumable extends Item{
                     break;
             }
         }
+
+        optionsForRightClickMenuInInventory.add("Use");
+        optionsForRightClickMenuInInventory.add("Sell");
+        optionsForRightClickMenuInInventory.add("Divide");
     }
 }
 class Scroll extends Item{
@@ -319,5 +355,9 @@ class Scroll extends Item{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+        optionsForRightClickMenuInInventory.add("Use");
+        optionsForRightClickMenuInInventory.add("Sell");
+        optionsForRightClickMenuInInventory.add("Divide");
     }
 }
