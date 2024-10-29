@@ -119,20 +119,25 @@ public class Inventory {
     }
 
     private static void CombineTwoStacks(int amount){
-        int maxAmountInStackOfItem = ItemsService.GetItemClass(Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]]).maxAmountInStack;
-        int sAmount = maxAmountInStackOfItem - Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]];
-        if (sAmount >= amount){
-            Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] += amount;
-            Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] -= amount;
-            if(Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] == 0){
-                Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]] = null;
+        //System.out.println("combine two items: " + selectedSlotCordinate[0] + " " + selectedSlotCordinate[1] + "; " + endSlotCordinate[0] + " " + endSlotCordinate[1]);
+        if(selectedSlotCordinate[0] != endSlotCordinate[0] || selectedSlotCordinate[1] != endSlotCordinate[1]){
+            int maxAmountInStackOfItem = ItemsService.GetItemClass(Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]]).maxAmountInStack;
+            int sAmount = maxAmountInStackOfItem - Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]];
+            if (sAmount >= amount){
+                System.out.println("Full addition");
+                Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] += amount;
+                Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] -= amount;
+                if(Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] == 0){
+                    Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]] = null;
+                }
             }
-        }
-        else{
-            Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] += sAmount;
-            Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] -= (amount - sAmount);
-            if(Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] == 0){
-                Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]] = null;
+            else{
+                System.out.println("half addition");
+                Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] += sAmount;
+                Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] -= sAmount;
+                if(Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] == 0){
+                    Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]] = null;
+                }
             }
         }
     }
@@ -195,6 +200,7 @@ class InventoryCell{
             isPressed = true;
             if(Inventory.isLeftMouseDragging == false){
                 Inventory.selectedSlotCordinate = new int[]{posX,posY};
+                Inventory.endSlotCordinate = new int[]{posX,posY};
                 Inventory.isLeftMouseDragging = true;
             }
             else{
@@ -205,6 +211,7 @@ class InventoryCell{
             isPressed = true;
             if(Inventory.isRightMouseDragging == false){
                 Inventory.selectedSlotCordinate = new int[]{posX,posY};
+                Inventory.endSlotCordinate = new int[]{posX,posY};
                 Inventory.isRightMouseDragging = true;
             }
             else{

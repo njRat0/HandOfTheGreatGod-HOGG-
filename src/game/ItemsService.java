@@ -140,6 +140,10 @@ public class ItemsService {
         }
     }
 
+    void Test(){
+
+    }
+
     private static Item CreateItemClass(String itemName,List<String> itemParameters){
         String typeOfItem = null;
         Item item;
@@ -216,6 +220,7 @@ abstract class Item {
     int maxAmountInStack = 1;
 
     ArrayList<String> optionsForRightClickMenuInInventory = new ArrayList<String>(){};
+
 }
 
 class OneHandedWeapon extends Item{
