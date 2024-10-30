@@ -76,7 +76,7 @@ public class UserInputService {
 			{
 				case KeyEvent.VK_W:
 					keyUP = true;
-					ItemsService.AddItemToInventoryOfPlayer("SmallRedSoul", 1);
+					ItemsService.AddItemToInventoryOfPlayer("RegularSword", 1);
 					break;
 				case KeyEvent.VK_S:
 					keyDOWN = true;

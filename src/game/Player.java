@@ -15,6 +15,9 @@ public class Player extends Character{
 	//parameters
 	public static int[] sizeOfItemsInventory = new int[]{8,8};
 	//public  static ArrayList<String> itemsInventory = new ArrayList<String>();
+	public static Dictionary<String, String> eqiupedItems = new Hashtable<String, String>(){{
+		
+	}};
 	public static String[][] itemsInventory = new String[8][8];
 	public static int[][] itemsInventoryAmount = new int[8][8];
 	public static int[] selectedItemForDraggCordinates = new int[2];
@@ -35,9 +38,20 @@ public class Player extends Character{
 		itemsInventoryAmount = newItemsInventoryAmount;
 	}
 
+	private void InitEquipedItemsDictionary(){
+		eqiupedItems.put("Helm", "null");
+		eqiupedItems.put("ChestArmour", "null");
+		eqiupedItems.put("Leggings", "null");
+		eqiupedItems.put("Boots", "null");
+		eqiupedItems.put("Ring1", "null");
+		eqiupedItems.put("Ring2", "null");
+		eqiupedItems.put("Armlet1", "null");
+		eqiupedItems.put("Armlet2", "null");
+		eqiupedItems.put("Necklace", "null");
+	}
+
 	public Player() {
-		// InitItemsInventory();
-		// items.add(itemsInventory);
+		InitEquipedItemsDictionary();
 	}
 	
 	/**

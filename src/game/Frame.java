@@ -22,6 +22,7 @@ public class Frame extends JFrame {
 	public static int startPosOfGameY;
 
 	private static BufferedImage inventoryCellImage;
+	private static BufferedImage inventoryTrashBinCellImage;
 
 	private long lastRender;
 	private ArrayList<Float> fpsHistory;
@@ -32,6 +33,7 @@ public class Frame extends JFrame {
 		super(title);
 		try {
 			inventoryCellImage = ImageIO.read(new File("res\\UI\\InventoryCell.png"));
+			inventoryTrashBinCellImage = ImageIO.read(new File("res\\UI\\InventoryTrashBinCell.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -234,6 +236,8 @@ public class Frame extends JFrame {
 					}
 				}
 			}
+
+			g2d.drawImage(inventoryTrashBinCellImage, 570 , 640, 64,64,null);
 
 			if(Inventory.isLeftMouseDragging){
 				g2d.drawImage(inventoryCellImage, 660 + Inventory.selectedSlotCordinate[0] * 74, 60 + Inventory.selectedSlotCordinate[1]*74, 64,64,null);
