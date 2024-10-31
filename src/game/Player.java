@@ -13,13 +13,13 @@ import java.util.*;
 public class Player extends Character{
 	
 	//parameters
-	public static int[] sizeOfItemsInventory = new int[]{8,8};
+	public static int[] sizeOfItemsInventory = new int[]{8,9};
 	//public  static ArrayList<String> itemsInventory = new ArrayList<String>();
 	public static Dictionary<String, String> eqiupedItems = new Hashtable<String, String>(){{
 		
 	}};
-	public static String[][] itemsInventory = new String[8][8];
-	public static int[][] itemsInventoryAmount = new int[8][8];
+	public static String[][] itemsInventory = new String[9][8];
+	public static int[][] itemsInventoryAmount = new int[9][8];
 	public static int[] selectedItemForDraggCordinates = new int[2];
 
 	public static void ChangeTheSizeOfInventory(int[] newSize){
@@ -43,10 +43,8 @@ public class Player extends Character{
 		eqiupedItems.put("ChestArmour", "null");
 		eqiupedItems.put("Leggings", "null");
 		eqiupedItems.put("Boots", "null");
-		eqiupedItems.put("Ring1", "null");
-		eqiupedItems.put("Ring2", "null");
-		eqiupedItems.put("Armlet1", "null");
-		eqiupedItems.put("Armlet2", "null");
+		eqiupedItems.put("Ring", "null");
+		eqiupedItems.put("Armlets", "null");
 		eqiupedItems.put("Necklace", "null");
 	}
 

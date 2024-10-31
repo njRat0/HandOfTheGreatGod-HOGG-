@@ -84,9 +84,10 @@ public class ItemsService {
         Item classOfItem = GetItemClass(itemName);
         System.out.println("add");
         boolean isEnd = false;
+        
         if(classOfItem.maxAmountInStack > 1){
-            for(int y = 0; y < Player.itemsInventory.length; y++){
-                for(int x = 0; x < Player.itemsInventory[0].length; x++){
+            for(int y = 1; y < Player.sizeOfItemsInventory[1]; y++){
+                for(int x = 0; x < Player.sizeOfItemsInventory[0]; x++){
                     if(Player.itemsInventory[y][x] != null && Player.itemsInventory[y][x].equals(itemName)){
                         if(Player.itemsInventoryAmount[y][x] < classOfItem.maxAmountInStack){
                             if(Player.itemsInventoryAmount[y][x] + amount > classOfItem.maxAmountInStack){
@@ -112,7 +113,7 @@ public class ItemsService {
 
         if (wasItemAdd == false){
             isEnd = false;
-            for(int y = 0; y < Player.itemsInventory.length; y++){
+            for(int y = 1; y < Player.itemsInventory.length; y++){
                 for(int x = 0; x < Player.itemsInventory[0].length; x++){
                     if(Player.itemsInventory[y][x] == null){
                         if(amount > classOfItem.maxAmountInStack){

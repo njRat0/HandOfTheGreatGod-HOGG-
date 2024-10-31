@@ -17,11 +17,12 @@ public class Inventory {
     public static boolean isRightClick = false;
 
     public static boolean isRightMenuOpen = false;
+    public static boolean isEquipedItemsWindowOpen = false;
     public static MyButton[] rightClickMenuButtons;
 
     public static void InitNewItemsInventoryGrid(){
         cellsOfItemsInventory.clear();
-        for (int y = 0; y < Player.sizeOfItemsInventory[1]; y++){
+        for (int y = 1; y < Player.sizeOfItemsInventory[1]; y++){
             for (int x = 0; x < Player.sizeOfItemsInventory[0]; x++){
                 cellsOfItemsInventory.add(new InventoryCell(x, y, 64, 64));   
             }
@@ -178,7 +179,7 @@ class InventoryCell{
         this.posX = posX;
         this.posY = posY;
         locationOnScreenX = 660 + posX * 74;
-        locationOnScreenY = 60 + posY * 74;
+        locationOnScreenY = 60 + (posY-1) * 74;
         this.sizeX = sizeX;
         this.sizeY = sizeY;
     }
