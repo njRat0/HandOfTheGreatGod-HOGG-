@@ -23,6 +23,7 @@ public class Frame extends JFrame {
 
 	private static BufferedImage inventoryCellImage;
 	private static BufferedImage inventoryTrashBinCellImage;
+	private static ArrayList<BufferedImage> inventoryEquippingCellsImage = new ArrayList<BufferedImage>();
 
 	private long lastRender;
 	private ArrayList<Float> fpsHistory;
@@ -34,7 +35,13 @@ public class Frame extends JFrame {
 		try {
 			inventoryCellImage = ImageIO.read(new File("res\\UI\\InventoryCell.png"));
 			inventoryTrashBinCellImage = ImageIO.read(new File("res\\UI\\InventoryTrashBinCell.png"));
+			for(int i = 0; i < 6; i++){
+				System.out.println("res\\UI\\" + Inventory.listOfNamesOfEquippingItemsCell[i] + ".png");
+				inventoryEquippingCellsImage.add(ImageIO.read(new File("res\\UI\\Inventory" + Inventory.listOfNamesOfEquippingItemsCell[i] + "Cell.png")));
+			}
+			
 		} catch (IOException e) {
+			System.out.println("Error: image load failed");
 			e.printStackTrace();
 		}
 		setResizable(false);
@@ -238,6 +245,13 @@ public class Frame extends JFrame {
 			}
 
 			g2d.drawImage(inventoryTrashBinCellImage, 570 , 640, 64,64,null);
+			//draw eqiupping cells
+			g2d.drawImage(inventoryEquippingCellsImage.get(0), 200 , 100, 64,64,null);
+			g2d.drawImage(inventoryEquippingCellsImage.get(1), 200 , 175, 64,64,null);
+			g2d.drawImage(inventoryEquippingCellsImage.get(2), 200 , 250, 64,64,null);
+			g2d.drawImage(inventoryEquippingCellsImage.get(3), 200 , 325, 64,64,null);
+			g2d.drawImage(inventoryEquippingCellsImage.get(4), 125 , 175, 64,64,null);
+			g2d.drawImage(inventoryEquippingCellsImage.get(5), 275 , 175, 64,64,null);
 
 			if(Inventory.isLeftMouseDragging){
 				g2d.drawImage(inventoryCellImage, 660 + Inventory.selectedSlotCordinate[0] * 74, 60 + (Inventory.selectedSlotCordinate[1]- 1)*74, 64,64,null);

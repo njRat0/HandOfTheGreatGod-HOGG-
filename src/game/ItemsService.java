@@ -24,6 +24,7 @@ public class ItemsService {
     private static Dictionary<String, List<String>> dictionaryOfItemsByName = new Hashtable<String, List<String>>();
     private static Dictionary<Integer, String> dictionaryOfItemsNameByWorth = new Hashtable<Integer,String>();
     private static Dictionary<String, Item> dictionaryOfItemsInGameByName = new Hashtable<String, Item>();
+    
 
     public static void Init(){
         try {

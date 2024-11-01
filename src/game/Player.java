@@ -20,7 +20,7 @@ public class Player extends Character{
 	}};
 	public static String[][] itemsInventory = new String[9][8];
 	public static int[][] itemsInventoryAmount = new int[9][8];
-	public static int[] selectedItemForDraggCordinates = new int[2];
+	public static 
 
 	public static void ChangeTheSizeOfInventory(int[] newSize){
 		sizeOfItemsInventory = newSize;
@@ -40,11 +40,14 @@ public class Player extends Character{
 
 	private void InitEquipedItemsDictionary(){
 		eqiupedItems.put("Helm", "null");
-		eqiupedItems.put("ChestArmour", "null");
+		eqiupedItems.put("ChestArmor", "null");
 		eqiupedItems.put("Leggings", "null");
 		eqiupedItems.put("Boots", "null");
-		eqiupedItems.put("Ring", "null");
-		eqiupedItems.put("Armlets", "null");
+		eqiupedItems.put("Weapon1", "null");
+		eqiupedItems.put("Weapon2", "null");
+		eqiupedItems.put("Ring1", "null");
+		eqiupedItems.put("Ring2", "null");
+		eqiupedItems.put("Armlet", "null");
 		eqiupedItems.put("Necklace", "null");
 	}
 

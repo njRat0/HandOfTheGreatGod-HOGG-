@@ -16,6 +16,19 @@ public class Inventory {
     public static boolean isRightMouseDragging = false;
     public static boolean isRightClick = false;
 
+    public static String[] listOfNamesOfEquippingItemsCell = new String[]{
+    "Helm",
+    "ChestArmor",
+    "Leggings",
+    "Boots",
+    "Weapon",
+    "Weapon",
+    "Ring",
+    "Ring",
+    "Armlet",
+    "Necklace"
+    };
+
     public static boolean isRightMenuOpen = false;
     public static boolean isEquipedItemsWindowOpen = false;
     public static MyButton[] rightClickMenuButtons;
