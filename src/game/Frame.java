@@ -228,17 +228,17 @@ public class Frame extends JFrame {
 			g2d.setColor(new Color(64, 64, 64));
 			g2d.fillRect(640, 0, 640, gameHeight);
 
-			for (int y = 1; y < Player.sizeOfItemsInventory[1]; y++){
+			for (int y = 0; y < Player.sizeOfItemsInventory[1]; y++){
 				for (int x = 0; x < Player.sizeOfItemsInventory[0]; x++){
-					g2d.drawImage(inventoryCellImage, 660 + x * 74, 60 + (y-1)*74, 64,64,null);
+					g2d.drawImage(inventoryCellImage, 660 + x * 74, 60 + y*74, 64,64,null);
 					if (Player.itemsInventory[y][x] != null){
-						g2d.drawImage(ItemsService.GetItemClass(Player.itemsInventory[y][x]).icon, 660 + x * 74, 60 + (y-1)*74, 64,64,null);
+						g2d.drawImage(ItemsService.GetItemClass(Player.itemsInventory[y][x]).icon, 660 + x * 74, 60 + y*74, 64,64,null);
 						g2d.setColor(Color.white);
 
 						if (Player.itemsInventoryAmount[y][x] > 1){
 							String strAmountOfItem = String.valueOf(Player.itemsInventoryAmount[y][x]);
 							int strWidth = g2d.getFontMetrics().stringWidth(strAmountOfItem);
-							g2d.drawString(strAmountOfItem, 720 - strWidth + x * 74, 120+ (y-1)*74);
+							g2d.drawString(strAmountOfItem, 720 - strWidth + x * 74, 120+ y*74);
 						}
 					}
 				}
@@ -254,18 +254,18 @@ public class Frame extends JFrame {
 			g2d.drawImage(inventoryEquippingCellsImage.get(5), 275 , 175, 64,64,null);
 
 			if(Inventory.isLeftMouseDragging){
-				g2d.drawImage(inventoryCellImage, 660 + Inventory.selectedSlotCordinate[0] * 74, 60 + (Inventory.selectedSlotCordinate[1]- 1)*74, 64,64,null);
+				g2d.drawImage(inventoryCellImage, 660 + Inventory.selectedSlotCordinate[0] * 74, 60 + (Inventory.selectedSlotCordinate[1])*74, 64,64,null);
 				
 				g2d.drawImage(ItemsService.GetItemClass(Player.itemsInventory[Inventory.selectedSlotCordinate[1]][Inventory.selectedSlotCordinate[0]]).icon, UserInputService.mouseX -32, UserInputService.mouseY -32, 64,64,null);
 			}
 			else if(Inventory.isRightMouseDragging){
-				g2d.drawImage(inventoryCellImage, 660 + Inventory.selectedSlotCordinate[0] * 74, 60 + (Inventory.selectedSlotCordinate[1]- 1)*74, 64,64,null);
-				g2d.drawImage(ItemsService.GetItemClass(Player.itemsInventory[Inventory.selectedSlotCordinate[1]][Inventory.selectedSlotCordinate[0]]).icon, 660 + Inventory.selectedSlotCordinate[0] * 74, 60 + (Inventory.selectedSlotCordinate[1]- 1)*74, 64,64,null);
+				g2d.drawImage(inventoryCellImage, 660 + Inventory.selectedSlotCordinate[0] * 74, 60 + (Inventory.selectedSlotCordinate[1])*74, 64,64,null);
+				g2d.drawImage(ItemsService.GetItemClass(Player.itemsInventory[Inventory.selectedSlotCordinate[1]][Inventory.selectedSlotCordinate[0]]).icon, 660 + Inventory.selectedSlotCordinate[0] * 74, 60 + (Inventory.selectedSlotCordinate[1])*74, 64,64,null);
 				g2d.setColor(Color.white);
 				if (Player.itemsInventoryAmount[Inventory.selectedSlotCordinate[1]][Inventory.selectedSlotCordinate[0]] > 2){
 					String strAmountOfItem = String.valueOf(Player.itemsInventoryAmount[Inventory.selectedSlotCordinate[1]][Inventory.selectedSlotCordinate[0]] / 2);
 					int strWidth = g2d.getFontMetrics().stringWidth(strAmountOfItem);
-					g2d.drawString(strAmountOfItem, 720 - strWidth + Inventory.selectedSlotCordinate[0] * 74, 120+ (Inventory.selectedSlotCordinate[1]- 1)*74);
+					g2d.drawString(strAmountOfItem, 720 - strWidth + Inventory.selectedSlotCordinate[0] * 74, 120+ (Inventory.selectedSlotCordinate[1])*74);
 				}
 
 				g2d.drawImage(ItemsService.GetItemClass(Player.itemsInventory[Inventory.selectedSlotCordinate[1]][Inventory.selectedSlotCordinate[0]]).icon, UserInputService.mouseX-32, UserInputService.mouseY-32, 64,64,null);
