@@ -95,12 +95,30 @@ public class Inventory {
             if(selectedSlotTrashBinCell || endSlotTrashBinCell){
                 if(selectedSlotTrashBinCell != endSlotTrashBinCell){
                     if(selectedSlotTrashBinCell == true){
-                        if(ItemsService.GetItemClass(Player.TrashBinCell).maxAmountInStack != 1){
+                        if(Player.TrashBinCell.equals(Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]]) && ItemsService.GetItemClass(Player.TrashBinCell).maxAmountInStack != 1){
+                            CombineTwoStacks(Player.TrashBinCellAmount);
+                        }
+                        else{
+                            String savedItemName = Player.TrashBinCell;
+                            int savedItemAmount = Player.TrashBinCellAmount;
 
+                            Player.TrashBinCell= Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]];
+                            Player.TrashBinCellAmount= Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]];
+                            Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]] = savedItemName;
+                            Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] = savedItemAmount;
                         }
                     }
                     else{
-
+                        int maxAmountInStackOfItem = ItemsService.GetItemClass(Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]]).maxAmountInStack;
+                        if(Player.TrashBinCell.equals(Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]]) && Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] < maxAmountInStackOfItem){
+                            CombineTwoStacks(Player.TrashBinCellAmount);
+                        }
+                        else{
+                            Player.TrashBinCell= Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]];
+                            Player.TrashBinCellAmount= Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]];
+                            Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]] = savedItemName;
+                            Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] = savedItemAmount;
+                        }
                     }
                 }
             }
