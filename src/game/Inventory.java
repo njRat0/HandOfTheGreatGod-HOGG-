@@ -24,24 +24,13 @@ enum TypeOfInventoryCell{
 public class Inventory {
     public static List<InventoryCell> cellsOfItemsInventory = new ArrayList<InventoryCell>();
     public static int[] selectedSlotCordinate = new int[]{0,0};
+    public static InventoryCell selectedInventoryCell;
+    public static InventoryCell endInventoryCell; 
     public static int[] endSlotCordinate= new int[]{0,0};
     public static boolean isLeftMouseDragging = false;
     public static boolean isRightMouseDragging = false;
     public static boolean isRightClick = false;
     public static String equippingParams_TypeNameOfCarringItem = null;
-
-    public static String[] listOfNamesOfEquippingItemsCell = new String[]{
-        "Helm",
-        "ChestArmor",
-        "Leggings",
-        "Boots",
-        "Weapon",
-        "Weapon",
-        "Ring",
-        "Ring",
-        "Armlet",
-        "Necklace"
-    };
 
     public static boolean isRightMenuOpen = false;
     public static boolean isEquipedItemsWindowOpen = false;
@@ -49,13 +38,19 @@ public class Inventory {
 
     public static void InitNewItemsInventoryGrid(){
         cellsOfItemsInventory.clear();
-        for (int y = 0; y < Player.sizeOfItemsInventory[1]; y++){
+        for (int y = 2; y < Player.sizeOfItemsInventory[1]; y++){
             for (int x = 0; x < Player.sizeOfItemsInventory[0]; x++){
-                cellsOfItemsInventory.add(new InventoryCell(x, y, 660 + x * 74, 60 + y*74 , 64, 64, TypeOfInventoryCell.Empty));   
+                cellsOfItemsInventory.add(new InventoryCell(x, y, 660 + x * 74, 60 + (y-2)*74 , 64, 64, TypeOfInventoryCell.Empty));   
             }
         }
 
-        //cellsOfItemsInventory.add(new InventoryCell(570 , 640, 64, 64);
+        cellsOfItemsInventory.add(new InventoryCell(7,1,570 , 640, 64, 64, TypeOfInventoryCell.TrashBin));
+        cellsOfItemsInventory.add(new InventoryCell(0,0,200 , 100, 64,64, TypeOfInventoryCell.Helm));
+        cellsOfItemsInventory.add(new InventoryCell(1,0,200 , 170, 64,64, TypeOfInventoryCell.ChestArmor));
+        cellsOfItemsInventory.add(new InventoryCell(2,0,200 , 240, 64,64, TypeOfInventoryCell.Leggings));
+        cellsOfItemsInventory.add(new InventoryCell(3,0,200 , 310, 64,64, TypeOfInventoryCell.Boots));
+        cellsOfItemsInventory.add(new InventoryCell(4,0,130 , 170, 64,64, TypeOfInventoryCell.Weapon));
+        cellsOfItemsInventory.add(new InventoryCell(5,0,270 , 170, 64,64, TypeOfInventoryCell.Weapon));
     }
 
     public static void UpdateInventory(){
@@ -110,6 +105,9 @@ public class Inventory {
                 Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]] = savedItemName;
                 Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] = savedItemAmount;
             }
+
+            selectedInventoryCell = null;
+            endSlotCordinate = null;
         }
     }
 
@@ -145,6 +143,9 @@ public class Inventory {
                     }
                 }
             }
+
+            selectedInventoryCell = null;
+            endSlotCordinate = null;
         }
     }
 
@@ -193,13 +194,12 @@ public class Inventory {
 }
 
 class InventoryCell{
-    private int indexX;
-    private int indexY;
-    private int sizeX;
-    private int sizeY;
-    private int locationOnScreenX;
-    private int locationOnScreenY;
-    public int equipping_index = -1;
+    public int indexX;
+    public int indexY;
+    public int sizeX;
+    public int sizeY;
+    public int locationOnScreenX;
+    public int locationOnScreenY;
 
     private boolean isMouseOver =  false;
     private boolean isPressed = false;
@@ -232,11 +232,14 @@ class InventoryCell{
             isPressed = true;
             if(Inventory.isLeftMouseDragging == false){
                 Inventory.selectedSlotCordinate = new int[]{indexX,indexY};
+                Inventory.selectedInventoryCell = this;
+                Inventory.endInventoryCell = this;
                 Inventory.endSlotCordinate = new int[]{indexX,indexY};
                 Inventory.isLeftMouseDragging = true;
             }
             else{
                 Inventory.endSlotCordinate = new int[]{indexX,indexY};
+                Inventory.endInventoryCell = this;
             }
         }
         else if(UserInputService.rightMousePress == true && isMouseOver == true){
@@ -245,9 +248,12 @@ class InventoryCell{
                 Inventory.selectedSlotCordinate = new int[]{indexX,indexY};
                 Inventory.endSlotCordinate = new int[]{indexX,indexY};
                 Inventory.isRightMouseDragging = true;
+                Inventory.selectedInventoryCell = this;
+                Inventory.endInventoryCell = this;
             }
             else{
                 Inventory.endSlotCordinate = new int[]{indexX,indexY};
+                Inventory.endInventoryCell = this;
             }
         }
     }

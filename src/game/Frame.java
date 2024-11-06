@@ -6,8 +6,7 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Dictionary;
+import java.util.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -26,7 +25,22 @@ public class Frame extends JFrame {
 	private static BufferedImage inventoryCellImage;
 	private static BufferedImage inventoryTrashBinCellImage;
 	private static ArrayList<BufferedImage> inventoryEquippingCellsImage = new ArrayList<BufferedImage>();
-	//private static Dictionary 
+	private static Dictionary<String, BufferedImage> imageOfInventoryCell = new Hashtable<String,BufferedImage>();
+
+	public static void InitDictionaryOfImageOfInventoryCell(){
+		try{
+			imageOfInventoryCell.put("Empty", ImageIO.read(new File("res\\UI\\InventoryCell.png")));
+			imageOfInventoryCell.put("TrashBin", ImageIO.read(new File("res\\UI\\InventoryTrashBinCell.png")));
+			imageOfInventoryCell.put("Helm", ImageIO.read(new File("res\\UI\\InventoryHelmCell.png")));
+			imageOfInventoryCell.put("ChestArmor", ImageIO.read(new File("res\\UI\\InventoryChestArmorCell.png")));
+			imageOfInventoryCell.put("Leggings", ImageIO.read(new File("res\\UI\\InventoryLeggingsCell.png")));
+			imageOfInventoryCell.put("Boots", ImageIO.read(new File("res\\UI\\InventoryBootsCell.png")));
+			imageOfInventoryCell.put("Weapon", ImageIO.read(new File("res\\UI\\InventoryWeaponCell.png")));
+		}
+		catch(IOException e){
+			System.out.println("Error: inventory cells images weren`t found");
+		}
+	}
 
 	private long lastRender;
 	private ArrayList<Float> fpsHistory;
@@ -35,18 +49,7 @@ public class Frame extends JFrame {
 	
 	public Frame(String title) {
 		super(title);
-		try {
-			inventoryCellImage = ImageIO.read(new File("res\\UI\\InventoryCell.png"));
-			inventoryTrashBinCellImage = ImageIO.read(new File("res\\UI\\InventoryTrashBinCell.png"));
-			for(int i = 0; i < 6; i++){
-				System.out.println("res\\UI\\" + Inventory.listOfNamesOfEquippingItemsCell[i] + ".png");
-				inventoryEquippingCellsImage.add(ImageIO.read(new File("res\\UI\\Inventory" + Inventory.listOfNamesOfEquippingItemsCell[i] + "Cell.png")));
-			}
-			
-		} catch (IOException e) {
-			System.out.println("Error: image load failed");
-			e.printStackTrace();
-		}
+		InitDictionaryOfImageOfInventoryCell();
 		setResizable(false);
 		//setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		SetUpFrame();
@@ -232,61 +235,34 @@ public class Frame extends JFrame {
 			g2d.fillRect(640, 0, 640, gameHeight);
 
 			for(int i =0; i < Inventory.cellsOfItemsInventory.size(); i++){
-				switch (player) {
-					case value:
-						
-						break;
+				InventoryCell invCell = Inventory.cellsOfItemsInventory.get(i);
+				g2d.drawImage(imageOfInventoryCell.get(invCell.type.toString()), invCell.locationOnScreenX, invCell.locationOnScreenY, invCell.sizeX, invCell.sizeY, null);
 				
-					default:
-						break;
-				}
-			}
-			for (int y = 0; y < Player.sizeOfItemsInventory[1]; y++){
-				for (int x = 0; x < Player.sizeOfItemsInventory[0]; x++){
-					g2d.drawImage(inventoryCellImage, 660 + x * 74, 60 + y*74, 64,64,null);
-					if (Player.itemsInventory[y][x] != null){
-						g2d.drawImage(ItemsService.GetItemClass(Player.itemsInventory[y][x]).icon, 660 + x * 74, 60 + y*74, 64,64,null);
-						g2d.setColor(Color.white);
+				if (Player.itemsInventory[invCell.indexY][invCell.indexX] != null){
+					g2d.drawImage(ItemsService.GetItemClass(Player.itemsInventory[invCell.indexY][invCell.indexX]).icon, invCell.locationOnScreenX, invCell.locationOnScreenY, invCell.sizeX, invCell.sizeY,null);
+					g2d.setColor(Color.white);
 
-						if (Player.itemsInventoryAmount[y][x] > 1){
-							String strAmountOfItem = String.valueOf(Player.itemsInventoryAmount[y][x]);
-							int strWidth = g2d.getFontMetrics().stringWidth(strAmountOfItem);
-							g2d.drawString(strAmountOfItem, 720 - strWidth + x * 74, 120+ y*74);
-						}
+					int amountOfItem = Player.itemsInventoryAmount[invCell.indexY][invCell.indexX];
+					if (amountOfItem > 1){
+						String strAmountOfItem = String.valueOf(amountOfItem);
+						int strWidth = g2d.getFontMetrics().stringWidth(strAmountOfItem);
+						g2d.drawString(strAmountOfItem, invCell.locationOnScreenX + invCell.sizeX - strWidth, invCell.locationOnScreenY+55);
 					}
 				}
 			}
 
-			g2d.drawImage(inventoryTrashBinCellImage, 570 , 640, 64,64,null);
-			if(Player.TrashBinCell != null){
-				g2d.drawImage(ItemsService.GetItemClass(Player.TrashBinCell).icon, 570, 640, 64,64,null);
-				g2d.setColor(Color.white);
-				if (Player.TrashBinCellAmount > 1){
-					String strAmountOfItem = String.valueOf(Player.TrashBinCellAmount);
-					int strWidth = g2d.getFontMetrics().stringWidth(strAmountOfItem);
-					g2d.drawString(strAmountOfItem, 630 - strWidth, 700);
-				}
-			}
-			//draw eqiupping cells
-			g2d.drawImage(inventoryEquippingCellsImage.get(0), 200 , 100, 64,64,null);
-			g2d.drawImage(inventoryEquippingCellsImage.get(1), 200 , 175, 64,64,null);
-			g2d.drawImage(inventoryEquippingCellsImage.get(2), 200 , 250, 64,64,null);
-			g2d.drawImage(inventoryEquippingCellsImage.get(3), 200 , 325, 64,64,null);
-			g2d.drawImage(inventoryEquippingCellsImage.get(4), 125 , 175, 64,64,null);
-			g2d.drawImage(inventoryEquippingCellsImage.get(5), 275 , 175, 64,64,null);
-
 			if(Inventory.isLeftMouseDragging){
-				g2d.drawImage(inventoryCellImage, 660 + Inventory.selectedSlotCordinate[0] * 74, 60 + (Inventory.selectedSlotCordinate[1])*74, 64,64,null);
+				g2d.drawImage(imageOfInventoryCell.get(Inventory.selectedInventoryCell.type.toString()), Inventory.selectedInventoryCell.locationOnScreenX, Inventory.selectedInventoryCell.locationOnScreenY, Inventory.selectedInventoryCell.sizeX, Inventory.selectedInventoryCell.sizeY, null);
 				g2d.drawImage(ItemsService.GetItemClass(Player.itemsInventory[Inventory.selectedSlotCordinate[1]][Inventory.selectedSlotCordinate[0]]).icon, UserInputService.mouseX -32, UserInputService.mouseY -32, 64,64,null);
 			}
 			else if(Inventory.isRightMouseDragging){
-				g2d.drawImage(inventoryCellImage, 660 + Inventory.selectedSlotCordinate[0] * 74, 60 + (Inventory.selectedSlotCordinate[1])*74, 64,64,null);
-				g2d.drawImage(ItemsService.GetItemClass(Player.itemsInventory[Inventory.selectedSlotCordinate[1]][Inventory.selectedSlotCordinate[0]]).icon, 660 + Inventory.selectedSlotCordinate[0] * 74, 60 + (Inventory.selectedSlotCordinate[1])*74, 64,64,null);
+				g2d.drawImage(imageOfInventoryCell.get(Inventory.selectedInventoryCell.type.toString()), Inventory.selectedInventoryCell.locationOnScreenX, Inventory.selectedInventoryCell.locationOnScreenY, Inventory.selectedInventoryCell.sizeX, Inventory.selectedInventoryCell.sizeY, null);				
+				g2d.drawImage(ItemsService.GetItemClass(Player.itemsInventory[Inventory.selectedSlotCordinate[1]][Inventory.selectedSlotCordinate[0]]).icon, Inventory.selectedInventoryCell.locationOnScreenX, Inventory.selectedInventoryCell.locationOnScreenY, Inventory.selectedInventoryCell.sizeX, Inventory.selectedInventoryCell.sizeY,null);
 				g2d.setColor(Color.white);
 				if (Player.itemsInventoryAmount[Inventory.selectedSlotCordinate[1]][Inventory.selectedSlotCordinate[0]] > 2){
 					String strAmountOfItem = String.valueOf(Player.itemsInventoryAmount[Inventory.selectedSlotCordinate[1]][Inventory.selectedSlotCordinate[0]] / 2);
 					int strWidth = g2d.getFontMetrics().stringWidth(strAmountOfItem);
-					g2d.drawString(strAmountOfItem, 720 - strWidth + Inventory.selectedSlotCordinate[0] * 74, 120+ (Inventory.selectedSlotCordinate[1])*74);
+					g2d.drawString(strAmountOfItem, Inventory.selectedInventoryCell.locationOnScreenX + Inventory.selectedInventoryCell.sizeX - strWidth, Inventory.selectedInventoryCell.locationOnScreenY + 55);
 				}
 
 				g2d.drawImage(ItemsService.GetItemClass(Player.itemsInventory[Inventory.selectedSlotCordinate[1]][Inventory.selectedSlotCordinate[0]]).icon, UserInputService.mouseX-32, UserInputService.mouseY-32, 64,64,null);

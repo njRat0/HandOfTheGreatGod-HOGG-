@@ -13,13 +13,13 @@ import java.util.*;
 public class Player extends Character{
 	
 	//parameters
-	public static int[] sizeOfItemsInventory = new int[]{8,8};
+	public static int[] sizeOfItemsInventory = new int[]{8,10};
 	//public  static ArrayList<String> itemsInventory = new ArrayList<String>();
 	public static Dictionary<String, String> eqiupedItems = new Hashtable<String, String>(){{
 		
 	}};
-	public static String[][] itemsInventory = new String[8][8];
-	public static int[][] itemsInventoryAmount = new int[8][8];
+	public static String[][] itemsInventory = new String[10][8];
+	public static int[][] itemsInventoryAmount = new int[10][8];
 	public static String TrashBinCell;
 	public static int TrashBinCellAmount;
 
