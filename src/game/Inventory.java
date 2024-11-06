@@ -8,8 +8,21 @@ enum TypeOfInventory{
     ItemsInventory
 }
 
+enum TypeOfInventoryCell{
+    Empty,
+    TrashBin,
+    Helm,
+    ChestArmor,
+    Leggings,
+    Boots,
+    Weapon,
+    Ring,
+    Armlet,
+    Necklace
+}
+
 public class Inventory {
-    private static List<InventoryCell> cellsOfItemsInventory = new ArrayList<InventoryCell>();
+    public static List<InventoryCell> cellsOfItemsInventory = new ArrayList<InventoryCell>();
     public static int[] selectedSlotCordinate = new int[]{0,0};
     public static int[] endSlotCordinate= new int[]{0,0};
     public static boolean isLeftMouseDragging = false;
@@ -38,7 +51,7 @@ public class Inventory {
         cellsOfItemsInventory.clear();
         for (int y = 0; y < Player.sizeOfItemsInventory[1]; y++){
             for (int x = 0; x < Player.sizeOfItemsInventory[0]; x++){
-                cellsOfItemsInventory.add(new InventoryCell(x, y, 660 + x * 74, 60 + y*74 , 64, 64));   
+                cellsOfItemsInventory.add(new InventoryCell(x, y, 660 + x * 74, 60 + y*74 , 64, 64, TypeOfInventoryCell.Empty));   
             }
         }
 
@@ -190,8 +203,10 @@ class InventoryCell{
 
     private boolean isMouseOver =  false;
     private boolean isPressed = false;
+    public TypeOfInventoryCell type;
     
-    public InventoryCell(int indexX,int indexY, int locationOnScreenX, int locationOnScreenY, int sizeX, int sizeY){
+    public InventoryCell(int indexX,int indexY, int locationOnScreenX, int locationOnScreenY, int sizeX, int sizeY, TypeOfInventoryCell type){
+        this.type = type;
         this.indexX = indexX;
         this.indexY = indexY;
         this.locationOnScreenX = locationOnScreenX;
