@@ -8,20 +8,10 @@ enum TypeOfInventory{
     ItemsInventory
 }
 
-enum TypeOfInventoryCell{
-    InventoryCell,
-    EquippingCell,
-    TrashBinCell
-}
-
 public class Inventory {
     private static List<InventoryCell> cellsOfItemsInventory = new ArrayList<InventoryCell>();
     public static int[] selectedSlotCordinate = new int[]{0,0};
     public static int[] endSlotCordinate= new int[]{0,0};
-    public static int selectedSlotEquippingCell = -1;
-    public static int endSlotEquippingCell = -1;
-    public static boolean selectedSlotTrashBinCell = false;
-    public static boolean endSlotTrashBinCell = false;
     public static boolean isLeftMouseDragging = false;
     public static boolean isRightMouseDragging = false;
     public static boolean isRightClick = false;
@@ -48,9 +38,11 @@ public class Inventory {
         cellsOfItemsInventory.clear();
         for (int y = 0; y < Player.sizeOfItemsInventory[1]; y++){
             for (int x = 0; x < Player.sizeOfItemsInventory[0]; x++){
-                cellsOfItemsInventory.add(new InventoryCell(x, y, 64, 64, TypeOfInventoryCell.InventoryCell));   
+                cellsOfItemsInventory.add(new InventoryCell(x, y, 660 + x * 74, 60 + y*74 , 64, 64));   
             }
         }
+
+        //cellsOfItemsInventory.add(new InventoryCell(570 , 640, 64, 64);
     }
 
     public static void UpdateInventory(){
@@ -92,43 +84,6 @@ public class Inventory {
         if(UserInputService.leftMousePress == false){
             isLeftMouseDragging = false;
             isRightClick = false;
-            if(selectedSlotTrashBinCell || endSlotTrashBinCell){
-                if(selectedSlotTrashBinCell != endSlotTrashBinCell){
-                    if(selectedSlotTrashBinCell == true){
-                        if(Player.TrashBinCell.equals(Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]]) && ItemsService.GetItemClass(Player.TrashBinCell).maxAmountInStack != 1){
-                            CombineTwoStacks(Player.TrashBinCellAmount);
-                        }
-                        else{
-                            String savedItemName = Player.TrashBinCell;
-                            int savedItemAmount = Player.TrashBinCellAmount;
-
-                            Player.TrashBinCell= Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]];
-                            Player.TrashBinCellAmount= Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]];
-                            Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]] = savedItemName;
-                            Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] = savedItemAmount;
-                        }
-                    }
-                    else{
-                        int maxAmountInStackOfItem = ItemsService.GetItemClass(Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]]).maxAmountInStack;
-                        if(Player.TrashBinCell.equals(Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]]) && Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] < maxAmountInStackOfItem){
-                            CombineTwoStacks(Player.TrashBinCellAmount);
-                        }
-                        else{
-                            Player.TrashBinCell= Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]];
-                            Player.TrashBinCellAmount= Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]];
-                            Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]] = savedItemName;
-                            Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] = savedItemAmount;
-                        }
-                    }
-                }
-            }
-            else if(selectedSlotEquippingCell != -1 || endSlotEquippingCell != -1){
-
-            }
-            else{
-
-            }
-            
             int maxAmountInStackOfItem = ItemsService.GetItemClass(Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]]).maxAmountInStack;
             if(Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]].equals(Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]]) && Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] < maxAmountInStackOfItem && Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] < maxAmountInStackOfItem){
                 CombineTwoStacks(Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]]);
@@ -142,11 +97,6 @@ public class Inventory {
                 Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]] = savedItemName;
                 Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] = savedItemAmount;
             }
-
-            selectedSlotTrashBinCell = false;
-            endSlotTrashBinCell = false;
-            selectedSlotEquippingCell = -1;
-            endSlotEquippingCell = -1;
         }
     }
 
@@ -186,37 +136,7 @@ public class Inventory {
     }
 
     private static void CombineTwoStacks(int amount){
-        if(selectedSlotTrashBinCell || endSlotTrashBinCell){
-            if(selectedSlotTrashBinCell != endSlotTrashBinCell){
-                if(selectedSlotTrashBinCell == true){
-                    int maxAmountInStackOfItem = ItemsService.GetItemClass(Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]]).maxAmountInStack;
-                    int sAmount = maxAmountInStackOfItem - Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]];
-                    if (sAmount >= amount){
-                        System.out.println("Full addition");
-                        Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] += amount;
-                        Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] -= amount;
-                        if(Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] == 0){
-                            Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]] = null;
-                        }
-                    }
-                    else{
-                        System.out.println("half addition");
-                        Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] += sAmount;
-                        Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] -= sAmount;
-                        if(Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] == 0){
-                            Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]] = null;
-                        }
-                    }
-                }
-                else{
-                    
-                }
-            }
-        }
-        else if((selectedSlotEquippingCell != -1 || endSlotEquippingCell != -1) && !(selectedSlotEquippingCell == endSlotEquippingCell)){
-
-        }
-        else if(selectedSlotCordinate[0] != endSlotCordinate[0] || selectedSlotCordinate[1] != endSlotCordinate[1]){
+        if(selectedSlotCordinate[0] != endSlotCordinate[0] || selectedSlotCordinate[1] != endSlotCordinate[1]){
             int maxAmountInStackOfItem = ItemsService.GetItemClass(Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]]).maxAmountInStack;
             int sAmount = maxAmountInStackOfItem - Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]];
             if (sAmount >= amount){
@@ -260,24 +180,22 @@ public class Inventory {
 }
 
 class InventoryCell{
-    private int posX;
-    private int posY;
+    private int indexX;
+    private int indexY;
     private int sizeX;
     private int sizeY;
     private int locationOnScreenX;
     private int locationOnScreenY;
-    public TypeOfInventoryCell type;
     public int equipping_index = -1;
 
     private boolean isMouseOver =  false;
     private boolean isPressed = false;
     
-    public InventoryCell(int posX,int posY, int sizeX, int sizeY, TypeOfInventoryCell type){
-        this.type = type;
-        this.posX = posX;
-        this.posY = posY;
-        locationOnScreenX = 660 + posX * 74;
-        locationOnScreenY = 60 + posY * 74;
+    public InventoryCell(int indexX,int indexY, int locationOnScreenX, int locationOnScreenY, int sizeX, int sizeY){
+        this.indexX = indexX;
+        this.indexY = indexY;
+        this.locationOnScreenX = locationOnScreenX;
+        this.locationOnScreenY = locationOnScreenY;
         this.sizeX = sizeX;
         this.sizeY = sizeY;
     }
@@ -297,86 +215,24 @@ class InventoryCell{
 
         if((UserInputService.leftMousePress == true && isMouseOver == true)){
             isPressed = true;
-            switch (type) {
-                case InventoryCell:
-                    if(Inventory.isLeftMouseDragging == false){
-                        Inventory.selectedSlotCordinate = new int[]{posX,posY};
-                        Inventory.endSlotCordinate = new int[]{posX,posY};
-                        Inventory.isLeftMouseDragging = true;
-                    }
-                    else{
-                        Inventory.endSlotCordinate = new int[]{posX,posY};
-                        Inventory.endSlotEquippingCell = -1;
-                        Inventory.endSlotTrashBinCell = false;
-                    }
-                    break;
-                case EquippingCell:
-                    if(Inventory.isLeftMouseDragging == false){
-                        Inventory.selectedSlotEquippingCell = equipping_index;
-                        Inventory.endSlotEquippingCell = equipping_index;
-                        Inventory.isLeftMouseDragging = true;
-                    }
-                    else{
-                        Inventory.endSlotEquippingCell = equipping_index;
-                        Inventory.endSlotTrashBinCell = false;
-                    }
-                    break;
-                case TrashBinCell:
-                    if(Inventory.isLeftMouseDragging == false){
-                        Inventory.selectedSlotTrashBinCell = true;
-                        Inventory.endSlotTrashBinCell = true;
-                        Inventory.isLeftMouseDragging = true;
-                    }
-                    else{
-                        Inventory.endSlotEquippingCell = -1;
-                        Inventory.endSlotTrashBinCell = true;
-                    }
-                    break;
-                default:
-                    System.out.println("Error: the type of cell do not exist");
-                    break;
+            if(Inventory.isLeftMouseDragging == false){
+                Inventory.selectedSlotCordinate = new int[]{indexX,indexY};
+                Inventory.endSlotCordinate = new int[]{indexX,indexY};
+                Inventory.isLeftMouseDragging = true;
+            }
+            else{
+                Inventory.endSlotCordinate = new int[]{indexX,indexY};
             }
         }
         else if(UserInputService.rightMousePress == true && isMouseOver == true){
             isPressed = true;
-            switch (type) {
-                case InventoryCell:
-                    if(Inventory.isRightMouseDragging == false){
-                        Inventory.selectedSlotCordinate = new int[]{posX,posY};
-                        Inventory.endSlotCordinate = new int[]{posX,posY};
-                        Inventory.isRightMouseDragging = true;
-                    }
-                    else{
-                        Inventory.endSlotCordinate = new int[]{posX,posY};
-                        Inventory.endSlotEquippingCell = -1;
-                        Inventory.endSlotTrashBinCell = false;
-                    }
-                    break;
-                case EquippingCell:
-                    if(Inventory.isRightMouseDragging == false){
-                        Inventory.selectedSlotEquippingCell = equipping_index;
-                        Inventory.endSlotEquippingCell = equipping_index;
-                        Inventory.isRightMouseDragging = true;
-                    }
-                    else{
-                        Inventory.endSlotEquippingCell = equipping_index;
-                        Inventory.endSlotTrashBinCell = false;
-                    }
-                    break;
-                case TrashBinCell:
-                    if(Inventory.isRightMouseDragging == false){
-                        Inventory.selectedSlotTrashBinCell = true;
-                        Inventory.endSlotTrashBinCell = true;
-                        Inventory.isRightMouseDragging = true;
-                    }
-                    else{
-                        Inventory.endSlotEquippingCell = -1;
-                        Inventory.endSlotTrashBinCell = true;
-                    }
-                    break;
-                default:
-                    System.out.println("Error: the type of cell do not exist");
-                    break;
+            if(Inventory.isRightMouseDragging == false){
+                Inventory.selectedSlotCordinate = new int[]{indexX,indexY};
+                Inventory.endSlotCordinate = new int[]{indexX,indexY};
+                Inventory.isRightMouseDragging = true;
+            }
+            else{
+                Inventory.endSlotCordinate = new int[]{indexX,indexY};
             }
         }
     }

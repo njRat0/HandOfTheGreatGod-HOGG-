@@ -245,6 +245,15 @@ public class Frame extends JFrame {
 			}
 
 			g2d.drawImage(inventoryTrashBinCellImage, 570 , 640, 64,64,null);
+			if(Player.TrashBinCell != null){
+				g2d.drawImage(ItemsService.GetItemClass(Player.TrashBinCell).icon, 570, 640, 64,64,null);
+				g2d.setColor(Color.white);
+				if (Player.TrashBinCellAmount > 1){
+					String strAmountOfItem = String.valueOf(Player.TrashBinCellAmount);
+					int strWidth = g2d.getFontMetrics().stringWidth(strAmountOfItem);
+					g2d.drawString(strAmountOfItem, 630 - strWidth, 700);
+				}
+			}
 			//draw eqiupping cells
 			g2d.drawImage(inventoryEquippingCellsImage.get(0), 200 , 100, 64,64,null);
 			g2d.drawImage(inventoryEquippingCellsImage.get(1), 200 , 175, 64,64,null);
@@ -255,7 +264,6 @@ public class Frame extends JFrame {
 
 			if(Inventory.isLeftMouseDragging){
 				g2d.drawImage(inventoryCellImage, 660 + Inventory.selectedSlotCordinate[0] * 74, 60 + (Inventory.selectedSlotCordinate[1])*74, 64,64,null);
-				
 				g2d.drawImage(ItemsService.GetItemClass(Player.itemsInventory[Inventory.selectedSlotCordinate[1]][Inventory.selectedSlotCordinate[0]]).icon, UserInputService.mouseX -32, UserInputService.mouseY -32, 64,64,null);
 			}
 			else if(Inventory.isRightMouseDragging){
