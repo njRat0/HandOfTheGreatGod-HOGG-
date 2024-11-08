@@ -236,7 +236,17 @@ public class Frame extends JFrame {
 
 			for(int i =0; i < Inventory.cellsOfItemsInventory.size(); i++){
 				InventoryCell invCell = Inventory.cellsOfItemsInventory.get(i);
-				g2d.drawImage(imageOfInventoryCell.get(invCell.type.toString()), invCell.locationOnScreenX, invCell.locationOnScreenY, invCell.sizeX, invCell.sizeY, null);
+				if(invCell.type != TypeOfInventoryCell.Empty){
+					if(Player.itemsInventory[invCell.indexY][invCell.indexX] == null){
+						g2d.drawImage(imageOfInventoryCell.get(invCell.type.toString()), invCell.locationOnScreenX, invCell.locationOnScreenY, invCell.sizeX, invCell.sizeY, null);
+					}
+					else{
+						g2d.drawImage(imageOfInventoryCell.get("Empty"), invCell.locationOnScreenX, invCell.locationOnScreenY, invCell.sizeX, invCell.sizeY, null);
+					}
+				}
+				else{
+					g2d.drawImage(imageOfInventoryCell.get(invCell.type.toString()), invCell.locationOnScreenX, invCell.locationOnScreenY, invCell.sizeX, invCell.sizeY, null);
+				}
 				
 				if (Player.itemsInventory[invCell.indexY][invCell.indexX] != null){
 					g2d.drawImage(ItemsService.GetItemClass(Player.itemsInventory[invCell.indexY][invCell.indexX]).icon, invCell.locationOnScreenX, invCell.locationOnScreenY, invCell.sizeX, invCell.sizeY,null);

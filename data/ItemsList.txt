@@ -1,6 +1,7 @@
 RegularSword{
     id:00001
     type:TwoHandedWeapon
+    equippingPart:Weapon
     addDamage:3
     addSpeed:-1.2
     cards:TestAttack, TestBlock;

@@ -93,21 +93,47 @@ public class Inventory {
             isLeftMouseDragging = false;
             isRightClick = false;
             int maxAmountInStackOfItem = ItemsService.GetItemClass(Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]]).maxAmountInStack;
-            if(Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]].equals(Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]]) && Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] < maxAmountInStackOfItem && Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] < maxAmountInStackOfItem){
-                CombineTwoStacks(Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]]);
+            if(endInventoryCell.type == TypeOfInventoryCell.Empty){
+                if(Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]].equals(Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]]) && Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] < maxAmountInStackOfItem && Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] < maxAmountInStackOfItem){
+                    CombineTwoStacks(Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]]);
+                }
+                else{
+                    String savedItemName = Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]];
+                    int savedItemAmount = Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]];
+    
+                    Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]] = Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]];
+                    Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] = Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]];
+                    Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]] = savedItemName;
+                    Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] = savedItemAmount;
+                }
+            }
+            else if(endInventoryCell.type == TypeOfInventoryCell.TrashBin){
+                if(!(selectedSlotCordinate[0] == endSlotCordinate[0] && selectedSlotCordinate[1] == endSlotCordinate[1])){
+                    Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]] =  Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]];
+                    Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] =  Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]];
+                    Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]] = null;
+                    Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] = 0;
+                }
             }
             else{
-                String savedItemName = Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]];
-                int savedItemAmount = Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]];
-
-                Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]] = Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]];
-                Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] = Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]];
-                Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]] = savedItemName;
-                Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] = savedItemAmount;
+                //System.out.println(ItemsService.GetItemClass(Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]]).equippingPart);
+                if( ItemsService.GetItemClass(Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]]).equippingPart != null && endInventoryCell.type == ItemsService.GetItemClass(Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]]).equippingPart){
+                    String savedItemName = Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]];
+                    int savedItemAmount = Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]];
+    
+                    Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]] = Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]];
+                    Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] = Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]];
+                    Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]] = savedItemName;
+                    Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] = savedItemAmount;
+                }
+                else{
+                    System.out.println("Cannot equipe since its not correct type");
+                }
             }
+            
 
             selectedInventoryCell = null;
-            endSlotCordinate = null;
+            endInventoryCell = null;
         }
     }
 
@@ -120,7 +146,7 @@ public class Inventory {
                 isRightMouseDragging = false;
                 isLeftMouseDragging = false;
             }
-            else{
+            else if(endInventoryCell.type == TypeOfInventoryCell.Empty){
                 isRightClick = false;
                 isRightMouseDragging = false;
                 isLeftMouseDragging = false;
@@ -141,8 +167,32 @@ public class Inventory {
                         Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] -= amount;
                         Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] = amount;
                     }
+                }   
+            }
+            else if(endInventoryCell.type == TypeOfInventoryCell.TrashBin){
+                if(!(selectedSlotCordinate[0] == endSlotCordinate[0] && selectedSlotCordinate[1] == endSlotCordinate[1])){
+                    Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]] =  Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]];
+                    Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] =  Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] / 2;
+                    Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] = Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]]/2;
+                    //<---
                 }
             }
+            else{
+                //System.out.println(ItemsService.GetItemClass(Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]]).equippingPart);
+                if( ItemsService.GetItemClass(Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]]).equippingPart != null && endInventoryCell.type == ItemsService.GetItemClass(Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]]).equippingPart){
+                    String savedItemName = Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]];
+                    int savedItemAmount = Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]];
+    
+                    Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]] = Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]];
+                    Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] = Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]];
+                    Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]] = savedItemName;
+                    Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] = savedItemAmount;
+                }
+                else{
+                    System.out.println("Cannot equipe since its not correct type");
+                }
+            }
+            
 
             selectedInventoryCell = null;
             endSlotCordinate = null;
@@ -187,7 +237,7 @@ public class Inventory {
 			rightClickMenuButtons[i].colorClick = new Color(0, 0, 0);
 			rightClickMenuButtons[i].SetSize( 50, 25);
             rightClickMenuButtons[i].name = selectedItem.optionsForRightClickMenuInInventory.get(i);
-			rightClickMenuButtons[i].SetLocation(735 + selectedSlotCordinate[0] * 74,selectedSlotCordinate[1] * 74 + globalOffset + 92);
+			rightClickMenuButtons[i].SetLocation(selectedInventoryCell.locationOnScreenX + 70,selectedInventoryCell.locationOnScreenY + 35 + globalOffset);
 			globalOffset += 25;
 		}
     }

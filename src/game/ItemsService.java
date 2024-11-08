@@ -19,6 +19,7 @@ enum TYPES_OF_ITEMS{
     Scroll
 }
 
+
 public class ItemsService {
     private static File itemsListData = new File("data\\ItemsList.txt");
     private static Dictionary<String, List<String>> dictionaryOfItemsByName = new Hashtable<String, List<String>>();
@@ -78,6 +79,10 @@ public class ItemsService {
             }
         }
         return null;
+    }
+
+    public static void EquippingItem(boolean wasAlreadyMoved){
+
     }
 
     public static void AddItemToInventoryOfPlayer(String itemName, int amount){
@@ -220,6 +225,7 @@ abstract class Item {
     int worth;
     BufferedImage icon;
     int maxAmountInStack = 1;
+    public TypeOfInventoryCell equippingPart;
 
     ArrayList<String> optionsForRightClickMenuInInventory = new ArrayList<String>(){};
 
@@ -246,6 +252,9 @@ class OneHandedWeapon extends Item{
                 case "worth":
                     worth = Integer.valueOf(parameterNameAndValue[1]);
                     break;
+                case "equippingPart":
+                    equippingPart = TypeOfInventoryCell.valueOf(parameterNameAndValue[1]);
+                    break;
                 case "addDamage":
                     addDamage = Float.valueOf(parameterNameAndValue[1]);
                     break;
@@ -265,6 +274,9 @@ class OneHandedWeapon extends Item{
     }
 }
 class TwoHandedWeapon extends Item{
+    float addDamage = 0;
+    float addSpeed = 0;
+    String[] cards;
 
     public TwoHandedWeapon(List<String> ListOfParameters, String itemName){
         name = itemName;
@@ -273,12 +285,41 @@ class TwoHandedWeapon extends Item{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+        for(String line : ListOfParameters){
+            String[] parameterNameAndValue = line.split(":");
+            switch (parameterNameAndValue[0]) {
+                case "id":
+                    id = parameterNameAndValue[1];
+                    break;
+                case "worth":
+                    worth = Integer.valueOf(parameterNameAndValue[1]);
+                    break;
+                case "equippingPart":
+                    equippingPart = TypeOfInventoryCell.valueOf(parameterNameAndValue[1]);
+                    break;
+                case "addDamage":
+                    addDamage = Float.valueOf(parameterNameAndValue[1]);
+                    break;
+                case "addSpeed":
+                    addSpeed = Float.valueOf(parameterNameAndValue[1]);
+                    break;
+                case "cards":
+                    cards = parameterNameAndValue[1].split(", ");
+                    break;
+                default:
+                    break;
+            }
+        }
 
         optionsForRightClickMenuInInventory.add("Equipe");
         optionsForRightClickMenuInInventory.add("Sell");
     }
 }
 class Armor extends Item{
+    float addDamage = 0;
+    float addSpeed = 0;
+    String[] cards;
+    
     public Armor(List<String> ListOfParameters, String itemName){
         name = itemName;
         try {
