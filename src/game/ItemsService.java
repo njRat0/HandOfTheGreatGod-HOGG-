@@ -223,17 +223,25 @@ abstract class Item {
     String id;
     String name;
     int worth;
+    float rarity = 1;
     BufferedImage icon;
     int maxAmountInStack = 1;
     public TypeOfInventoryCell equippingPart;
 
     ArrayList<String> optionsForRightClickMenuInInventory = new ArrayList<String>(){};
 
+    Item(){
+        optionsForRightClickMenuInInventory.add("Throw away");
+    }
+
 }
 
 class OneHandedWeapon extends Item{
-    float addDamage = 0;
+    float addPhysicalDamage = 0;
+    float addMagicDamage = 0;
     float addSpeed = 0;
+    float addPhysicalArmor = 0;
+    float addMagicArmor = 0;
     String[] cards;
 
     public OneHandedWeapon(List<String> ListOfParameters, String itemName){
@@ -255,8 +263,20 @@ class OneHandedWeapon extends Item{
                 case "equippingPart":
                     equippingPart = TypeOfInventoryCell.valueOf(parameterNameAndValue[1]);
                     break;
-                case "addDamage":
-                    addDamage = Float.valueOf(parameterNameAndValue[1]);
+                case "addPhysicalDamage":
+                    addPhysicalDamage = Float.valueOf(parameterNameAndValue[1]);
+                    break;
+                case "addMagicDamage":
+                    addMagicDamage = Float.valueOf(parameterNameAndValue[1]);
+                    break;
+                case "addPhysicalArmor":
+                    addPhysicalArmor = Float.valueOf(parameterNameAndValue[1]);
+                    break;
+                case "addMagicArmor":
+                    addMagicArmor = Float.valueOf(parameterNameAndValue[1]);
+                    break;
+                case "rarity":
+                    rarity = Float.valueOf(parameterNameAndValue[1]);
                     break;
                 case "addSpeed":
                     addSpeed = Float.valueOf(parameterNameAndValue[1]);
@@ -274,8 +294,11 @@ class OneHandedWeapon extends Item{
     }
 }
 class TwoHandedWeapon extends Item{
-    float addDamage = 0;
+    float addPhysicalDamage = 0;
+    float addMagicDamage = 0;
     float addSpeed = 0;
+    float addPhysicalArmor = 0;
+    float addMagicArmor = 0;
     String[] cards;
 
     public TwoHandedWeapon(List<String> ListOfParameters, String itemName){
@@ -297,8 +320,20 @@ class TwoHandedWeapon extends Item{
                 case "equippingPart":
                     equippingPart = TypeOfInventoryCell.valueOf(parameterNameAndValue[1]);
                     break;
-                case "addDamage":
-                    addDamage = Float.valueOf(parameterNameAndValue[1]);
+                case "addPhysicalDamage":
+                    addPhysicalDamage = Float.valueOf(parameterNameAndValue[1]);
+                    break;
+                case "addMagicDamage":
+                    addMagicDamage = Float.valueOf(parameterNameAndValue[1]);
+                    break;
+                case "addPhysicalArmor":
+                    addPhysicalArmor = Float.valueOf(parameterNameAndValue[1]);
+                    break;
+                case "addMagicArmor":
+                    addMagicArmor = Float.valueOf(parameterNameAndValue[1]);
+                    break;
+                case "rarity":
+                    rarity = Float.valueOf(parameterNameAndValue[1]);
                     break;
                 case "addSpeed":
                     addSpeed = Float.valueOf(parameterNameAndValue[1]);
@@ -316,14 +351,54 @@ class TwoHandedWeapon extends Item{
     }
 }
 class Armor extends Item{
-    float addDamage = 0;
+    float addPhysicalDamage = 0;
+    float addMagicDamage = 0;
     float addSpeed = 0;
+    float addPhysicalArmor = 0;
+    float addMagicArmor = 0;
     String[] cards;
     
     public Armor(List<String> ListOfParameters, String itemName){
         name = itemName;
         try {
 			icon = ImageIO.read(new File("res\\Items\\Armor\\" + name + ".png"));
+            for(String line : ListOfParameters){
+                String[] parameterNameAndValue = line.split(":");
+                switch (parameterNameAndValue[0]) {
+                    case "id":
+                        id = parameterNameAndValue[1];
+                        break;
+                    case "worth":
+                        worth = Integer.valueOf(parameterNameAndValue[1]);
+                        break;
+                    case "equippingPart":
+                        equippingPart = TypeOfInventoryCell.valueOf(parameterNameAndValue[1]);
+                        break;
+                    case "addPhysicalDamage":
+                        addPhysicalDamage = Float.valueOf(parameterNameAndValue[1]);
+                        break;
+                    case "addMagicDamage":
+                        addMagicDamage = Float.valueOf(parameterNameAndValue[1]);
+                        break;
+                    case "addPhysicalArmor":
+                        addPhysicalArmor = Float.valueOf(parameterNameAndValue[1]);
+                        break;
+                    case "addMagicArmor":
+                        addMagicArmor = Float.valueOf(parameterNameAndValue[1]);
+                        break;
+                    case "rarity":
+                        rarity = Float.valueOf(parameterNameAndValue[1]);
+                        break;
+                    case "addSpeed":
+                        addSpeed = Float.valueOf(parameterNameAndValue[1]);
+                        break;
+                    case "cards":
+                        cards = parameterNameAndValue[1].split(", ");
+                        break;
+                    default:
+                        break;
+                }
+            }
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

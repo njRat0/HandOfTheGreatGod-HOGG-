@@ -138,7 +138,9 @@ public class Inventory {
     }
 
     private static void RightMouseDragging(){
-        if(UserInputService.rightMousePress == false){
+        if(UserInputService.rightMousePress == false ){
+            isRightMouseDragging = false;
+            isRightClick = false;
             if( isRightClick == false && selectedSlotCordinate[0] == endSlotCordinate[0] && selectedSlotCordinate[1] == endSlotCordinate[1]){
                 System.out.println("right menu");
                 SetUpRightClickMenuOfItem();
@@ -171,9 +173,19 @@ public class Inventory {
             }
             else if(endInventoryCell.type == TypeOfInventoryCell.TrashBin){
                 if(!(selectedSlotCordinate[0] == endSlotCordinate[0] && selectedSlotCordinate[1] == endSlotCordinate[1])){
-                    Player.itemsInventory[endSlotCordinate[1]][endSlotCordinate[0]] =  Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]];
-                    Player.itemsInventoryAmount[endSlotCordinate[1]][endSlotCordinate[0]] =  Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] / 2;
-                    Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] = Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]]/2;
+                    int amount = Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] / 2;
+                    if(amount == 0){
+                        Player.itemsInventory[1][7] =  Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]];
+                        Player.itemsInventoryAmount[1][7] =  Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]];
+                        Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] = 0;
+                        Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]] = null;
+                    }
+                    else{
+                        Player.itemsInventory[1][7] =  Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]];
+                        Player.itemsInventoryAmount[1][7] =  Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] / 2;
+                        Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]] = Player.itemsInventoryAmount[selectedSlotCordinate[1]][selectedSlotCordinate[0]]/2;
+                    }
+                    
                     //<---
                 }
             }
@@ -192,10 +204,9 @@ public class Inventory {
                     System.out.println("Cannot equipe since its not correct type");
                 }
             }
-            
 
             selectedInventoryCell = null;
-            endSlotCordinate = null;
+            endInventoryCell = null;
         }
     }
 
@@ -224,20 +235,33 @@ public class Inventory {
 
     private static void SetUpRightClickMenuOfItem(){
         Item selectedItem = ItemsService.GetItemClass(Player.itemsInventory[selectedSlotCordinate[1]][selectedSlotCordinate[0]]);
-        rightClickMenuButtons = new MyButton[selectedItem.optionsForRightClickMenuInInventory.size()];
+        ArrayList<String> listOfAdditionalOptionsForRightMenu = new ArrayList<String>();
+        int numberOfAdditionalOptionsForRightMenu = 0;
+        if(selectedInventoryCell.type != TypeOfInventoryCell.TrashBin && selectedInventoryCell.type != TypeOfInventoryCell.Empty ){
+            numberOfAdditionalOptionsForRightMenu += 1;
+            listOfAdditionalOptionsForRightMenu.add("Uneqiupe");
+        }
+        rightClickMenuButtons = new MyButton[selectedItem.optionsForRightClickMenuInInventory.size() + numberOfAdditionalOptionsForRightMenu];
         int globalOffset = -(int)(rightClickMenuButtons.length*25)/2;
         isRightMenuOpen = true;
 		for(int i = 0; i < rightClickMenuButtons.length; i++){
-			rightClickMenuButtons[i] = new MyButton(TypeOfButton.RightClickMenuInInventory, selectedItem.optionsForRightClickMenuInInventory.get(i));
-			rightClickMenuButtons[i].id=i;
-			rightClickMenuButtons[i].SetBorderSize((int)(1));
-			rightClickMenuButtons[i].colorBackground = new Color(125, 125, 125);
-			rightClickMenuButtons[i].colorBorders = new Color(0, 0, 0);
-			rightClickMenuButtons[i].colorOver = new Color(94, 94, 94);
-			rightClickMenuButtons[i].colorClick = new Color(0, 0, 0);
-			rightClickMenuButtons[i].SetSize( 50, 25);
-            rightClickMenuButtons[i].name = selectedItem.optionsForRightClickMenuInInventory.get(i);
-			rightClickMenuButtons[i].SetLocation(selectedInventoryCell.locationOnScreenX + 70,selectedInventoryCell.locationOnScreenY + 35 + globalOffset);
+            if(i < numberOfAdditionalOptionsForRightMenu){
+                rightClickMenuButtons[i] = new MyButton(TypeOfButton.RightClickMenuInInventory, listOfAdditionalOptionsForRightMenu.get(i));
+                rightClickMenuButtons[i].name = listOfAdditionalOptionsForRightMenu.get(i);
+            }
+            else{
+                rightClickMenuButtons[i] = new MyButton(TypeOfButton.RightClickMenuInInventory, selectedItem.optionsForRightClickMenuInInventory.get(i - numberOfAdditionalOptionsForRightMenu));
+                rightClickMenuButtons[i].name = selectedItem.optionsForRightClickMenuInInventory.get(i - numberOfAdditionalOptionsForRightMenu);
+            }
+            rightClickMenuButtons[i].id=i;
+            rightClickMenuButtons[i].SetBorderSize((int)(1));
+            rightClickMenuButtons[i].colorBackground = new Color(125, 125, 125);
+            rightClickMenuButtons[i].colorBorders = new Color(0, 0, 0);
+            rightClickMenuButtons[i].colorOver = new Color(94, 94, 94);
+            rightClickMenuButtons[i].colorClick = new Color(0, 0, 0);
+            rightClickMenuButtons[i].SetSize( 50, 25);
+
+            rightClickMenuButtons[i].SetLocation(selectedInventoryCell.locationOnScreenX + 70,selectedInventoryCell.locationOnScreenY + 35 + globalOffset);
 			globalOffset += 25;
 		}
     }

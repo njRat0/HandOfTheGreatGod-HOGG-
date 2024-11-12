@@ -2,10 +2,44 @@ RegularSword{
     id:00001
     type:TwoHandedWeapon
     equippingPart:Weapon
-    addDamage:3
-    addSpeed:-1.2
+    addPhysicalDamage:12
+    addSpeed:-2.4
     cards:TestAttack, TestBlock;
-    worth:55
+    worth:115
+}
+IronHelm{
+    id:00017
+    type:Armor
+    equippingPart:Helm
+    addPhysicalArmor:3
+    addSpeed:-1.9
+    worth:135
+}
+IronChestArmor{
+    id:00018
+    type:Armor
+    equippingPart:ChestArmor
+    addPhysicalArmor:7
+    addMagicArmor:1
+    addSpeed:-3.1
+    worth:270
+}
+IronLeggings{
+    id:00019
+    type:Armor
+    equippingPart:Leggings
+    addPhysicalArmor:5
+    addMagicArmor:1
+    addSpeed:-2.2
+    worth:225
+}
+IronBoots{
+    id:00020
+    type:Armor
+    equippingPart:Boots
+    addPhysicalArmor:2
+    addSpeed:-1.6
+    worth:130
 }
 SmallHealingPotion{
     id:00002

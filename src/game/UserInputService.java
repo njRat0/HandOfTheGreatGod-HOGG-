@@ -77,6 +77,10 @@ public class UserInputService {
 				case KeyEvent.VK_W:
 					keyUP = true;
 					ItemsService.AddItemToInventoryOfPlayer("RegularSword", 1);
+					ItemsService.AddItemToInventoryOfPlayer("IronHelm", 1);
+					ItemsService.AddItemToInventoryOfPlayer("IronChestArmor", 1);
+					ItemsService.AddItemToInventoryOfPlayer("IronLeggings", 1);
+					ItemsService.AddItemToInventoryOfPlayer("IronBoots", 1);
 					break;
 				case KeyEvent.VK_S:
 					keyDOWN = true;
