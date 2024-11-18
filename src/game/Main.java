@@ -32,6 +32,7 @@ public class Main {
 				Settings.SetUpDefaultSettings();
 				ItemsService.Init();
 				Inventory.InitNewItemsInventoryGrid();
+				BasicPattern.Init();
 				frame = new Frame("ThroughTheEssence");
 				frame.setLocationRelativeTo(null); // put frame at center of screen
 				frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

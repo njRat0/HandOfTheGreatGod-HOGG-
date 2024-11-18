@@ -62,7 +62,17 @@ public class ItemsService {
         }
     }
 
-    public static Item GetItemClass(String name){
+    public static Item GetItemClass(String name){ 
+        int iStringOfPhysicalUpdgrate = name.indexOf("+");
+        int iStringOfMagicUpdgrate = name.indexOf("*");
+        
+        if( iStringOfPhysicalUpdgrate != -1){
+          
+        }
+        else if(iStringOfMagicUpdgrate != -1){
+            
+        }
+
         Item item = dictionaryOfItemsInGameByName.get(name);
         if (item != null){
             return item;
@@ -147,10 +157,6 @@ public class ItemsService {
         }
     }
 
-    void Test(){
-
-    }
-
     private static Item CreateItemClass(String itemName,List<String> itemParameters){
         String typeOfItem = null;
         Item item;
@@ -201,6 +207,9 @@ public class ItemsService {
         switch (nameOfOption) {
             case "Equipe":
                 System.out.println("Equipe");
+                break;
+            case "Unequipe":
+                
                 break;
             case "Use":
                 System.out.println("Use");

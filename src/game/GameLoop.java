@@ -31,7 +31,7 @@ public class GameLoop implements Runnable {
 	public static Random r = new Random();
 
 	private Frame canvas;
-	private static Player player;
+	public static Player player;
 
 	public static boolean isPause = false;
 
@@ -155,6 +155,7 @@ public class GameLoop implements Runnable {
 		while (!gameOver) {
 			try {
 				long start = System.currentTimeMillis();
+				player.Update();
 				if(curLayout == 0){
 					for(MyButton button : GameLoop.menuButtons){
 						button.update();

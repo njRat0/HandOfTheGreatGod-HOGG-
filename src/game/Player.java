@@ -53,15 +53,13 @@ public class Player extends Character{
 	}
 
 	public Player() {
+		super(null);
 		InitEquipedItemsDictionary();
 	}
 	
 	/**
 	 * The method which updates the game state.
 	 */
-	public void update() {
-
-	}
 
 	public void TakeDamage(float amount){
 		
@@ -71,8 +69,15 @@ public class Player extends Character{
 		
 	}
 
-	public void toDraw(Graphics2D g2d){
-	
+	@Override
+	public void ToDraw(Graphics2D g2d) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void Update() {
+		System.out.println(attributes.get("Strength"));
+		System.out.println(parameters.get("MaxHP"));
 	}
 }
 
