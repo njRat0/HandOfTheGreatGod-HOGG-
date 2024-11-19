@@ -53,7 +53,7 @@ public class Player extends Character{
 	}
 
 	public Player() {
-		super(null);
+		super(null, 10,10,10,10);
 		InitEquipedItemsDictionary();
 	}
 	
@@ -76,8 +76,8 @@ public class Player extends Character{
 
 	@Override
 	public void Update() {
-		System.out.println(attributes.get("Strength"));
-		System.out.println(parameters.get("MaxHP"));
+		//System.out.println(attributes.get("Strength"));
+		//System.out.println(parameters.get("MaxHP"));
 	}
 }
 

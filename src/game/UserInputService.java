@@ -117,6 +117,5 @@ public class UserInputService {
 					break;
 			}
 		}
-
 	}
 }
