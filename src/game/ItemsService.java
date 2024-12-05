@@ -222,7 +222,7 @@ public class ItemsService {
                 break;
         
             default:
-            System.out.println("Error: list doesnt consist this option");
+                System.out.println("Error: list doesnt consist this option");
                 break;
         }
     }

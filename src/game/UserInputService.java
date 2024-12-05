@@ -88,7 +88,7 @@ public class UserInputService {
 					break;
 				case KeyEvent.VK_A:
 					keyLEFT = true;
-					GameLoop.player.ChangeAttribute("Strength", 1);
+					GameLoop.player.ChangeAttribute("Dexterity", 1);
 					break;
 				case KeyEvent.VK_D:
 					keyRIGHT = true;	
