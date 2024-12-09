@@ -2,7 +2,12 @@
 package game;
 
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
+
+import javax.imageio.ImageIO;
 
 /**
  * This class holds the state of game and all of its elements.
@@ -10,8 +15,7 @@ import java.util.*;
  * 
  * @author Seyed Mohammad Ghaffarian
  */
-public class Player extends Character{
-	
+public class Player extends GameCharacter{
 	//parameters
 	public static int[] sizeOfItemsInventory = new int[]{8,10};
 	//public  static ArrayList<String> itemsInventory = new ArrayList<String>();
@@ -54,20 +58,19 @@ public class Player extends Character{
 
 	public Player() {
 		super(null, 10,10,10,10);
+		try {
+			spriteInBattle = ImageIO.read(new File("res\\BattleRes\\Characters\\Player\\Main.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		name = "Player";
 		InitEquipedItemsDictionary();
 	}
 	
 	/**
 	 * The method which updates the game state.
 	 */
-
-	public void TakeDamage(float amount){
-		
-	}
-
-	public void TakeHeale(float amount){
-		
-	}
 
 	@Override
 	public void ToDraw(Graphics2D g2d) {
@@ -78,6 +81,12 @@ public class Player extends Character{
 	public void Update() {
 		//System.out.println(attributes.get("Strength"));
 		//System.out.println(parameters.get("MaxHP"));
+	}
+
+	@Override
+	void LogicOfTurn() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'LogicOfTurn'");
 	}
 }
 

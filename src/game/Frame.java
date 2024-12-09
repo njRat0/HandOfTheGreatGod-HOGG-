@@ -105,7 +105,39 @@ public class Frame extends JFrame {
 		bufferStrategy = getBufferStrategy();
 	}
 
-	
+	public void RenderCharacterOnBattleScreen(Graphics2D g2d, GameCharacter character, int locX , int locY){
+		if(character.spriteInBattle != null){
+			g2d.drawImage(character.spriteInBattle, locX, locY, character.spriteInBattle.getWidth(),character.spriteInBattle.getHeight(), null);
+		}
+		else{
+			g2d.setColor(new Color(107, 150, 207));
+			g2d.fillRect(locX, locY, 128, 256);
+		}
+
+		g2d.setColor(new Color(64, 64, 64));
+		g2d.fillRect(locX, locY - 10, 150, 15);
+		g2d.setColor(Color.red);
+		g2d.fillRect(locX + 5, locY - 7, 142, 9);
+
+		g2d.setColor(new Color(75, 75, 75));
+		g2d.fillRect(locX, locY + 5, 135, 10);
+		g2d.setColor(Color.BLUE);
+		g2d.fillRect(locX + 5, locY + 7, 127, 6);
+
+		g2d.setColor(new Color(64, 64, 64));
+		g2d.fillOval(locX - 20, locY - 20, 50, 50);
+
+		String strNameOfCharacter = character.name;
+		g2d.setColor(Color.WHITE);
+		g2d.setFont(g2d.getFont().deriveFont(Font.BOLD).deriveFont(16.0f));
+		int strWidth = g2d.getFontMetrics().stringWidth(strNameOfCharacter);
+		g2d.drawString(strNameOfCharacter, locX + 20,  locY - 15);
+		
+		String strLvlOfPlayer = String.valueOf(character.lvl);
+		g2d.setFont(g2d.getFont().deriveFont(Font.BOLD).deriveFont(28.0f));
+		strWidth = g2d.getFontMetrics().stringWidth(strLvlOfPlayer);
+		g2d.drawString(strLvlOfPlayer, locX + 5 - strWidth/2,  locY + 15);
+	}
 	/**
 	 * Game rendering with triple-buffering using BufferStrategy.
 	 */
@@ -150,7 +182,6 @@ public class Frame extends JFrame {
 		// Draw background
 		g2d.setColor(Color.BLACK);
 		g2d.fillRect(startPosOfGameX, startPosOfGameY, gameWidth, gameHeight);
-		
 		
 		if(GameLoop.curLayout == 0){
 			for(MyButton button : GameLoop.menuButtons){
@@ -229,6 +260,15 @@ public class Frame extends JFrame {
 				int strWidth = g2d.getFontMetrics().stringWidth(str);
 				g2d.drawString(str, (gameWidth - strWidth) / 2, gameHeight / 2);
 			}
+		}
+		else if(GameLoop.curLayout == 4){
+			g2d.setColor(new Color(64, 64, 64));
+			g2d.fillRect(945, 0, 335, gameHeight);
+
+			//render Player
+			RenderCharacterOnBattleScreen(g2d, player, 45, 425);
+			RenderCharacterOnBattleScreen(g2d, player, 45, 65);
+
 		}
 		else if(GameLoop.curLayout == 5){
 			g2d.setColor(new Color(64, 64, 64));

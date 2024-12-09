@@ -6,10 +6,15 @@ import java.text.DecimalFormat;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
-public abstract class Character{
-    public int locX, locY;
-	public BufferedImage sprite;
+public abstract class GameCharacter{
+    public BufferedImage spriteInBattle;
+    public int locX_inBattle, locY_inBattle;
+    public int locX_onMap, locY_onMap;
+    public int sizeOfSpriteX = 128;
+    public int sizeOfSpriteY = 256;
 	public float sizeOfSprite = 1f;
+    public int lvl = 1;
+    public String name = "None";
 
     protected DecimalFormat dF = new DecimalFormat("#.#");
     protected Dictionary<String, Integer> attributes = new Hashtable<String, Integer>();
@@ -19,7 +24,7 @@ public abstract class Character{
     protected String[] eqiupedItems = new String[6];
 
 
-    public Character(String[] eqiupedItems, int _str, int _int, int _dex, int _dur){
+    public GameCharacter(String[] eqiupedItems, int _str, int _int, int _dex, int _dur){
         this.eqiupedItems = eqiupedItems;
         BasicPattern.InitAttributesDictionary(attributes);
         attributes.put("Strength", _str);
@@ -47,13 +52,19 @@ public abstract class Character{
         parameters.put("CurSpeed", Float.valueOf(dF.format(parameters.get("MaxSpeed"))));
     }
 
-    public void GetDamage(float magicalDamage, float physicalDamage){
+    abstract void LogicOfTurn();
+
+    public void TakeDamage(float magicalDamage, float physicalDamage){
         magicalDamage -= parameters.get("MagicArmor");
         physicalDamage -= parameters.get("PhysicalArmor");
         if(magicalDamage < 0) magicalDamage = 0;
         if(physicalDamage < 0) physicalDamage = 0;
 
         parameters.put("CurHP", parameters.get("CurHP") - (magicalDamage + physicalDamage));
+    }
+
+    public void TakeHealth(float value){
+        parameters.put("CurHP", parameters.get("CurHP") + value);
     }
 
     private void ConvertAttributesToParameters(){

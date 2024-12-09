@@ -2,6 +2,7 @@
 package game;
 
 import java.awt.Color;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -35,19 +36,6 @@ public class GameLoop implements Runnable {
 
 	public static boolean isPause = false;
 
-	public static boolean isChoosedClass;
-
-	
-
-	//ChoosingSkill system
-	public static int probabilityOfAllSkills;
-	public static ArrayList<MyButton> chooseSkillButtons = new ArrayList<MyButton>();
-	public static int maxNumberOfActiveSkills = 2;
-	public static int maxNumberOfPassiveSkills = 6;
-	public static int countChoosingSlotsForAS = 3; //-->For active skills
-	public static int countChoosingSlotsForPS = 3; //-->for passive skills
-	//private int maxNumberOfUpgratingParameters = 2;
-	public static boolean isChoosingSkills = true;
 
 	public GameLoop(Frame frame) {
 		canvas = frame;
@@ -65,8 +53,9 @@ public class GameLoop implements Runnable {
 	
 	/**
 	 * This must be called before the game loop starts.
+	 * 
 	 */
-	public void init() {
+	public void init(){
 		// Perform all initializations ...
 		player = new Player();
 		canvas.addKeyListener(UserInputService.getKeyListener());

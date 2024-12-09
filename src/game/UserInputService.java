@@ -84,7 +84,7 @@ public class UserInputService {
 					break;
 				case KeyEvent.VK_S:
 					keyDOWN = true;
-					ItemsService.AddItemToInventoryOfPlayer("RedSoul", 50);
+					GameLoop.curLayout = 4;
 					break;
 				case KeyEvent.VK_A:
 					keyLEFT = true;
