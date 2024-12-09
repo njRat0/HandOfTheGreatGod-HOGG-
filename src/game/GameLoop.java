@@ -2,11 +2,7 @@
 package game;
 
 import java.awt.Color;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Random;
-
-import javax.imageio.ImageIO;
 
 
 /**
@@ -102,7 +98,6 @@ public class GameLoop implements Runnable {
 	}
 
 	public static void SetUp_SettingsButtons(){
-		int globalOffset = 0;
 		for(int i = 0; i < settingsButtons.length; i++){
 			settingsButtons[i] = new MyButton(TypeOfButton.Settings, null);
 			settingsButtons[i].id= i;

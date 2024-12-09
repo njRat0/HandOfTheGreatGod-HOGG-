@@ -22,9 +22,6 @@ public class Frame extends JFrame {
 	public static int startPosOfGameX;
 	public static int startPosOfGameY;
 
-	private static BufferedImage inventoryCellImage;
-	private static BufferedImage inventoryTrashBinCellImage;
-	private static ArrayList<BufferedImage> inventoryEquippingCellsImage = new ArrayList<BufferedImage>();
 	private static Dictionary<String, BufferedImage> imageOfInventoryCell = new Hashtable<String,BufferedImage>();
 
 	public static void InitDictionaryOfImageOfInventoryCell(){
@@ -53,11 +50,28 @@ public class Frame extends JFrame {
 		setResizable(false);
 		//setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		SetUpFrame();
+		InitSpritersOfParameters();
 		gameCenterY = gameHeight/2;
 		gameCenterX = gameWidth/2;
 		lastRender = -1;
 		fpsHistory = new ArrayList<>(100);
 		setFocusTraversalKeysEnabled(false);
+	}
+
+	private BufferedImage[] parametersIcons = new BufferedImage[6];
+	private void InitSpritersOfParameters(){
+		try {
+			parametersIcons[0] = ImageIO.read(new File("res\\ParametersIcons\\MagicArmor.png"));
+			parametersIcons[1] = ImageIO.read(new File("res\\ParametersIcons\\MagicDamage.png"));
+			parametersIcons[2] = ImageIO.read(new File("res\\ParametersIcons\\PhysicalArmor.png"));
+			parametersIcons[3] = ImageIO.read(new File("res\\ParametersIcons\\PhysicalDamage.png"));
+			parametersIcons[4] = ImageIO.read(new File("res\\ParametersIcons\\Resistance.png"));
+			parametersIcons[5] = ImageIO.read(new File("res\\ParametersIcons\\Speed.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	public void SetUpFrame(){
@@ -111,7 +125,7 @@ public class Frame extends JFrame {
 		}
 		else{
 			g2d.setColor(new Color(107, 150, 207));
-			g2d.fillRect(locX, locY, 128, 256);
+			g2d.fillRect(locX, locY, 128, 128);
 		}
 
 		g2d.setColor(new Color(64, 64, 64));
@@ -137,6 +151,33 @@ public class Frame extends JFrame {
 		g2d.setFont(g2d.getFont().deriveFont(Font.BOLD).deriveFont(28.0f));
 		strWidth = g2d.getFontMetrics().stringWidth(strLvlOfPlayer);
 		g2d.drawString(strLvlOfPlayer, locX + 5 - strWidth/2,  locY + 15);
+
+		if(character.showParameters == true){
+			int posX = character.spriteInBattle.getWidth() + locX ;
+			int posY= locY + 40;
+			g2d.drawImage(parametersIcons[3], posX, posY, 16, 16, null);
+			g2d.drawImage(parametersIcons[2], posX, posY + 20, 16, 16, null);
+			g2d.drawImage(parametersIcons[1], posX, posY + 40, 16, 16, null);
+			g2d.drawImage(parametersIcons[0], posX, posY + 60, 16, 16, null);
+			g2d.drawImage(parametersIcons[4], posX, posY + 80, 16, 16, null);
+			g2d.drawImage(parametersIcons[5], posX, posY + 100, 16, 16, null);
+
+			g2d.setFont(g2d.getFont().deriveFont(Font.BOLD).deriveFont(12.0f));
+			posX += 20;
+			posY += 12;
+			String strOfParameter = String.valueOf(character.parameters.get("PhysicalDamage")) + ((character.additionalParameters.get("PhysicalDamage") != 0) ? "+" + String.valueOf(character.additionalParameters.get("PhysicalDamage")):"");
+			g2d.drawString(strOfParameter,  posX, posY);
+			strOfParameter = String.valueOf(character.parameters.get("PhysicalArmor")) + ((character.additionalParameters.get("PhysicalArmor") != 0) ? "+" + String.valueOf(character.additionalParameters.get("PhysicalArmor")):"");
+			g2d.drawString(strOfParameter,  posX, posY + 20);
+			strOfParameter = String.valueOf(character.parameters.get("MagicDamage")) + ((character.additionalParameters.get("MagicDamage") != 0) ? "+" + String.valueOf(character.additionalParameters.get("MagicDamage")):"");
+			g2d.drawString(strOfParameter,  posX, posY + 40);
+			strOfParameter = String.valueOf(character.parameters.get("MagicArmor"))+ ((character.additionalParameters.get("MagicArmor") != 0) ? "+" + String.valueOf(character.additionalParameters.get("MagicArmor")):"");
+			g2d.drawString(strOfParameter,  posX, posY + 60);
+			strOfParameter = String.valueOf(character.parameters.get("Resistance")) + ((character.additionalParameters.get("Resistance") != 0) ? "+" + String.valueOf(character.additionalParameters.get("Resistance")):"");
+			g2d.drawString(strOfParameter,  posX, posY + 80);
+			strOfParameter = String.valueOf(character.parameters.get("CurSpeed")) + " / " + String.valueOf(character.parameters.get("CurSpeed"));
+			g2d.drawString(strOfParameter,  posX, posY + 100);
+		}
 	}
 	/**
 	 * Game rendering with triple-buffering using BufferStrategy.
@@ -170,7 +211,6 @@ public class Frame extends JFrame {
 		} while (bufferStrategy.contentsLost());
 	}
 	
-	private static int numberOfCycle = 0;
 	public static void MassageToPlayer(Graphics2D g2d){
 
 	}

@@ -58,6 +58,7 @@ public class Player extends GameCharacter{
 
 	public Player() {
 		super(null, 10,10,10,10);
+		showParameters = true;
 		try {
 			spriteInBattle = ImageIO.read(new File("res\\BattleRes\\Characters\\Player\\Main.png"));
 		} catch (IOException e) {

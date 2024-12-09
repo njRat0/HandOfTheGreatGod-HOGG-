@@ -8,18 +8,18 @@ import java.util.Hashtable;
 
 public abstract class GameCharacter{
     public BufferedImage spriteInBattle;
-    public int locX_inBattle, locY_inBattle;
-    public int locX_onMap, locY_onMap;
     public int sizeOfSpriteX = 128;
     public int sizeOfSpriteY = 256;
 	public float sizeOfSprite = 1f;
     public int lvl = 1;
     public String name = "None";
+    public boolean showParameters = false;
 
     protected DecimalFormat dF = new DecimalFormat("#.#");
     protected Dictionary<String, Integer> attributes = new Hashtable<String, Integer>();
     protected Dictionary<String, Integer> previosAttributes = new Hashtable<String, Integer>();
     protected Dictionary<String, Float> parameters = new Hashtable<String, Float>();
+    protected Dictionary<String, Float> additionalParameters = new Hashtable<String, Float>();
     protected Dictionary<String, Float> parametersOfEqiupedItems = new Hashtable<String, Float>();
     protected String[] eqiupedItems = new String[6];
 
@@ -33,6 +33,7 @@ public abstract class GameCharacter{
         attributes.put("Intelligence", _int);
         BasicPattern.InitAttributesDictionary(previosAttributes);
         BasicPattern.InitParametersDictionary(parameters);
+        BasicPattern.InitAdditionalParametersDictionary(additionalParameters);
         BasicPattern.InitParametersOfEqiupedItemsDictionary(parameters);
         ConvertAttributesToParameters();
         parameters.put("CurHP", parameters.get("MaxHP"));
@@ -172,6 +173,23 @@ class BasicPattern{
         curDictionary.put("MagicDamage", 0f);
         curDictionary.put("MaxSpeed", 0f);
         curDictionary.put("CurSpeed", 0f);
+    }
+
+    static public void InitAdditionalParametersDictionary(Dictionary<String, Float> curDictionary){
+        curDictionary.put("MaxHP", 0f);
+        curDictionary.put("RegenHP", 0f);
+        curDictionary.put("MaxMP", 0f);
+        curDictionary.put("RegenMP", 0f);
+
+        curDictionary.put("CreateChance", 0f);
+        curDictionary.put("CreateDamage", 0f);
+        curDictionary.put("Resistance", 0f);
+
+        curDictionary.put("PhysicalArmor", 0f);
+        curDictionary.put("MagicArmor", 0f);
+        curDictionary.put("PhysicalDamage", 0f);
+        curDictionary.put("MagicDamage", 0f);
+        curDictionary.put("MaxSpeed", 0f);
     }
 
     static public void InitParametersOfEqiupedItemsDictionary(Dictionary<String, Float> curDictionary){
