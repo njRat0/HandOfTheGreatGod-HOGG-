@@ -96,6 +96,9 @@ public class UserInputService {
 				case KeyEvent.VK_TAB:
 					GameLoop.GoToItemsInventory();
 					break;
+				case KeyEvent.VK_F9:
+					DataService.CheckDoesSavingSlotsExisting();
+					break;
 			}
 		}
 

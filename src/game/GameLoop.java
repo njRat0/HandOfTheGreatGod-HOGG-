@@ -31,6 +31,7 @@ public class GameLoop implements Runnable {
 	public static Player player;
 
 	public static boolean isPause = false;
+	public static boolean isChoosingGameSlot = false;
 
 
 	public GameLoop(Frame frame) {
@@ -53,6 +54,7 @@ public class GameLoop implements Runnable {
 	 */
 	public void init(){
 		// Perform all initializations ...
+		DataService.CheckDoesSavingSlotsExisting();
 		player = new Player();
 		canvas.addKeyListener(UserInputService.getKeyListener());
 		canvas.addMouseListener(UserInputService.getMouseListener());

@@ -12,7 +12,7 @@ public class BattleSystem {
     }
 
     public static void StartNewBattle(){
-
+        
     }
 
     public static void EndBattle(){
