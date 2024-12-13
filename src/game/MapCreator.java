@@ -1,6 +1,7 @@
 package game;
 
 import java.util.Random;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -68,11 +69,12 @@ public class MapCreator {
             }
             curPointsCor = new ArrayList<int[]>(List.copyOf(nextPointsCor));
             nextPointsCor.clear();
-            for(int[] cor : curPointsCor){
+            for(int[] cor : nextPointsCor){
                 System.out.print(cor[0]+"x" + cor[1]+"y, ");
             }
             System.out.println();
             //squer step
+            int lengthToNextPoint_SquerStep = lengthToNextPoint -1;
             for(int[] curCellCor : curPointsCor){
                 System.out.println("New point of squer step: " + curCellCor[0] + ", " + curCellCor[1]);
                 totalValue = 0;
@@ -96,13 +98,22 @@ public class MapCreator {
                 map[curCellCor[1]][curCellCor[0]] = totalValue/countOfAffectingCells;
                 
                 //stop here<<<<<<<<<
-                if(lengthToNextPoint-1 > 0){
-                    System.out.println(sizeOfSide);
-                    if(curCellCor[0]+(lengthToNextPoint-1) < sizeOfSide && curCellCor[0]+(lengthToNextPoint-1) < sizeOfSide && !nextPointsCor.contains(new int[]{curCellCor[0]+(lengthToNextPoint-1), curCellCor[1]+(lengthToNextPoint-1)})){
-                        nextPointsCor.add(new int[]{curCellCor[0]+(lengthToNextPoint-1), curCellCor[1]+(lengthToNextPoint-1)});
+                if(lengthToNextPoint_SquerStep > 0){
+                    if(curCellCor[0] + lengthToNextPoint_SquerStep < sizeOfSide && curCellCor[1] + lengthToNextPoint_SquerStep < sizeOfSide && !ReallyContains_IntMassive(nextPointsCor, curCellCor)){                        
+                        nextPointsCor.add(new int[]{curCellCor[0]+lengthToNextPoint_SquerStep,curCellCor[1]+lengthToNextPoint_SquerStep});
+                    }
+                    if(curCellCor[0] - lengthToNextPoint_SquerStep >= 0 && curCellCor[1] + lengthToNextPoint_SquerStep < sizeOfSide && !ReallyContains_IntMassive(nextPointsCor, curCellCor)){                        
+                        nextPointsCor.add(new int[]{curCellCor[0]+lengthToNextPoint_SquerStep,curCellCor[1]+lengthToNextPoint_SquerStep});
+                    }
+                    if(curCellCor[0] + lengthToNextPoint_SquerStep < sizeOfSide && curCellCor[1] - lengthToNextPoint_SquerStep >= 0 && !ReallyContains_IntMassive(nextPointsCor, curCellCor)){
+                        nextPointsCor.add(new int[]{curCellCor[0]+lengthToNextPoint_SquerStep,curCellCor[1]+lengthToNextPoint_SquerStep});
+                    }
+                    if(curCellCor[0] - lengthToNextPoint_SquerStep >= 0 && curCellCor[1] - lengthToNextPoint_SquerStep >= 0 && !ReallyContains_IntMassive(nextPointsCor, curCellCor)){
+                        nextPointsCor.add(new int[]{curCellCor[0]+lengthToNextPoint_SquerStep,curCellCor[1]+lengthToNextPoint_SquerStep});
                     }
                 }
             }
+            curPointsCor.clear();
             curPointsCor = new ArrayList<int[]>(List.copyOf(nextPointsCor));
             nextPointsCor.clear();
             lengthToNextPoint -=1;
@@ -111,8 +122,18 @@ public class MapCreator {
                 System.out.print(cor[0]+"x" + cor[1]+"y, ");
             }
         }
-
         return map;
+    }
+
+    private static boolean ReallyContains_IntMassive(ArrayList<int[]> list, int[] findingValue){
+        boolean result = false;
+        for(int[] e : list){
+            if(e[0] == findingValue[0] && e[1] == findingValue[1]){
+                result = true;
+                break;
+            }
+        }
+        return result;
     }
 
     public static void CreateNewOpenWorld(){
