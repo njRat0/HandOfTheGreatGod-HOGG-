@@ -100,7 +100,7 @@ public class UserInputService {
 					DataService.CheckDoesSavingSlotsExisting();
 					break;
 				case KeyEvent.VK_F10:
-					MapCreator.CreateNewMap(0, 2);
+					MapCreator.CreateNewMap(0, 3);
 					break;
 			}
 		}

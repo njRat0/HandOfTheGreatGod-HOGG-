@@ -1,6 +1,9 @@
 package game;
 
 import java.util.Random;
+
+import javax.sound.midi.SysexMessage;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,17 +34,16 @@ public class MapCreator {
         map[sizeOfSide-1][sizeOfSide-1] = (int)(Math.random() * maxHight);
 
         int lengthToNextPoint = sizeOfSide/2;
+        System.out.println("side size: " + sizeOfSide);
+        System.out.println("lengthToNextPoint: " + lengthToNextPoint);
         ArrayList<int[]> nextPointsCor = new ArrayList<int[]>();
         ArrayList<int[]> curPointsCor = new ArrayList<int[]>();
         int countOfAffectingCells = 0;
         int totalValue = 0;
-        //ArrayList<int[]> nextPointsValue = new ArrayList<int[]>();
         curPointsCor.add(new int[]{lengthToNextPoint, lengthToNextPoint});
-        //nextPointsValue.add(new int[]{0, 0});
         while(lengthToNextPoint != 0){
             //diamond step
-            for(int[] curCellCor : curPointsCor){
-                System.out.println("New point of diamond step: " + curCellCor[0] + ", " + curCellCor[1]);
+            for(int[] curCellCor : curPointsCor){                
                 totalValue = 0;
                 countOfAffectingCells = 0;
                 if(curCellCor[1] + lengthToNextPoint < sizeOfSide && curCellCor[0] + lengthToNextPoint < sizeOfSide){
@@ -49,34 +51,47 @@ public class MapCreator {
                     countOfAffectingCells++;
                 }
                 if(curCellCor[1] - lengthToNextPoint >= 0 && curCellCor[0] + lengthToNextPoint < sizeOfSide){
-                    totalValue += map[curCellCor[1] + lengthToNextPoint][curCellCor[0] - lengthToNextPoint];
+                    totalValue += map[curCellCor[1] - lengthToNextPoint][curCellCor[0] + lengthToNextPoint];
                     countOfAffectingCells++;
                 }
                 if(curCellCor[1] + lengthToNextPoint < sizeOfSide && curCellCor[0] - lengthToNextPoint >= 0){
-                    totalValue += map[curCellCor[1] - lengthToNextPoint][curCellCor[0] + lengthToNextPoint];
+                    totalValue += map[curCellCor[1] + lengthToNextPoint][curCellCor[0] - lengthToNextPoint];
                     countOfAffectingCells++;
                 }
                 if(curCellCor[1] - lengthToNextPoint >= 0 && curCellCor[0] - lengthToNextPoint >= 0){
                     totalValue += map[curCellCor[1] - lengthToNextPoint][curCellCor[0] - lengthToNextPoint];
                     countOfAffectingCells++;
                 }
-                map[curCellCor[1]][curCellCor[0]] = totalValue/countOfAffectingCells;
 
-                if(!nextPointsCor.contains(new int[]{curCellCor[0]+lengthToNextPoint, curCellCor[1]}))nextPointsCor.add(new int[]{curCellCor[0]+lengthToNextPoint, curCellCor[1]});
-                if(!nextPointsCor.contains(new int[]{curCellCor[0]-lengthToNextPoint, curCellCor[1]}))nextPointsCor.add(new int[]{curCellCor[0]-lengthToNextPoint, curCellCor[1]});
-                if(!nextPointsCor.contains(new int[]{curCellCor[0], curCellCor[1]+lengthToNextPoint}))nextPointsCor.add(new int[]{curCellCor[0], curCellCor[1]+lengthToNextPoint});
-                if(!nextPointsCor.contains(new int[]{curCellCor[0], curCellCor[1]-lengthToNextPoint}))nextPointsCor.add(new int[]{curCellCor[0], curCellCor[1]-lengthToNextPoint});
+                if(roughness != 0){
+                    int value = totalValue/countOfAffectingCells;
+                    int addValue = (int)((Math.random()*2 - 1) * roughness);
+                    if(value + addValue > maxHight){
+                        value = maxHight;
+                    }
+                    else if(value + addValue < minHight){
+                        value = minHight;
+                    }
+                    else{
+                        value+=addValue;
+                    }
+
+                    map[curCellCor[1]][curCellCor[0]] = value;
+                }
+                else{
+                    map[curCellCor[1]][curCellCor[0]] = totalValue/countOfAffectingCells;
+                }
+
+                if(!ReallyContains_IntMassive(nextPointsCor, new int[]{curCellCor[0]+lengthToNextPoint, curCellCor[1]}))nextPointsCor.add(new int[]{curCellCor[0]+lengthToNextPoint, curCellCor[1]});
+                if(!ReallyContains_IntMassive(nextPointsCor, new int[]{curCellCor[0]-lengthToNextPoint, curCellCor[1]}))nextPointsCor.add(new int[]{curCellCor[0]-lengthToNextPoint, curCellCor[1]});
+                if(!ReallyContains_IntMassive(nextPointsCor, new int[]{curCellCor[0], curCellCor[1]+lengthToNextPoint}))nextPointsCor.add(new int[]{curCellCor[0], curCellCor[1]+lengthToNextPoint});
+                if(!ReallyContains_IntMassive(nextPointsCor, new int[]{curCellCor[0], curCellCor[1]-lengthToNextPoint}))nextPointsCor.add(new int[]{curCellCor[0], curCellCor[1]-lengthToNextPoint});
             }
             curPointsCor = new ArrayList<int[]>(List.copyOf(nextPointsCor));
             nextPointsCor.clear();
-            for(int[] cor : nextPointsCor){
-                System.out.print(cor[0]+"x" + cor[1]+"y, ");
-            }
-            System.out.println();
             //squer step
             int lengthToNextPoint_SquerStep = lengthToNextPoint -1;
             for(int[] curCellCor : curPointsCor){
-                System.out.println("New point of squer step: " + curCellCor[0] + ", " + curCellCor[1]);
                 totalValue = 0;
                 countOfAffectingCells = 0;
                 if(curCellCor[0] + lengthToNextPoint < sizeOfSide){
@@ -95,21 +110,40 @@ public class MapCreator {
                     totalValue += map[curCellCor[1] - lengthToNextPoint][curCellCor[0]];
                     countOfAffectingCells++;
                 }
-                map[curCellCor[1]][curCellCor[0]] = totalValue/countOfAffectingCells;
+
+                if(roughness != 0){
+                    int value = totalValue/countOfAffectingCells;
+                    int addValue = (int)((Math.random()*2 - 1) * roughness);
+                    if(value + addValue > maxHight){
+                        value = maxHight;
+                    }
+                    else if(value + addValue < minHight){
+                        value = minHight;
+                    }
+                    else{
+                        value+=addValue;
+                    }
+
+                    map[curCellCor[1]][curCellCor[0]] = value;
+                }
+                else{
+                    map[curCellCor[1]][curCellCor[0]] = totalValue/countOfAffectingCells;
+                }
+                
                 
                 //stop here<<<<<<<<<
                 if(lengthToNextPoint_SquerStep > 0){
-                    if(curCellCor[0] + lengthToNextPoint_SquerStep < sizeOfSide && curCellCor[1] + lengthToNextPoint_SquerStep < sizeOfSide && !ReallyContains_IntMassive(nextPointsCor, curCellCor)){                        
-                        nextPointsCor.add(new int[]{curCellCor[0]+lengthToNextPoint_SquerStep,curCellCor[1]+lengthToNextPoint_SquerStep});
+                    if((curCellCor[0] + lengthToNextPoint_SquerStep) < sizeOfSide && (curCellCor[1] + lengthToNextPoint_SquerStep) < sizeOfSide && !ReallyContains_IntMassive(nextPointsCor, new int[]{curCellCor[0] + lengthToNextPoint_SquerStep, curCellCor[1] + lengthToNextPoint_SquerStep})){
+                        nextPointsCor.add(new int[]{curCellCor[0] + lengthToNextPoint_SquerStep, curCellCor[1] + lengthToNextPoint_SquerStep} );
                     }
-                    if(curCellCor[0] - lengthToNextPoint_SquerStep >= 0 && curCellCor[1] + lengthToNextPoint_SquerStep < sizeOfSide && !ReallyContains_IntMassive(nextPointsCor, curCellCor)){                        
-                        nextPointsCor.add(new int[]{curCellCor[0]+lengthToNextPoint_SquerStep,curCellCor[1]+lengthToNextPoint_SquerStep});
+                    if((curCellCor[0] - lengthToNextPoint_SquerStep) >= 0 && (curCellCor[1] + lengthToNextPoint_SquerStep) < sizeOfSide && !ReallyContains_IntMassive(nextPointsCor, new int[]{curCellCor[0] - lengthToNextPoint_SquerStep, curCellCor[1] + lengthToNextPoint_SquerStep})){
+                        nextPointsCor.add(new int[]{curCellCor[0] - lengthToNextPoint_SquerStep, curCellCor[1] + lengthToNextPoint_SquerStep});
                     }
-                    if(curCellCor[0] + lengthToNextPoint_SquerStep < sizeOfSide && curCellCor[1] - lengthToNextPoint_SquerStep >= 0 && !ReallyContains_IntMassive(nextPointsCor, curCellCor)){
-                        nextPointsCor.add(new int[]{curCellCor[0]+lengthToNextPoint_SquerStep,curCellCor[1]+lengthToNextPoint_SquerStep});
+                    if((curCellCor[0] + lengthToNextPoint_SquerStep) < sizeOfSide && (curCellCor[1] - lengthToNextPoint_SquerStep) >= 0 && !ReallyContains_IntMassive(nextPointsCor, new int[]{curCellCor[0] + lengthToNextPoint_SquerStep, curCellCor[1] - lengthToNextPoint_SquerStep})){
+                        nextPointsCor.add(new int[]{curCellCor[0] + lengthToNextPoint_SquerStep, curCellCor[1] - lengthToNextPoint_SquerStep});
                     }
-                    if(curCellCor[0] - lengthToNextPoint_SquerStep >= 0 && curCellCor[1] - lengthToNextPoint_SquerStep >= 0 && !ReallyContains_IntMassive(nextPointsCor, curCellCor)){
-                        nextPointsCor.add(new int[]{curCellCor[0]+lengthToNextPoint_SquerStep,curCellCor[1]+lengthToNextPoint_SquerStep});
+                    if((curCellCor[0] - lengthToNextPoint_SquerStep) >= 0 && (curCellCor[1] - lengthToNextPoint_SquerStep) >= 0 && !ReallyContains_IntMassive(nextPointsCor, new int[]{curCellCor[0] - lengthToNextPoint_SquerStep, curCellCor[1] - lengthToNextPoint_SquerStep})){
+                        nextPointsCor.add(new int[]{curCellCor[0] - lengthToNextPoint_SquerStep, curCellCor[1] - lengthToNextPoint_SquerStep});
                     }
                 }
             }
@@ -117,10 +151,6 @@ public class MapCreator {
             curPointsCor = new ArrayList<int[]>(List.copyOf(nextPointsCor));
             nextPointsCor.clear();
             lengthToNextPoint -=1;
-
-            for(int[] cor : curPointsCor){
-                System.out.print(cor[0]+"x" + cor[1]+"y, ");
-            }
         }
         return map;
     }
