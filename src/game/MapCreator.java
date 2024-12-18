@@ -11,20 +11,22 @@ import java.util.List;
 
 public class MapCreator {
     public static void CreateNewMap(float roughnessFactor, int size){
+        GameMapService.curMap = new int[][]{};
         int minHight = 0;
         int maxHight = 7;
         int sizeOfSide = (int)(Math.pow(2, size) + 1);
         int[][] map = new int[sizeOfSide][sizeOfSide];
         
         map = CreateHightMap(map, minHight, maxHight, sizeOfSide, roughnessFactor);
-        System.out.println("");
-        for(int[] i : map){
-            for(int j : i){
-                System.out.print(j);
-            }
-            System.out.println("");
-        }
-        System.out.println("------------");
+        // System.out.println("");
+        // for(int[] i : map){
+        //     for(int j : i){
+        //         System.out.print(j);
+        //     }
+        //     System.out.println("");
+        // }
+        // System.out.println("------------");
+        GameMapService.curMap = map;
     }
 
     private static int[][] CreateHightMap(int[][] map, int minHight, int maxHight, int sizeOfSide, float roughness){
@@ -90,7 +92,7 @@ public class MapCreator {
             curPointsCor = new ArrayList<int[]>(List.copyOf(nextPointsCor));
             nextPointsCor.clear();
             //squer step
-            int lengthToNextPoint_SquerStep = lengthToNextPoint -1;
+            int lengthToNextPoint_SquerStep = lengthToNextPoint /2;
             for(int[] curCellCor : curPointsCor){
                 totalValue = 0;
                 countOfAffectingCells = 0;
@@ -150,7 +152,7 @@ public class MapCreator {
             curPointsCor.clear();
             curPointsCor = new ArrayList<int[]>(List.copyOf(nextPointsCor));
             nextPointsCor.clear();
-            lengthToNextPoint -=1;
+            lengthToNextPoint /= 2;
         }
         return map;
     }

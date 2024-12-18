@@ -32,6 +32,7 @@ public class GameLoop implements Runnable {
 
 	public static boolean isPause = false;
 	public static boolean isChoosingGameSlot = false;
+	public static boolean isShowingMap = false;
 
 
 	public GameLoop(Frame frame) {

@@ -223,7 +223,45 @@ public class Frame extends JFrame {
 		g2d.setColor(Color.BLACK);
 		g2d.fillRect(startPosOfGameX, startPosOfGameY, gameWidth, gameHeight);
 		
-		if(GameLoop.curLayout == 0){
+		if(GameLoop.isShowingMap){
+			int ofSetX = 100;
+			int ofSetY = 200;
+			g2d.setColor(Color.BLACK);
+			g2d.fillRect(startPosOfGameX, startPosOfGameY, gameWidth, gameHeight);
+
+			for(int y = 0; y < GameMapService.curMap.length; y++){
+				for(int x = 0; x < GameMapService.curMap[y].length; x++){
+					switch(GameMapService.curMap[y][x]){
+						case 0:
+							g2d.setColor(Color.BLUE);
+							break;
+						case 1:
+							g2d.setColor(Color.CYAN);
+							break;
+						case 2:
+							g2d.setColor(Color.YELLOW);
+							break;
+						case 3:
+							g2d.setColor(new Color(156, 255, 153));
+							break;
+						case 4:
+							g2d.setColor(new Color(46, 158, 43));
+							break;
+						case 5:
+							g2d.setColor(new Color(143, 121, 103));
+							break;
+						case 6:
+							g2d.setColor(new Color(77, 55, 37));
+							break;
+						case 7:
+							g2d.setColor(Color.WHITE);
+							break;
+					}
+					g2d.drawLine(x + ofSetX,y + ofSetY,x + ofSetX,y + ofSetY);   
+				}
+			}
+		}
+		else if(GameLoop.curLayout == 0){
 			for(MyButton button : GameLoop.menuButtons){
 				button.toDraw(g2d);
 				String str = button.name;
